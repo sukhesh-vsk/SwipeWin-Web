@@ -1,21 +1,21 @@
 'use client'
- 
+
 import { useSportsNavigation } from '@azuro-org/sdk'
 import { ActiveLink } from '@/components'
- 
- 
-export function ListSports() {
+
+
+export function SportsNavigation() {
   const { loading, sports } = useSportsNavigation({
     withGameCount: true,
   })
- 
+
   if (loading) {
     return <div>Loading...</div>
   }
- 
+
   // it's simple sort by games count, you can implement your own
   const sortedSports = [ ...sports || [] ].sort((a, b) => b.games!.length - a.games!.length)
- 
+
   return (
     <div className="w-full mb-8 overflow-hidden">
       <div className="w-full overflow-x-auto no-scrollbar">
@@ -23,7 +23,7 @@ export function ListSports() {
           <ActiveLink
             className="py-2 px-4 bg-zinc-100 whitespace-nowrap rounded-full"
             activeClassName="!bg-purple-200"
-            href="/home/top"
+            href="/events/top"
           >
             Top
           </ActiveLink>
@@ -33,7 +33,7 @@ export function ListSports() {
                 key={slug}
                 className="flex items-center py-2 px-4 bg-zinc-100 whitespace-nowrap rounded-full"
                 activeClassName="!bg-purple-200"
-                href={`/home/${slug}`}
+                href={`/events/${slug}`}
               >
                 <span>{name}</span>
                 {

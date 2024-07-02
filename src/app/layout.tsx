@@ -3,8 +3,7 @@ import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { Providers } from "@/context";
-import { BottomBar, Navbar } from "@/components";
+import { BottomBar, Navbar, Providers } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,8 +24,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body className={inter.className}>
         <Providers initialChainId={initialChainId} initialLiveState={initialLiveState}>
           <Navbar /> 
-          <main></main>
-          {children}
+          <main className="container pt-5 pb-10">
+            {children}
+          </main>
         </Providers>
         <BottomBar />
       </body>

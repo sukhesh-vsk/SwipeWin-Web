@@ -1,15 +1,15 @@
 import dayjs from 'dayjs'
 import { type GameQuery } from '@azuro-org/sdk'
- 
- 
+
+
 type ParticipantLogoProps = {
   image?: string | null
   name: string
 }
- 
+
 export function ParticipantLogo(props: ParticipantLogoProps) {
   const { image, name } = props
- 
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center justify-center w-20 h-20 bg-white rounded-full">
@@ -23,14 +23,14 @@ export function ParticipantLogo(props: ParticipantLogoProps) {
     </div>
   )
 }
- 
+
 type Props = {
   game: GameQuery['games'][0]
 }
- 
+
 export function GameInfo(props: Props) {
   const { sport, league, participants, startsAt } = props.game
- 
+
   return (
     <div className="flex flex-col items-center pt-6 pb-8 bg-zinc-50 rounded-[40px]">
       <div className="flex flex-col items-center text-md">

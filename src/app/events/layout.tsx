@@ -1,15 +1,14 @@
 'use client'
- 
-import { ListSports, Sport } from '@/components'
+
+import { SportsNavigation, Sport } from '@/components'
 import { useParams } from 'next/navigation'
-import { useSports, type UseSportsProps, Game_OrderBy, OrderDirection, useLive } from '@azuro-org/sdk'
- 
- 
+import { useSports, type UseSportsProps, Game_OrderBy, OrderDirection } from '@azuro-org/sdk'
+
+
 const useData = () => {
   const params = useParams()
-  const { isLive } = useLive()
   const isTopPage = params.sport === 'top'
- 
+
   const props: UseSportsProps = isTopPage ? {
     gameOrderBy: Game_OrderBy.Turnover,
     filter: {
@@ -24,21 +23,21 @@ const useData = () => {
       leagueSlug: params.league as string,
     }
   }
- 
-  const { loading, sports } = useSports({ ...props, isLive })
- 
+
+  const { loading, sports } = useSports(props)
+
   return {
     sports,
     loading,
   }
 }
- 
+
 export default function EventsLayout() {
   const { loading, sports } = useData()
- 
+
   return (
     <>
-      <ListSports />
+      <SportsNavigation />
       {
         loading ? (
           <div>Loading...</div>

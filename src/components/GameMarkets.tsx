@@ -1,16 +1,16 @@
 'use client'
- 
+
 import type { GameMarkets, MarketOutcome } from '@azuro-org/sdk'
-import { OutcomeBTN } from '@/components'
- 
- 
+import { OutcomeButton } from '@/components'
+
+
 type GameMarketsProps = {
   markets: GameMarkets
 }
- 
+
 export function GameMarkets(props: GameMarketsProps) {
   const { markets } = props
- 
+
   return (
     <div className="max-w-[600px] mx-auto mt-12 space-y-6">
       {
@@ -24,7 +24,7 @@ export function GameMarkets(props: GameMarketsProps) {
                     <div className="flex gap-2 w-full">
                       {
                         outcomes.map((outcome) => (
-                          <OutcomeBTN
+                          <OutcomeButton
                             key={outcome.selectionName}
                             outcome={outcome}
                           />

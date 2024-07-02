@@ -9,8 +9,7 @@ export function BottomBar() {
         <ActiveLink
           className="text-zinc-800 hover:text-black transition"
           activeClassName="!text-black font-semibold !cursor-default"
-          href="/home"
-          regex="^\/home(.*)"
+          href="/events/top"
         >
           Home
         </ActiveLink>
@@ -18,7 +17,6 @@ export function BottomBar() {
           className="text-zinc-800 hover:text-black transition ml-4"
           activeClassName="!text-black font-semibold !cursor-default"
           href="/allbets"
-          regex="^\/allbets"
         >
           My Bets
         </ActiveLink>
@@ -26,7 +24,6 @@ export function BottomBar() {
           className="text-zinc-800 hover:text-black transition ml-4"
           activeClassName="!text-black font-semibold !cursor-default"
           href="/support"
-          regex="^\/support"
         >
           Support
         </ActiveLink>

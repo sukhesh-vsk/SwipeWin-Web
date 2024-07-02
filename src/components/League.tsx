@@ -13,7 +13,7 @@ type GameProps = {
   game: GamesQuery['games'][0]
 }
 
-function Game(props: GameProps) {
+function Game(props: (GameProps & { league: string })) {
   const { className, game } = props
   const { gameId, title, startsAt, status: graphStatus } = game
 
@@ -29,25 +29,23 @@ function Game(props: GameProps) {
   })
 
   return (
-    <div className={cx(className, "p-2 bg-zinc-200 rounded-lg flex items-center justify-between")}>
-      <div className='max-w-[220px] w-full'>
-        <Link
-          className="text-sm mb-2 hover:underline block whitespace-nowrap overflow-hidden text-ellipsis w-full"
-          href={`/event/${gameId}`}
-        >
-          {title}
-        </Link>
-        <div>{dayjs(+startsAt * 1000).format('DD MMM HH:mm')}</div>
+    <Link href={`/event/${gameId}`}>
+    <div className={cx(className, "p-2 bg-sgrad text-text rounded-lg flex flex-col items-center justify-around game-card")}>
+      <div>
+        <div className='text-md mb-8 tracking-widest font-medium text-center'>{props.league}</div>
+        <div className='max-w-[220px] text-sm w-full flex flex-col items-center justify-center mx-auto'>
+            {title}
+          <div className='text-sm'>{dayjs(+startsAt * 1000).format('DD MMM HH:mm')}</div>
+        </div>
       </div>
       {
         Boolean(markets?.[0]?.outcomeRows[0]) && (
-          <div className="min-w-[500px]">
-            <div className="text-center">{markets![0].name}</div>
+          <div className="lg:min-w-[500px]">
             <div className="flex items-center">
               {
                 markets![0].outcomeRows[0].map((outcome) => (
                   <OutcomeButton
-                    className="ml-2 first-of-type:ml-0"
+                    className="ml-2 odd-cont first-of-type:ml-0"
                     key={outcome.selectionName}
                     outcome={outcome}
                   />
@@ -57,13 +55,8 @@ function Game(props: GameProps) {
           </div>
         )
       }
-      <Link
-        className="text-md p-2 rounded-lg bg-zinc-100 hover:underline"
-        href={`/event/${gameId}`}
-      >
-        All Markets =&gt;
-      </Link>
     </div>
+    </Link>
   )
 }
 
@@ -105,19 +98,14 @@ export function League(props: LeagueProps) {
             </>
           )
         }
-        <Link
-          className="hover:underline w-fit"
-          href={`/events/${sportSlug}/${countrySlug}/${league.slug}`}
-        >
-          {league.name}
-        </Link>
       </div>
       {
         games.map(game => (
           <Game
             key={game.gameId}
-            className="mt-2 first-of-type:mt-0"
+            className="mt-2 first-of-type:mt-0 mb-4"
             game={game}
+            league={league.name}
           />
         ))
       }

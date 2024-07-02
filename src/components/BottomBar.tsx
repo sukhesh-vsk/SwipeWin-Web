@@ -5,7 +5,7 @@ import { ActiveLink } from '@/components'
 
 export function BottomBar() {
   return (
-    <footer className='bg-white fixed inset-x-0 bottom-0'>
+    <footer className='bg-bhg w-full bottom-bar flex space-around p-4'>
         <ActiveLink
           className="text-zinc-800 hover:text-black transition"
           activeClassName="!text-black font-semibold !cursor-default"

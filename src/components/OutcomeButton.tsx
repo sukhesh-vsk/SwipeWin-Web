@@ -26,9 +26,9 @@ export function OutcomeButton(props: OutcomeProps) {
     return propsKey === itemKey
   }))
 
-  const buttonClassName = cx(`flex justify-between p-5 transition rounded-2xl cursor-pointer w-full disabled:cursor-not-allowed disabled:opacity-50 ${className}`, {
-    'bg-slate-200 hover:bg-slate-300': isActive,
-    'bg-zinc-50 hover:bg-zinc-100': !isActive,
+  const buttonClassName = cx(`flex items-center justify-between p-5 transition rounded-2xl cursor-pointer w-full disabled:cursor-not-allowed disabled:opacity-50 ${className}`, {
+    'bg-sec_dim_2': isActive,
+    'bg-odd': !isActive,
   })
 
   const handleClick = () => {
@@ -53,7 +53,6 @@ export function OutcomeButton(props: OutcomeProps) {
       onClick={handleClick}
       disabled={isLocked}
     >
-      <span className="text-zinc-500">{outcome.selectionName}</span>
       <span className="font-medium">{isOddsFetching ? '--' : odds.toFixed(2)}</span>
     </button>
   )

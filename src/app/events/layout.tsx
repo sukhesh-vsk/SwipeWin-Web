@@ -4,7 +4,6 @@ import { SportsNavigation, Sport } from '@/components'
 import { useParams } from 'next/navigation'
 import { useSports, type UseSportsProps, Game_OrderBy, OrderDirection } from '@azuro-org/sdk'
 
-
 const useData = () => {
   const params = useParams()
   const isTopPage = params.sport === 'top'
@@ -12,7 +11,8 @@ const useData = () => {
   const props: UseSportsProps = isTopPage ? {
     gameOrderBy: Game_OrderBy.Turnover,
     filter: {
-      limit: 10,
+      limit: 1,
+      sportSlug: 'football'
     }
   } : {
     gameOrderBy: Game_OrderBy.StartsAt,

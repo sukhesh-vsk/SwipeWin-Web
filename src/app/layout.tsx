@@ -25,6 +25,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body className={inter.className}>
         <Providers initialChainId={initialChainId} initialLiveState={initialLiveState}>
           <Navbar /> 
+          <main></main>
           {children}
         </Providers>
         <BottomBar />

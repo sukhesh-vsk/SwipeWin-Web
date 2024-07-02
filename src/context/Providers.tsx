@@ -10,6 +10,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { polygon, gnosis } from "viem/chains";
+import { BetslipProvider } from "./BetSlip";
 
 const { wallets } = getDefaultWallets();
 
@@ -44,7 +45,9 @@ export function Providers(props: ProvidersProps) {
         <RainbowKitProvider>
           <AzuroSDKProvider initialChainId={chainId}>
             <LiveProvider initialLiveState={initialLiveState}>
-              {children}
+              <BetslipProvider>
+                {children}
+              </BetslipProvider>
             </LiveProvider>
           </AzuroSDKProvider>
         </RainbowKitProvider>

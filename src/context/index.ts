@@ -1,3 +1,4 @@
+import { BetslipProvider } from "./BetSlip";
 import { Providers } from "./Providers";
 
-export { Providers }
+export { Providers, BetslipProvider }

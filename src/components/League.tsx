@@ -43,10 +43,10 @@ function Game(props: (GameProps & { league: string } & { sports: string })) {
           <div className="lg:min-w-[500px]">
             <div className="flex items-center">
               {
-                markets![0].outcomeRows[0].map((outcome) => (
+                markets![0].outcomeRows[0].map((outcome, index) => (
                   <OutcomeButton
                     className="ml-2 odd-cont first-of-type:ml-0"
-                    key={outcome.selectionName}
+                    key={`${outcome.selectionName}-${index}`}
                     outcome={outcome}
                   />
                 ))

@@ -22,13 +22,13 @@ export function Sport(props: SportProps) {
   return (
     <div
       className={cx({
-        "p-4 bg-zinc-50 rounded-3xl mt-2 first-of-type:mt-0": !isSportPage
+        "p-4 bg-bg rounded-3xl mt-2 first-of-type:mt-0": !isSportPage
       })}
     >
       {
         !isSportPage && (
           <Link
-            className="text-lg mb-2 hover:underline font-bold"
+            className="text-lg text-text mb-2 hover:underline font-bold"
             href={`/events/${sport.slug}`}
           >
             {sport.name}

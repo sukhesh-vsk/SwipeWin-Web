@@ -24,11 +24,11 @@ export function Country(props: CountryProps) {
   const isLeaguePage = params.league
 
   return (
-    <div
-      className={cx(className, {
-        'p-4 bg-zinc-100 rounded-3xl': !isCountryPage && !isLeaguePage
-      })}>
-      {
+    // <div
+    //   className={cx(className, {
+    //     'p-4 bg-zinc-100 rounded-3xl': !isCountryPage && !isLeaguePage
+    //   })}>
+      /* {
         !isLeaguePage && (
           <Link
             className={cx('mb-2 hover:underline', {
@@ -40,7 +40,8 @@ export function Country(props: CountryProps) {
             {country.name}
           </Link>
         )
-      }
+      } */
+      <div>
       {
         leagues.map(league => (
           <League
@@ -52,7 +53,7 @@ export function Country(props: CountryProps) {
             countrySlug={country.slug}
           />
         ))
-      }
+        }
     </div>
   )
 }

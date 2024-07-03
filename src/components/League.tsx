@@ -30,7 +30,7 @@ function Game(props: (GameProps & { league: string })) {
 
   return (
     <Link href={`/event/${gameId}`}>
-    <div className={cx(className, "p-2 bg-sgrad text-text rounded-lg flex flex-col items-center justify-around game-card")}>
+    <div className={cx(className, "p-2 bg-sgrad text-text rounded-xl flex flex-col items-center justify-around game-card")}>
       <div>
         <div className='text-md mb-8 tracking-widest font-medium text-center'>{props.league}</div>
         <div className='max-w-[220px] text-sm w-full flex flex-col items-center justify-center mx-auto'>
@@ -77,10 +77,11 @@ export function League(props: LeagueProps) {
   const isLeaguePage = params.league
 
   return (
-    <div
-      className={cx(className, {
-        "p-4 bg-zinc-50 rounded-md": !isLeaguePage
-      })}>
+    // <div
+    //   className={cx(className, {
+    //     "p-4 bg-red-500 rounded-md": !isLeaguePage
+    //   })}>
+    <div>
       <div className={cx("flex items-center mb-2", {
         "text-sm": !isLeaguePage,
         "text-lg font-bold": isLeaguePage

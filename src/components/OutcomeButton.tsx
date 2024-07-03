@@ -26,7 +26,7 @@ export function OutcomeButton(props: OutcomeProps) {
     return propsKey === itemKey
   }))
 
-  const buttonClassName = cx(`flex items-center justify-between p-5 transition rounded-2xl cursor-pointer w-full disabled:cursor-not-allowed disabled:opacity-50 ${className}`, {
+  const buttonClassName = cx(`flex items-center justify-between px-4 py-3 transition rounded-2xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className}`, {
     'bg-sec_dim_2': isActive,
     'bg-odd': !isActive,
   })

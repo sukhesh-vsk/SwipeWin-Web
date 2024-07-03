@@ -7,13 +7,16 @@ import { GameInfo, GameMarkets } from '@/components'
 
 type MarketsProps = {
   gameId: string
-  gameStatus: GameStatus
+  gameStatus: GameStatus,
 }
 
 const Markets: React.FC<MarketsProps> = ({ gameId, gameStatus }) => {
   const { loading, markets } = useGameMarkets({
     gameId,
     gameStatus,
+    filter: {
+      outcomeIds: ['29']
+    }
   })
 
   if (loading) {
@@ -40,13 +43,13 @@ const Content: React.FC<ContentProps> = ({ game, isGameInLive }) => {
   })
 
   return (
-    <>
+    <div className='bg-sec_2 p-10 rounded-xl'>
       <GameInfo game={game} />
       <Markets
         gameId={game.gameId}
         gameStatus={gameStatus}
       />
-    </>
+    </div>
   )
 }
 

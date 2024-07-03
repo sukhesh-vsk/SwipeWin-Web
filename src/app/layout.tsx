@@ -21,10 +21,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body className={inter.className + " min-h-screen"}>
+      <body className={inter.className}>
         <Providers initialChainId={initialChainId} initialLiveState={initialLiveState}>
           <Navbar /> 
-            <main className="container pt-5 pb-10 flex-grow">
+            <main className="container pt-5 pb-10 flex-grow bg-bg">
               {children}
             </main>
           <BottomBar />

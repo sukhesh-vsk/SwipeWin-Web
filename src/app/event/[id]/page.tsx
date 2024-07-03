@@ -43,7 +43,7 @@ const Content: React.FC<ContentProps> = ({ game, isGameInLive }) => {
   })
 
   return (
-    <div className='bg-sec_2 p-10 rounded-xl'>
+    <div className='bg-sec_2 p-10 rounded-xl mx-6'>
       <GameInfo game={game} />
       <Markets
         gameId={game.gameId}

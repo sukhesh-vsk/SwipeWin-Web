@@ -8,15 +8,14 @@ html, body {
   height: 100%;
 }
 
-.bottom-bar {
-  position: sticky;
-  bottom: 100;
-  width: 100%;
-  background-color: tomato;
-}
-
 .game-card {
   height: 350px;
+}
+
+.text-gradient {
+  background: linear-gradient(228.27deg, #CF3577 2.64%, #64349E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 

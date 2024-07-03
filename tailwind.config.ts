@@ -31,7 +31,7 @@ const config: Config = {
           3: "#670669",
           4: "#b337b8",
         },
-        'odd': 'rgba(28, 32, 49, 0.6)'
+        'odd': 'rgba(28, 32, 49, 0.6)',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

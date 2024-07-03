@@ -24,10 +24,10 @@ function AmountInput() {
   const { loading: isBalanceFetching, balance } = useBetTokenBalance()
 
   return (
-    <div className="mt-4 pt-4 border-t border-zinc-300 space-y-2">
+    <div className="mt-4 pt-4 border-t border-zinc-300 space-y-2 text-sm">
       <div className="flex items-center justify-between">
-        <span className="text-md text-zinc-400">Wallet balance:</span>
-        <span className="text-md font-semibold">
+        <span className="text-sm text-zinc-400">Wallet balance:</span>
+        <span className="text-sm font-semibold">
           {
             isBalanceFetching ? (
               <>Loading...</>
@@ -43,20 +43,20 @@ function AmountInput() {
       </div>
       {
         Boolean(maxBet) && <div className="flex items-center justify-between">
-          <span className="text-md text-zinc-400">Max bet amount:</span>
-          <span className="text-md font-semibold">{maxBet} {betToken.symbol}</span>
+          <span className="text-sm text-zinc-400">Max bet amount:</span>
+          <span className="text-sm font-semibold">{maxBet} {betToken.symbol}</span>
         </div>
       }
       {
         Boolean(minBet) && <div className="flex items-center justify-between">
-          <span className="text-md text-zinc-400">Min bet amount:</span>
-          <span className="text-md font-semibold">{minBet} {betToken.symbol}</span>
+          <span className="text-sm text-zinc-400">Min bet amount:</span>
+          <span className="text-sm font-semibold">{minBet} {betToken.symbol}</span>
         </div>
       }
       <div className="flex items-center justify-between">
-        <span className="text-md text-zinc-400">Bet amount</span>
+        <span className="text-sm text-zinc-400">Bet amount</span>
         <input
-          className="w-[140px] py-2 px-4 border border-zinc-400 text-md text-right font-semibold rounded-md"
+          className="w-[140px] py-2 px-4 border border-zinc-400 text-sm text-right font-semibold rounded-md"
           type="number"
           placeholder="Bet amount"
           value={betAmount}
@@ -181,7 +181,7 @@ function Content() {
   })
 
   return (
-    <div className="bg-zinc-100 p-4 mb-4 rounded-md w-full max-h-[90vh] overflow-auto border border-solid">
+    <div className="bg-zinc-100 p-2 pt-4 mb-1 rounded-md overflow-auto border border-solid">
       <div className="flex items-center justify-between mb-2">
         <div className="">Betslip {items.length > 1 ? 'Combo' : 'Single'} {items.length ? `(${items.length})`: ''}</div>
         {
@@ -193,7 +193,7 @@ function Content() {
       {
         Boolean(items.length) ? (
           <>
-            <div className="max-h-[300px] overflow-auto">
+            <div className="overflow-auto">
               {
                 items.map(item => {
                   const { game: { gameId, startsAt, sportName, leagueName, participants }, conditionId, outcomeId } = item
@@ -204,7 +204,7 @@ function Content() {
                   const isLock = !isStatusesFetching && statuses[conditionId] !== ConditionStatus.Created
 
                   return (
-                    <div key={gameId} className="bg-zinc-50 p-2 rounded-md mt-2 first-of-type:mt-0">
+                    <div key={gameId} className="bg-zinc-50 p-2 px-4 rounded-md mt-2 first-of-type:mt-0 text-sm">
                       <div className="flex items-center justify-between mb-2">
                         <div>{sportName} / {leagueName}</div>
                         <button onClick={() => removeItem(gameId)}>Remove</button>
@@ -220,7 +220,7 @@ function Content() {
                                   )
                                 }
                               </div>
-                              <span className="text-md">{name}</span>
+                              <span className="text-sm">{name}</span>
                             </div>
                           ))
                         }
@@ -257,9 +257,9 @@ function Content() {
                 })
               }
             </div>
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-md text-zinc-400">Total Odds:</span>
-              <span className="text-md font-semibold">
+            <div className="flex items-center justify-between mt-2 text-sm px-2">
+              <span className="text-zinc-400">Total Odds:</span>
+              <span className="font-semibold">
                 {
                   isOddsFetching ? (
                     <>Loading...</>
@@ -269,9 +269,9 @@ function Content() {
                 }
               </span>
             </div>
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-md text-zinc-400">Possible win:</span>
-              <span className="text-md font-semibold">
+            <div className="flex items-center justify-between mt-2 px-2">
+              <span className="text-sm text-zinc-400">Possible win:</span>
+              <span className="text-sm font-semibold">
                 {
                   isOddsFetching ? (
                     <>Loading...</>
@@ -283,9 +283,9 @@ function Content() {
             </div>
             {
               Boolean(isRelayerFeeLoading || formattedRelayerFeeAmount) && (
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-md text-zinc-400">Relayer fee:</span>
-                  <span className="text-md font-semibold">
+                <div className="flex items-center justify-between mt-2 px-2">
+                  <span className="text-sm text-zinc-400">Relayer fee:</span>
+                  <span className="text-sm font-semibold">
                     {
                       isRelayerFeeLoading ? (
                         <>Loading...</>
@@ -309,7 +309,7 @@ function Content() {
               account?.address ? (
                 <SubmitButton />
               ) : (
-                <div className="mt-6 py-3.5 text-center bg-red-200 rounded-2xl">
+                <div className="mt-4 py-2 px-2 text-center bg-red-200 rounded-2xl">
                 Connect your wallet
               </div>
               )
@@ -328,7 +328,7 @@ export function Betslip() {
   const { items } = useBaseBetslip()
 
   return (
-    <div className="fixed bottom-4 right-4 w-full max-w-full md:max-w-sm">
+    <div className="fixed bottom-24 right-4 w-9/12">
       {
         isOpen && (
           <Content />

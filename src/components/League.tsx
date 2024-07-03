@@ -5,7 +5,7 @@ import cx from 'clsx'
 import { useParams } from 'next/navigation'
 import dayjs from 'dayjs'
 
-import { OutcomeButton } from './index'
+import { GameInfo, OutcomeButton } from './index'
 
 
 type GameProps = {
@@ -13,7 +13,7 @@ type GameProps = {
   game: GamesQuery['games'][0]
 }
 
-function Game(props: (GameProps & { league: string })) {
+function Game(props: (GameProps & { league: string } & { sports: string })) {
   const { className, game } = props
   const { gameId, title, startsAt, status: graphStatus } = game
 
@@ -77,12 +77,7 @@ export function League(props: LeagueProps) {
   const isLeaguePage = params.league
 
   return (
-    // <div
-    //   className={cx(className, {
-    //     "p-4 bg-red-500 rounded-md": !isLeaguePage
-    //   })}>
-    <div>
-      <div className={cx("flex items-center mb-2", {
+      <div className={cx("flex items-center mb-5 overflow-x-auto h-72", {
         "text-sm": !isLeaguePage,
         "text-lg font-bold": isLeaguePage
       })}>
@@ -99,15 +94,15 @@ export function League(props: LeagueProps) {
             </>
           )
         }
-      </div>
+      <div className='text-text font-bold text-md'>{league.name}</div>
       {
         games.map(game => (
-          <Game
-            key={game.gameId}
-            className="mt-2 first-of-type:mt-0 mb-4"
-            game={game}
-            league={league.name}
-          />
+          <Link href={`/event/${game.gameId}`} className='mx-4 bg-secondary py-6 px-6 h-64 rounded-lg w-80'>
+            <GameInfo
+              key={game.gameId}
+              game={game}
+            />
+          </Link>
         ))
       }
     </div>

@@ -25,14 +25,16 @@ export function ParticipantLogo(props: ParticipantLogoProps) {
 }
 
 type Props = {
-  game: GameQuery['games'][0]
+  game: GameQuery['games'][0], 
+  className?: string
 }
 
 export function GameInfo(props: Props) {
   const { sport, league, participants, startsAt } = props.game
+  const style = (props.className) ? props.className : '';
 
   return (
-    <div className="flex flex-col items-center pt-6 pb-8 w-full h-full px-5 mx-4 bg-transparent rounded-[40px]">
+    <div className={`flex flex-col items-center pt-6 pb-8 w-full h-full px-5 mx-4 rounded-[40px]` + (props.className) ? style : 'bg-transparent'}>
       <div className="flex flex-col items-center text-md text-text w-full mb-6">
         <div className='tracking-wide w-full text-center'>{sport.name} | {league.country.name}</div>
         <div className="mt-1 text-sm">

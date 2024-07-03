@@ -11,8 +11,7 @@ const useData = () => {
   const props: UseSportsProps = isTopPage ? {
     gameOrderBy: Game_OrderBy.Turnover,
     filter: {
-      limit: 1,
-      sportSlug: 'football'
+      limit: 10,
     }
   } : {
     gameOrderBy: Game_OrderBy.StartsAt,

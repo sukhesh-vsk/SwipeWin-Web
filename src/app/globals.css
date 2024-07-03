@@ -1,6 +1,87 @@
+/* styles/globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/assets/fonts/cairo/Cairo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/assets/fonts/cairo/Cairo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/assets/fonts/cairo/Cairo-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/assets/fonts/cairo/Cairo-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/assets/fonts/cairo/Cairo-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansTC';
+  src: url('/assets/fonts/noto-tc/NotoSansTC-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansTC';
+  src: url('/assets/fonts/noto-tc/NotoSansTC-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansTC';
+  src: url('/assets/fonts/noto-tc/NotoSansTC-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansTC';
+  src: url('/assets/fonts/noto-tc/NotoSansTC-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansTC';
+  src: url('/assets/fonts/noto-tc/NotoSansTC-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansTC';
+  src: url('/assets/fonts/noto-tc/NotoSansTC-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
 
 html, body {
   margin: 0;
@@ -8,36 +89,26 @@ html, body {
   height: 100%;
 }
 
-.game-card {
-  height: 350px;
-}
-
 .text-gradient {
   background: linear-gradient(228.27deg, #CF3577 2.64%, #64349E 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-@layer components {
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
+      display: none;
   }
-
+ /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
 }
+}
+

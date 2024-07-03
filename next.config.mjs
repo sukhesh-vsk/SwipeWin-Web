@@ -13,13 +13,18 @@ const nextConfig = {
         'encoding'
       )
    
+      config.module.rules.push({
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      })
+      
       return config
     },
     async redirects() {
       return [
         {
           source: '/',
-          destination: '/events/top',
+          destination: '/events',
           permanent: false
         }
       ]

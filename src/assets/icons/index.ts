@@ -1,0 +1,10 @@
+export { default as BetsColorico } from './bets_color.svg';
+export { default as Betsico } from './bets.svg';
+export { default as Filterico } from './filter.svg';
+export { default as Gridico } from './grid.svg';
+export { default as HomeColorico } from './home_color.svg';
+export { default as Homeico } from './home.svg';
+export { default as Searchico } from './search.svg';
+export { default as ThreeDotsColorico } from './three_dots_color.svg';
+export { default as ThreeDotsico } from './three_dots.svg';
+export { default as Listico } from './list.svg';

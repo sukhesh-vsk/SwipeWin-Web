@@ -15,6 +15,10 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        cairo: ['Cairo', 'sans-serif'],
+        'noto': ['NotoSansTC', 'sans-serif'],
+      },
       colors: {
         primary: "#F4376D",
         secondary: "#8D99B2",

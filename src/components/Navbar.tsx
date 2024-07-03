@@ -1,16 +1,20 @@
 'use client'
  
-import { ConnectButton } from '@rainbow-me/rainbowkit' 
- 
 export function Navbar() {
- 
+  const data = {
+    walletBal: 20
+  }
+
   return (
-    <header className="flex items-center py-3.5 border-b border-zinc-200 bg-bg px-4 py-5 ">
-      <div className="text-xl font-semibold text-text">Swipe Win</div>
+    <header className="px-8 py-6 flex items-center justify-between">
+      <div className="text-xl font-semibold text-text tracking-wide text-base">Swipe Win</div>
       
-      <div className="ml-auto flex items-center">
-        <ConnectButton chainStatus="none" />
-      </div>
+      <button className='flex bg-text px-2 py-1 tracking-wide rounded-full text-sm font-noto font-semibold'>
+        <div className='text-gradient'>
+          My Wallet : 
+        </div>
+        <span className='ms-1 text-gradient font-semibold'>{data.walletBal}</span>
+      </button>
     </header>
   )
 }

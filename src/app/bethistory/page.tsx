@@ -151,7 +151,7 @@ export default function BetHistory() {
     <>
       <PageHeader title='Bet History' filter={true} />
 
-      <div className='container-fluid'>
+      <div className='container'>
         {
           matches.map((data, index) => (
             <div key={data.year} className='flex flex-col mt-8'>

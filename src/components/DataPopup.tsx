@@ -4,11 +4,12 @@ import { Closeico } from '@/assets/icons';
 import React, { useEffect, useState } from 'react'
 
 export default function DataPopup(props: any) {
+    const [isHidden, setHidden] = useState(true);
+    
     if (!props.match) {
         return null; 
     }
     
-    const [isHidden, setHidden] = useState(true);
 
     useEffect(() => {
         if (props.visible === 'true') {

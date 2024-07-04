@@ -3,6 +3,8 @@
 import { Listico } from '@/assets/icons'
 import { SearchBar } from '@/components'
 import GameCard from '@/components/GameCard'
+import { Game_OrderBy, UseSportsProps, useSports } from '@azuro-org/sdk'
+import { useParams } from 'next/navigation'
 import React from 'react'
 
 
@@ -10,6 +12,22 @@ export default function Events() {
   const IND = '/images/india.png'
   const AUS = '/images/aus.png'
 
+  // const useData = () => {
+  //   const homeData: UseSportsProps = {
+  //     gameOrderBy: Game_OrderBy.Turnover,
+  //     filter: {
+  //       limit: 1,
+  //     }
+  //   }
+
+  //   const { loading, sports } = useSports(homeData);
+  //   return ({
+  //     sports, loading
+  //   })
+  // }
+
+  // const { loading, sports } = useData()
+  
   const datas = [
     {
       id: 1282,

@@ -1,11 +1,12 @@
 import React from "react";
 import './globals.css';
-import { BottomBar, Navbar } from "@/components";
+import { Betslip, BottomBar, Navbar } from "@/components";
 import { GameDataProvider } from "@/context/GameDataProvider";
 import { Providers } from "@/context/Providers";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import '@rainbow-me/rainbowkit/styles.css'
+import { BetslipProvider } from "@/context";
 
 export const metadata: Metadata = {
   title: 'Swipe Win',
@@ -25,9 +26,12 @@ export default function Layout(props: { children: React.ReactNode }) {
             <Providers initialChainId={initialChainId} initialLiveState={initialLiveState}>
               <GameDataProvider>
                 <Navbar />
+                <BetslipProvider>
                   <main className="container flex-1 fixed h-full flex-grow">
                     {children}
+                    <Betslip />
                   </main>
+                </BetslipProvider>
                 <BottomBar />
               </GameDataProvider>
             </Providers>

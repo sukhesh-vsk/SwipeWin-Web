@@ -13,12 +13,6 @@ export function Navbar() {
       <div className="text-xl font-semibold text-text tracking-wide text-base">Swipe Win</div>
       
       <ConnectButton chainStatus="none" />
-      {/* <button className='flex bg-text px-2 py-1 tracking-wide rounded-full text-sm font-noto font-semibold'>
-        <div className='text-gradient'>
-          My Wallet : 
-        </div>
-        <span className='ms-1 text-gradient font-semibold'>{data.walletBal}</span>
-      </button> */}
     </header>
   )
 }

@@ -23,11 +23,11 @@ export const BetslipProvider: React.FC<Props> = ({ children }) => {
   const { items } = useBaseBetslip()
   const [ isOpen, setOpen ] = useState(false)
 
-  useEffect(() => {
-    if (items.length) {
-      setOpen(true)
-    }
-  }, [ items ])
+  // useEffect(() => {
+  //   if (items.length) {
+  //     setOpen(true)
+  //   }
+  // }, [ items ])
 
   const value = {
     isOpen,

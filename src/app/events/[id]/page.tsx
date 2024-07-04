@@ -3,23 +3,47 @@
 import PageHeader from '@/components/PageHeader'
 import { useGameData } from '@/context/GameDataProvider';
 import useFetchOdds from '@/hooks/useFetchOdds';
+import { useBaseBetslip } from '@azuro-org/sdk';
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export default function Game() {
     const router = useRouter();
     const { gameData } = useGameData();
+    const { items, addItem, removeItem } = useBaseBetslip();
+
     const [selectedOdd, setSelectedOdd] = useState<string | null>(null);
     const [bettingAmount, setBettingAmount] = useState<number>(0);
     const [winningAmount, setWinningAmount] = useState<number>(0);
     const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
     const temp = useFetchOdds(gameData.id, gameData.status);
-    const odds = temp.markets[0].outcomeRows[0].map((outcome: any) => outcome.odds.toFixed(2));
+    const oddData = temp.markets[0].outcomeRows[0];
+    const odds = oddData.map((outcome: any) => outcome.odds.toFixed(2));
+    
+    const isActive = (items: any, outcome: any) => Boolean(items?.find((item: any) => {
+        const propsKey = `${outcome.coreAddress}-${outcome.lpAddress}-${outcome.gameId}-${outcome.conditionId}-${outcome.outcomeId}`
+        const itemKey = `${item.coreAddress}-${item.lpAddress}-${item.game.gameId}-${item.conditionId}-${item.outcomeId}`
+      
+        return propsKey === itemKey
+    }));
 
 
     const handleOddClick = (odd: string, index: number) => {
         setSelectedOdd(odd);
+        const item = {
+            gameId: String(oddData[index].gameId),
+            conditionId: String(oddData[index].conditionId),
+            outcomeId: String(oddData[index].outcomeId),
+            coreAddress: oddData[index].coreAddress,
+            lpAddress: oddData[index].lpAddress,
+            isExpressForbidden: oddData[index].isExpressForbidden,
+        }
+        if (isActive(items, oddData[index])) {
+            removeItem(String(oddData[index].gameId))
+          } else {
+            addItem(item)
+        }
         setWinningAmount(bettingAmount * Number(selectedOdd));
         switch(index) {
             case 0:

@@ -112,3 +112,10 @@ html {
 }
 }
 
+.button {
+  @apply py-1.5;
+  @apply px-4;
+  @apply text-white;
+  @apply bg-blue-700;
+  @apply rounded-md;
+}

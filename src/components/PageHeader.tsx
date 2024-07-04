@@ -17,7 +17,7 @@ export default function PageHeader({ title, filter }: PageHeaderProps) {
     }
 
     return (
-        <header className={`flex items-center mt-4 ${filter ? 'justify-between' : ''}`}>
+        <header className={`container flex items-center mt-4 ${filter ? 'justify-between' : ''}`}>
             <button className="p-2" onClick={handleClick}>
                 <Backico className='w-4'/>
             </button>

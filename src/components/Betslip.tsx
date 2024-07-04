@@ -204,9 +204,10 @@ function Content() {
       const isLock = !isStatusesFetching && statuses[conditionId] !== ConditionStatus.Created;
 
       return (
-        <div key={gameId} className="bg-bg_dim flex flex-col justify-between md:mx-auto py-4 px-5 rounded-md w-full max-w-md mt-2 first-of-type:mt-0 text-xs">
+        <div key={gameId} className="bg-bg_dim flex flex-col justify-center md:mx-auto py-0 px-6 rounded-md w-full min-h-full max-w-md mt-2 text-xs">
           <div className="flex items-center justify-between mb-2 text-xs">
-            <div>{sportName} / {leagueName}</div>
+            <div>
+             <p className='font-semibold'> {sportName} </p> <p> {leagueName} </p></div>
             <button onClick={() => removeItem(gameId)}>Remove</button>
           </div>
           <div className="flex items-center justify-between mb-2 text-xs">
@@ -309,7 +310,7 @@ function Content() {
               account?.address ? (
                 <SubmitButton />
               ) : (
-                <div className="mt-4 flex justify-center items-center text-sm text-center">
+                <div className="mt-1 flex justify-center items-center text-sm text-center">
                 <p className='w-max py-2 px-3 bg-blue-600 rounded-2xl'>Connect your wallet</p>
               </div>
               )
@@ -328,7 +329,7 @@ export function Betslip() {
   const { items } = useBaseBetslip()
 
   return (
-    <div className="fixed bottom-20 right-5 w-9/12">
+    <div className="fixed bottom-20 right-5 w-11/12">
       {
         isOpen && (
           <Content />

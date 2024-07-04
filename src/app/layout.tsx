@@ -27,7 +27,7 @@ export default function Layout(props: { children: React.ReactNode }) {
               <GameDataProvider>
                 <Navbar />
                 <BetslipProvider>
-                  <main className="container flex-1 fixed h-full flex-grow">
+                  <main className="container-fluid flex-1 h-full flex-grow">
                     {children}
                     <Betslip />
                   </main>

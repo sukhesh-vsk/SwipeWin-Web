@@ -73,10 +73,10 @@ export default function Game() {
         <>
             {(gameData !== null) && <PageHeader title={`${gameData.sport} Betting`} filter={false}/>}
 
-            <div className='bg-sec_2 h-4/6 mt-4 rounded-xl flex flex-col justify-center items-center'>
+            <div className='container flex flex-col justify-center items-center '>
                 {(gameData !== null) 
                 ?
-                    <>
+                    <div className='bg-sec_2 h-4/6 mt-4 py-4 rounded-xl flex flex-col justify-cetner items-center'>
                     <div className='grid grid-cols-3 gap-4 items-center w-3/5'>
                         <div className='flex flex-col items-center justify-center'>
                             <img src={gameData.teamImage[0]} alt="team1" width={50} height={50} />
@@ -91,11 +91,11 @@ export default function Game() {
                             <p className="text-xs uppercase mt-2 font-bold">{gameData.teams[1]}</p>
                         </div>
                     </div>
-                    <div className='flex w-3/5 justify-around mt-8 mb-4'>
+                    <div className='flex w-3/5 justify-center mt-8 mb-4'>
                         {odds.map((odd: string, index: number) => (
                             <button
                                 key={index}
-                                className={`${selectedOdd==odd ? 'bg-sec_dim' : 'bg-odd' } px-4 py-1 rounded-md font-cairo font-bold tracking-widest`}
+                                className={`${selectedOdd==odd ? 'bg-sec_dim' : 'bg-odd' } px-4 mx-2 py-1 rounded-md font-cairo font-bold tracking-widest`}
                                 onClick={() => handleOddClick(odd, index)}
                             >
                                 {odd}
@@ -123,7 +123,7 @@ export default function Game() {
                         </div>
                     </div>
                     <button className='bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-widest'>Bet Now</button>    
-                    </>
+                    </div>
                 : 
                     <p>Loading...</p>
                 }

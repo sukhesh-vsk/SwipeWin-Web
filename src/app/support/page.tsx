@@ -1,7 +1,10 @@
+import PageHeader from '@/components/PageHeader'
 import React from 'react'
 
 export default function Support() {
   return (
-    <div>Support</div>
+    <>
+      <PageHeader title='Support' filter={false} />
+    </>
   )
 }

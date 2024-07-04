@@ -37,6 +37,7 @@ const config: Config = {
           3: "#670669",
           4: "#b337b8",
         },
+        bg_dim: "rgba(28, 32, 49, 0.8)",
         'odd': 'rgba(28, 32, 49, 0.6)',
       },
       backgroundImage: {

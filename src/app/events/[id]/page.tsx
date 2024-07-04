@@ -12,10 +12,24 @@ export default function Game() {
     const [selectedOdd, setSelectedOdd] = useState<string | null>(null);
     const [bettingAmount, setBettingAmount] = useState<number>(0);
     const [winningAmount, setWinningAmount] = useState<number>(0);
+    const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
-    const handleOddClick = (odd: string) => {
+    const handleOddClick = (odd: string, index: number) => {
         setSelectedOdd(odd);
         setWinningAmount(bettingAmount * Number(selectedOdd));
+        switch(index) {
+            case 0:
+              setSelectedTeam(gameData.teams[0]);
+              break;
+            case 1:
+              setSelectedTeam('Draw'); 
+              break;
+            case 2:
+              setSelectedTeam(gameData.teams[1]);
+              break;
+            default:
+              setSelectedTeam(null);
+          }
     };
 
     useEffect(() => {
@@ -50,8 +64,8 @@ export default function Game() {
                     {gameData.odds.map((odd: string, index: number) => (
                         <button
                             key={index}
-                            className={`${ selectedOdd==odd ? 'bg-sec_dim' : 'bg-odd' } px-4 py-1 rounded-md font-cairo font-bold tracking-widest`}
-                            onClick={() => handleOddClick(odd)}
+                            className={`${selectedOdd==odd ? 'bg-sec_dim' : 'bg-odd' } px-4 py-1 rounded-md font-cairo font-bold tracking-widest`}
+                            onClick={() => handleOddClick(odd, index)}
                         >
                             {odd}
                         </button>
@@ -68,8 +82,10 @@ export default function Game() {
                         />
                     </div>
                     <div className='flex justify-around items-center'>
-                        <p>Winning Amount</p>
-                        <p>{winningAmount}</p>
+                        {selectedTeam && <p>
+                            If {selectedTeam === 'Draw' ? 'it Draws' : `${selectedTeam} wins, `} you win
+                        </p>}
+                        <p className='text-green_text'>{winningAmount}</p>
                     </div>
                 </div>
                 <button className='bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-widest'>Bet Now</button>    

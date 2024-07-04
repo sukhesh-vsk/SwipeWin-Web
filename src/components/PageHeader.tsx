@@ -1,4 +1,7 @@
+"use client"
+
 import { Backico, Filterico } from '@/assets/icons'
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 export interface PageHeaderProps {
@@ -7,9 +10,15 @@ export interface PageHeaderProps {
 }
 
 export default function PageHeader({ title, filter }: PageHeaderProps) {
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.back();
+    }
+
     return (
         <header className={`flex items-center mt-4 ${filter ? 'justify-between' : ''}`}>
-            <button className="p-2">
+            <button className="p-2" onClick={handleClick}>
                 <Backico className='w-4'/>
             </button>
             

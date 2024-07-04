@@ -28,7 +28,10 @@ const nextConfig = {
           permanent: false
         }
       ]
-    }
+    },
+    images: {
+      domains: ['avatars.azuro.org'],
+    },
   }
    
   export default nextConfig

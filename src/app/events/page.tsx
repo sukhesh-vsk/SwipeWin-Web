@@ -3,99 +3,66 @@
 import { Listico } from '@/assets/icons'
 import { SearchBar } from '@/components'
 import GameCard from '@/components/GameCard'
-import { Game_OrderBy, UseSportsProps, useSports } from '@azuro-org/sdk'
+import useFetchOdds from '@/hooks/useFetchOdds'
+import { Game_OrderBy, UseSportsProps, useGameMarkets, useSports } from '@azuro-org/sdk'
+import dayjs from 'dayjs'
 import { useParams } from 'next/navigation'
 import React from 'react'
 
 
 export default function Events() {
-  const IND = '/images/india.png'
-  const AUS = '/images/aus.png'
-
-  // const useData = () => {
-  //   const homeData: UseSportsProps = {
-  //     gameOrderBy: Game_OrderBy.Turnover,
-  //     filter: {
-  //       limit: 1,
-  //     }
-  //   }
-
-  //   const { loading, sports } = useSports(homeData);
-  //   return ({
-  //     sports, loading
-  //   })
-  // }
-
-  // const { loading, sports } = useData()
-  
-  const datas = [
-    {
-      id: 1282,
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      time: "3 JUN 20:30",
-      odds: ['1.5', '2.5', '3.5'],
-    },
-    {
-      id: 6453,
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      time: "3 JUN 20:30",
-      odds: ['1.5', '2.5', '3.5'],
-    },
-    {
-      id: 1282,
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      date: "3 JUN",
-      time: "20:30",
-      odds: ['1.5', '2.5', '3.5'],
-    },
-    {
-      id: 6453,
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      time: "3 JUN 20:30",
-      odds: ['1.5', '2.5', '3.5'],
-    },
-    {
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      time: "3 JUN 20:30",
-      odds: ['1.5', '2.5', '3.5'],
-    },
-    {
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      time: "3 JUN 20:30",
-      odds: ['1.5', '2.5', '3.5'],
-    },
-    {
-      league: "ICC Mens T20 World Cup",
-      sport: "Cricket",
-      teams: ["India", "Australia"],
-      teamImage: [IND, AUS],
-      time: "3 JUN 20:30",
-      odds: ['1.5', '2.5', '3.5'],
+  const useData = () => {
+    const dataFilter: UseSportsProps = {
+      gameOrderBy: Game_OrderBy.Turnover,
+      filter: {
+        limit: 1,
+      }
     }
-  ]
+
+    const { loading, sports } = useSports(dataFilter);
+
+    return ({
+      sports, loading
+    })
+  }
+  
+  const { loading, sports } = useData()
+  
+  const extractGames = (sportsData: any) => {
+    const GAME_DATA: any = [];
+    
+    var temp = sportsData.slice(0, 5);
+    temp.forEach((sport: any, index: number) => {
+      const countries = sport['countries'].slice(0, 1);
+      countries.forEach((country: any, index: number) => {
+        const leagues = country['leagues'].slice(0, 1);
+        leagues.forEach((league: any, index: number) => {
+          const games = league['games'][0];
+          
+          const DATA = {
+            id: games['gameId'],
+            sport: games['sport']['name'],
+            league: games['league']['name'],
+            status: games['status'],
+            time: dayjs(+games['startsAt']).format('DD MMM HH:mm'),
+            teams: [games['participants'][0]['name'], games['participants'][1]['name']],
+            teamImage: [games['participants'][0]['image'], games['participants'][1]['image']]
+          }
+        
+          GAME_DATA.push(DATA);
+        });
+      });
+    });
+    
+    return GAME_DATA;
+  };
+  
+  const datas = extractGames(sports);
 
   return (
     <>
       <SearchBar />
-      <div className='mt-10 h-4/5'>
+      <div className='mt-7 h-4/5'>
         <div className='flex justify-between items-center'>
           <p>Top Events</p>
           <div>
@@ -103,8 +70,8 @@ export default function Events() {
           </div>
         </div>
 
-        <div className='mt-9 flex overflow-x-auto space-x-4 w-full h-4/5 snap-x snap-mandatory no-scrollbar'>
-          {datas.map((data, index) => (
+        <div className='mt-5 flex overflow-x-auto space-x-4 w-full h-4/5 snap-x snap-mandatory no-scrollbar'>
+          {datas.map((data: any, index: number) => (
             <div className='snap-start' key={index}>
               <GameCard key={index} gameDetails={data}/>
             </div>

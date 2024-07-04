@@ -5,12 +5,14 @@ import { SearchBar } from '@/components'
 import GameCard from '@/components/GameCard'
 import React from 'react'
 
-import IND from "@/assets/images/india.png";
-import AUS from "@/assets/images/aus.png";
 
 export default function Events() {
+  const IND = '/images/india.png'
+  const AUS = '/images/aus.png'
+
   const datas = [
     {
+      id: 1282,
       league: "ICC Mens T20 World Cup",
       sport: "Cricket",
       teams: ["India", "Australia"],
@@ -19,6 +21,7 @@ export default function Events() {
       odds: ['1.5', '2.5', '3.5'],
     },
     {
+      id: 6453,
       league: "ICC Mens T20 World Cup",
       sport: "Cricket",
       teams: ["India", "Australia"],
@@ -27,6 +30,7 @@ export default function Events() {
       odds: ['1.5', '2.5', '3.5'],
     },
     {
+      id: 1282,
       league: "ICC Mens T20 World Cup",
       sport: "Cricket",
       teams: ["India", "Australia"],
@@ -36,6 +40,7 @@ export default function Events() {
       odds: ['1.5', '2.5', '3.5'],
     },
     {
+      id: 6453,
       league: "ICC Mens T20 World Cup",
       sport: "Cricket",
       teams: ["India", "Australia"],

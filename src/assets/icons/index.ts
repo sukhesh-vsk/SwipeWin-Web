@@ -8,3 +8,4 @@ export { default as Searchico } from './search.svg';
 export { default as ThreeDotsColorico } from './three_dots_color.svg';
 export { default as ThreeDotsico } from './three_dots.svg';
 export { default as Listico } from './list.svg';
+export { default as Backico } from './back.svg';

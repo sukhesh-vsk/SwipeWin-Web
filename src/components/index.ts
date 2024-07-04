@@ -1,3 +1,5 @@
 export * from './Navbar'
 export * from './BottomBar'
 export * from './SearchBar'
+export * from './PageHeader'
+export * from './TransactionDetail'

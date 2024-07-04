@@ -29,6 +29,8 @@ const config: Config = {
         accent: "#9A9A9A",
         text: "#F1F1F1",
         text_dim: "rgba(241, 241, 241, 0.3)",
+        green_text: "rgba(78, 204, 76, 0.9)",
+        red_text: "#CD3B3B",
         gradient: {
           1: "#741278",
           2: "#b337b8",

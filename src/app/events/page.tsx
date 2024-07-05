@@ -115,10 +115,11 @@ export default function Events() {
   // if(loading) return <p>Loading...</p>;
 
   return (
-    <>
+    <div className="h-full">
+      {/* <p>Main Content</p> */}
       <SearchBar />
       <div className="container mt-7 h-4/5 flex-1 h-full">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-6">
           <p>Top Events</p>
           <div>
             <Listico className="w-4" />
@@ -126,7 +127,7 @@ export default function Events() {
         </div>
         {(loading) 
           ? <p>Loading...</p> 
-          : <div className="mt-5 flex overflow-visible overflow-x-auto space-x-4 container-fluid mx-4 h-4/5 snap-x snap-mandatory no-scrollbar">
+          : <div className="mt-5 flex mt-8 overflow-visible overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
               {topEvents.map((data, index: number) => (
                 <div className="snap-start" key={index}>
                   <GameCard key={index} gameDetails={data} />
@@ -135,6 +136,6 @@ export default function Events() {
             </div>
         }
       </div>
-    </>
+    </div>
   );
 }

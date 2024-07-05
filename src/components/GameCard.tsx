@@ -28,7 +28,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
 
   return (
     <Link href={`/event/${data.id}`} passHref onClick={handleClick}>
-      <div className="bg-sgrad rounded-xl h-4/5 w-64 p-4 flex flex-col items-center justify-around">
+      <div className="bg-sgrad rounded-xl h-3/4 min-w-60 p-4 flex flex-col items-center justify-around">
         <div className="text-center text-sm font-medium">
           <p className="tracking-widest">{data.league}</p>
           <p className="tracking-widest mt-1 text-xs">{data.sport}</p>

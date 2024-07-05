@@ -6,16 +6,17 @@ import React, { useEffect, useState } from 'react'
 export default function DataPopup(props: any) {
     const [isHidden, setHidden] = useState(true);
     
-    if (!props.match) {
-        return null; 
-    }
-    
-
     useEffect(() => {
         if (props.visible === 'true') {
             setHidden(false);
         }
     }, [props.visible]);
+
+    if (!props.match) {
+        return null; 
+    }
+    
+
 
     const toggleForm = () => {
         props.toggleVisible();
@@ -26,8 +27,8 @@ export default function DataPopup(props: any) {
 
   return (
     <div className={`py-4 flex items-center justify-center fixed top-0 left-0 container-fluid bg-bg_dim h-full w-full ${isHidden ? 'hidden' : ''}`} onClick={() => toggleForm()}>
-        <div className='bg-sec_2 flex flex-col items-center h-5/6 w-4/5 rounded-xl' onClick={(e) => e.stopPropagation()}>
-            <div className='flex justify-center items- w-full px-4 pt-4'>
+        <div className='bg-sec_2 flex flex-col items-center h-max py-6 w-4/5 rounded-xl' onClick={(e) => e.stopPropagation()}>
+            <div className='flex justify-center items- w-full px-4 pt-4 mb-2'>
                 <p className='uppercase flex-1 text-center ps-4'>Transaction</p>
                 <div onClick={toggleForm} className='cursor-pointer'>
                     <Closeico className="w-6"/>
@@ -76,12 +77,12 @@ export default function DataPopup(props: any) {
                 </div>
                 <div className='w-full flex justify-between mt-2'>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
-                        <p className='text-sec_dim font-medium text-sm'>Event Date & Time</p>
-                        <p className='font-semibold tracking-widest text-sm'>{data.eventDate}</p>
+                        <p className='text-sec_dim font-medium text-sm'>Event Date</p>
+                        <p className='font-semibold tracking-widest text-xs'>{data.eventDate}</p>
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
-                        <p className='text-sec_dim font-medium text-sm'>Result</p>
-                        <p className='font-semibold tracking-wide text-sm'>{data.date}</p>
+                        <p className='text-sec_dim font-medium text-sm'>Betting Data</p>
+                        <p className='font-semibold tracking-wide text-xs'>{data.date}</p>
                     </div>
                 </div>
             </div>

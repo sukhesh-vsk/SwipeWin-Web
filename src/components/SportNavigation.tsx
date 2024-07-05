@@ -36,7 +36,6 @@ export function SportsNavigation() {
               </ActiveLink>
             ))
           }
-          <div className="flex-none w-3 h-4" />
         </div>
       </div>
     </div>

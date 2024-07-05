@@ -34,7 +34,7 @@ function Game(props: GameProps & { league: string } & { sports: string }) {
   });
 
   return (
-    <Link href={`/events/${gameId}`}>
+    <Link href={`/event/${gameId}`}>
       <div
         className={cx(
           className,
@@ -88,9 +88,9 @@ export function League(props: LeagueProps) {
 
   return (
     <div
-      className={cx("flex items-center mb-5 overflow-x-auto h-72", {
+      className={cx("flex items-center justify-start ms-4 my-5 overflow-x-auto h-max", {
         "text-sm": !isLeaguePage,
-        "text-lg font-bold": isLeaguePage,
+        "text-sm font-bold": isLeaguePage,
       })}
     >
       {isLeaguePage && (
@@ -104,16 +104,18 @@ export function League(props: LeagueProps) {
           <div className="mx-2">&middot;</div>
         </>
       )}
-      <div className="text-text font-bold text-md">{league.name}</div>
+      <div className="text-text font-medium text-xs mr-4 flex-1 min-w-28">{league.name}</div>
+      <div className="flex">
       {games.map((game, index) => (
         <Link
-          href={`/events/${game.gameId}`}
-          className="mx-4 bg-secondary py-6 px-6 h-64 rounded-lg w-80"
+          href={`/event/${game.gameId}`}
+          className="mx-4 bg-sgrad py-6 px-6 h-48 rounded-lg w-80"
           key={index}
         >
           <GameInfo key={game.gameId} game={game} />
         </Link>
       ))}
+      </div>
     </div>
   );
 }

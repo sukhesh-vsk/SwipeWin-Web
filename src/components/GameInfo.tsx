@@ -12,14 +12,14 @@ export function ParticipantLogo(props: ParticipantLogoProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex items-center justify-center w-20 h-20 bg-white rounded-full">
+      <div className="flex items-center justify-center rounded-full">
         {
           Boolean(image) && (
-            <img className="w-12 h-12" src={image!} alt="" />
+            <img className="w-8 h-8" src={image!} alt="" />
           )
         }
       </div>
-      <span className="max-w-[210px] mt-3 font-bold text-text tracking-widest uppercase text-sm text-center">{name}</span>
+      <span className="max-w-[210px] mt-3 font-medium text-text tracking-wide uppercase text-xs text-center">{name}</span>
     </div>
   )
 }
@@ -34,16 +34,16 @@ export function GameInfo(props: Props) {
   const style = (props.className) ? props.className : '';
 
   return (
-    <div className={`flex flex-col items-center pt-6 pb-8 w-full h-full px-5 mx-4 rounded-[40px]` + (props.className) ? style : 'bg-transparent'}>
-      <div className="flex flex-col items-center text-md text-text w-full mb-6">
-        <div className='tracking-wide w-full text-center'>{sport.name} | {league.country.name}</div>
-        <div className="mt-1 text-sm">
+    <div className={`flex flex-col items-center pt-2 pb-2 w-full h-full px-5 mx-4 rounded-[40px]` + (props.className) ? style : 'bg-transparent'}>
+      <div className="flex flex-col items-center text-md text-text w-full mb-3">
+        <div className='tracking-wide w-full text-sm text-center'><p>{sport.name}</p><p className='text-xs w-full'>{league.country.name}</p></div>
+        <div className="mt-1 text-xs font-medium">
           {league.name}
         </div>
       </div>
-      <div className="mt-5 grid grid-cols-[1fr_auto_1fr] flex flex-col space-around items-center">
+      <div className="mt-2 grid grid-cols-[1fr_auto_1fr] flex flex-col space-between items-center">
         <ParticipantLogo {...participants[0]} />
-          <div className="text-accent tracking-wide text-xs text-center mx-4">
+          <div className="text-accent tracking-wide text-xs text-center mx-2">
             {dayjs(+startsAt * 1000).format('DD MMM HH:mm')}
           </div>
         <ParticipantLogo {...participants[1]} />

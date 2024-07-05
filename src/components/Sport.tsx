@@ -6,6 +6,7 @@ import Link from 'next/link'
 import cx from 'clsx'
 
 import { Country } from './Country'
+import PageHeader from './PageHeader'
 
 
 type SportProps = {
@@ -22,13 +23,14 @@ export function Sport(props: SportProps) {
   return (
     <div
       className={cx({
-        "p-4 bg-bg rounded-3xl mt-2 first-of-type:mt-0": !isSportPage
+        "p-4 bg-bg rounded-3xl mt-4 first-of-type:mt-0": !isSportPage
       })}
-    >
+    > 
+      <PageHeader title={`${params.sport}`} filter={false} />
       {
         !isSportPage && (
           <Link
-            className="text-lg text-text mb-2 hover:underline font-bold"
+            className="text-sm text-text mb-2 hover:underline font-bold"
             href={`/games/${sport.slug}`}
           >
             {sport.name}

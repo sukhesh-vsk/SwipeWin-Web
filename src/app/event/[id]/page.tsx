@@ -1,11 +1,12 @@
 "use client"
 
+import OddComponent from '@/components/OddComponent';
 import Odds from '@/components/Odds';
 import PageHeader from '@/components/PageHeader'
 import { useGameData } from '@/context/GameDataProvider';
 import { SerializeGameData } from '@/hooks/Serializer';
 import useFetchOdds from '@/hooks/useFetchOdds';
-import { GameQuery, useBaseBetslip, useGame } from '@azuro-org/sdk';
+import { GameMarkets, GameQuery, useBaseBetslip, useGame, useGameMarkets } from '@azuro-org/sdk';
 import dayjs from 'dayjs';
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -17,16 +18,15 @@ type ContentProps = {
 }
   
 export default function Game() {
-    const params = useParams()
-
+    const params = useParams();
     const { loading, game, isGameInLive } = useGame({
       gameId: params.id as string,
     })
-    
-    console.log("Loading: ",loading);
-    console.log("Game: ",game);
 
-    // const game = SerializeGameData(game);
+    const { loading: marketLoading, markets } = useGameMarkets({
+        gameId: params.id as string,
+        gameStatus: game?.status as any
+    });
 
     const { items, addItem, removeItem } = useBaseBetslip();
 
@@ -35,7 +35,7 @@ export default function Game() {
     // const [winningAmount, setWinningAmount] = useState<number>(0);
     // const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
-    const { loading : OddLoading , markets } = useFetchOdds(game?.id, game?.status as any);
+    // const { loading : OddLoading , markets } = useFetchOdds(game?.id, game?.status as any);
     
     // const isActive = (items: any, outcome: any) => Boolean(items?.find((item: any) => {
     //     const propsKey = `${outcome.coreAddress}-${outcome.lpAddress}-${outcome.gameId}-${outcome.conditionId}-${outcome.outcomeId}`
@@ -94,9 +94,15 @@ export default function Game() {
         )
     }
 
+    if(marketLoading) {
+        return <div>Loading...</div>
+    }
+
+    // console.log("Markets: ",markets);
+
     return (
         <>
-            {(game !== null) && <PageHeader title={`${game.sport} Betting`} filter={false}/>}
+            {(game !== null) && <PageHeader title={`${game.sport.name} Betting`} filter={false}/>}
 
             <div className='container flex flex-col justify-center items-center '>
                 {(game !== null) 
@@ -116,13 +122,19 @@ export default function Game() {
                         </div>
                     </div>
                     <div className='flex w-3/5 justify-center mt-8 mb-4'>
-                    {loading ? (
-                                <p>Loading...</p>
-                            ) : markets && markets[0] && markets[0].outcomeRows[0] ? (
-                                <Odds oddsData={markets[0].outcomeRows[0]}  className="bg-odd px-4 py-1 rounded-md font-cairo font-bold tracking-widest" />
-                            ) : (
-                                <p>No odds available</p>
-                            )}
+                        {Boolean(markets?.[0]?.outcomeRows[0]) && (
+                            <div className="lg:min-w-[500px]">
+                                <div className="flex items-center">
+                                {markets![0].outcomeRows[0].map((outcome, index) => (
+                                    <OddComponent
+                                        className="ml-2 odd-cont first-of-type:ml-0"
+                                        key={`${outcome.selectionName}-${index}`}
+                                        outcome={outcome}
+                                    />
+                                ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div>
                         <div className='flex justify-around items-center mb-4'>

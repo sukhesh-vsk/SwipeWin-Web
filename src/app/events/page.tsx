@@ -3,6 +3,7 @@
 import { Listico } from "@/assets/icons";
 import { SearchBar } from "@/components";
 import GameCard from "@/components/GameCard";
+import { GameProps } from "@/types/types";
 import {
   Game_OrderBy,
   UseGamesProps,
@@ -51,7 +52,6 @@ interface GameDataProps {
   }[];
 };
 
-
 const useData = () => {
   const props: UseSportsProps = {
       gameOrderBy: Game_OrderBy.Turnover,
@@ -74,7 +74,7 @@ const useData = () => {
 
       topGame = gameList.slice(0, 5);
 
-      console.log("Game List", gameList);
+      // console.log("Game List", gameList);
   }
 
   const topEvents = topGame.map((games) => {
@@ -97,9 +97,7 @@ const useData = () => {
 
   })
 
-  console.log("Top Game", topEvents);
-
-  // topGame.push(DATA)
+  // console.log("Top Game", topEvents);
 
   return {
       sports,
@@ -129,7 +127,7 @@ export default function Events() {
         {(loading) 
           ? <p>Loading...</p> 
           : <div className="mt-5 flex overflow-visible overflow-x-auto space-x-4 container-fluid mx-4 h-4/5 snap-x snap-mandatory no-scrollbar">
-              {topEvents.map((data: any, index: number) => (
+              {topEvents.map((data, index: number) => (
                 <div className="snap-start" key={index}>
                   <GameCard key={index} gameDetails={data} />
                 </div>

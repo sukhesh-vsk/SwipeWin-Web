@@ -46,7 +46,7 @@ export function Country(props: CountryProps) {
         leagues.map(league => (
           <League
             key={league.slug}
-            className="mt-2 first-of-type:mt-0"
+            className="my-2 py-4 first-of-type:mt-0"
             league={league}
             sportSlug={sportSlug}
             countryName={country.name}

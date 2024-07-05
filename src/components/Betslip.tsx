@@ -207,7 +207,8 @@ function Content() {
         <div key={gameId} className="bg-bg_dim flex flex-col justify-center md:mx-auto py-0 px-6 rounded-md w-full min-h-full max-w-md mt-2 text-xs">
           <div className="flex items-center justify-between mb-2 text-xs">
             <div>
-             <p className='font-semibold'> {sportName} </p> <p> {leagueName} </p></div>
+              <p className='font-semibold'> {sportName} </p> <p> {leagueName} </p>
+             </div>
             <button onClick={() => removeItem(gameId)}>Remove</button>
           </div>
           <div className="flex items-center justify-between mb-2 text-xs">

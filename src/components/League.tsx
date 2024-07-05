@@ -11,16 +11,14 @@ import cx from "clsx";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 
-import { GameInfo } from "./GameInfo";
-import { OutcomeButton } from "./OutcomeButton";
-import GameCard from "./GameCard";
+import { GameInfo, OutcomeButton } from "./index";
 
 type GameProps = {
   className?: string;
   game: GamesQuery["games"][0];
 };
 
-const SerializeGameData = (props: GameProps & { league: string } & { sports: string }) => {
+function Game(props: GameProps & { league: string } & { sports: string }) {
   const { className, game } = props;
   const { gameId, title, startsAt, status: graphStatus } = game;
 
@@ -35,30 +33,39 @@ const SerializeGameData = (props: GameProps & { league: string } & { sports: str
     gameId,
   });
 
-  const DATA = {
-    id: gameId,
-    sport: props.sports,
-    league: props.league,
-    status: status,
-    time: dayjs(+startsAt).format("DD MMM HH:mm"),
-    teams: [game.participants[0].name, game.participants[1].name],
-    teamImage: [
-      game.participants[0].image,
-      game.participants[1].image,
-    ],
-  };
-
-  return DATA;
-}
-
-function Game(props: GameProps & { league: string } & { sports: string }) {
-
-  
-  const DATA = SerializeGameData(props);
-
   return (
-    <Link href={`/events/${DATA.id}`}>
-      <GameCard key={DATA.id} gameDetails={DATA} />
+    <Link href={`/events/${gameId}`}>
+      <div
+        className={cx(
+          className,
+          "p-2 bg-sgrad text-text rounded-xl flex flex-col items-center justify-around game-card"
+        )}
+      >
+        <div>
+          <div className="text-md mb-8 tracking-widest font-medium text-center">
+            {props.league}
+          </div>
+          <div className="max-w-[220px] text-sm w-full flex flex-col items-center justify-center mx-auto">
+            {title}
+            <div className="text-sm">
+              {dayjs(+startsAt * 1000).format("DD MMM HH:mm")}
+            </div>
+          </div>
+        </div>
+        {Boolean(markets?.[0]?.outcomeRows[0]) && (
+          <div className="lg:min-w-[500px]">
+            <div className="flex items-center">
+              {markets![0].outcomeRows[0].map((outcome, index) => (
+                <OutcomeButton
+                  className="ml-2 odd-cont first-of-type:ml-0"
+                  key={`${outcome.selectionName}-${index}`}
+                  outcome={outcome}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </Link>
   );
 }
@@ -90,7 +97,7 @@ export function League(props: LeagueProps) {
         <>
           <Link
             className="hover:underline w-fit"
-            href={`/games/${sportSlug}/${countrySlug}`}
+            href={`/events/${sportSlug}/${countrySlug}`}
           >
             <div className="ml-2">{countryName}</div>
           </Link>
@@ -104,7 +111,7 @@ export function League(props: LeagueProps) {
           className="mx-4 bg-secondary py-6 px-6 h-64 rounded-lg w-80"
           key={index}
         >
-          <GameCard key={game.gameId} gameDetails={SerializeGameData} />
+          <GameInfo key={game.gameId} game={game} />
         </Link>
       ))}
     </div>

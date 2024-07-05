@@ -19,11 +19,11 @@ export default function GameCard(props: { gameDetails: any }) {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setGameData(data);
-    router.push(`/events/${data.id}`);
+    router.push(`/event/${data.id}`);
   };
 
   return (
-    <Link href={`/events/${data.id}`} passHref onClick={handleClick}>
+    <Link href={`/event/${data.id}`} passHref onClick={handleClick}>
       <div className="bg-sgrad rounded-xl h-4/5 w-64 p-4 flex flex-col items-center justify-around">
         <div className="text-center text-sm font-medium">
           <p className="tracking-widest">{data.league}</p>

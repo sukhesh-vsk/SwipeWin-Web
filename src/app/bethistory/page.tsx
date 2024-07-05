@@ -2,7 +2,7 @@
 
 import PageHeader from '@/components/PageHeader'
 import React, { useState } from 'react'
-import { cricket_ico, football_ico } from '@/assets/sporticons';
+import { cricket_ico, football_ico } from '@/assets/icons';
 import DataPopup from '@/components/DataPopup';
 
 export default function BetHistory() {

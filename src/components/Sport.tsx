@@ -25,7 +25,7 @@ export function Sport(props: SportProps) {
       className={cx({
         "p-4 bg-bg rounded-3xl mt-4 first-of-type:mt-0": !isSportPage
       })}
-    >
+    > 
       <PageHeader title={`${params.sport}`} filter={false} />
       {
         !isSportPage && (

@@ -10,3 +10,6 @@ export { default as ThreeDotsico } from './three_dots.svg';
 export { default as Listico } from './list.svg';
 export { default as Backico } from './back.svg';
 export { default as Closeico } from './x.svg';
+export { default as Discordico } from './discord.svg';
+export { default as Telegramico } from './telegram.svg';
+export { default as Logoutico } from './logout.svg';

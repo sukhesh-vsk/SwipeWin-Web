@@ -16,7 +16,7 @@ export const BottomBar: React.FC = () => {
   const activePath = usePathname();
   
   return (
-    <footer className="flex fixed bottom-1 w-full justify-around items-center">
+    <footer className="flex absolute bottom-1 w-full justify-around items-center">
       <div className="bg-text flex justify-around items-center w-8/12 px-6 py-2 rounded-full ">
         <Link
           href="/events"

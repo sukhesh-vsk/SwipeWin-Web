@@ -28,7 +28,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
 
   return (
     <Link href={`/event/${data.id}`} passHref onClick={handleClick}>
-      <div className="bg-sgrad rounded-xl h-3/4 min-w-60 p-4 flex flex-col items-center justify-around">
+      <div className="bg-sgrad rounded-xl game-card h-3/4 min-w-60 p-4 flex flex-col items-center justify-around">
         <div className="text-center text-sm font-medium">
           <p className="tracking-widest">{data.league}</p>
           <p className="tracking-widest mt-1 text-xs">{data.sport}</p>
@@ -47,7 +47,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
           </div>
         </div>
         {Boolean(markets?.[0]?.outcomeRows[0]) && (
-          <div className="lg:min-w-[500px]">
+          <div className="">
             <div className="flex items-center">
               {markets![0].outcomeRows[0].map((outcome, index) => (
                 <OddComponent

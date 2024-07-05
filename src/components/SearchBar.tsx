@@ -24,7 +24,7 @@ export const SearchBar: React.FC = () => {
 
   return (
     <div className="flex container flex-col w-full">
-    <div className="flex w-full justify-around items-center items-center px-4 mt-4"> 
+    <div className="flex w-full justify-around items-center items-center px-0 mt-4"> 
       <form className="flex-1 mr-6">   
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div className="relative">

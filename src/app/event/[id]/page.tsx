@@ -6,7 +6,7 @@ import PageHeader from '@/components/PageHeader'
 import { useGameData } from '@/context/GameDataProvider';
 import { SerializeGameData } from '@/hooks/Serializer';
 import useFetchOdds from '@/hooks/useFetchOdds';
-import { GameMarkets, GameQuery, useBaseBetslip, useGame, useGameMarkets } from '@azuro-org/sdk';
+import { ConditionStatus, GameMarkets, GameQuery, useBaseBetslip, useDetailedBetslip, useGame, useGameMarkets, useLiveBetFee } from '@azuro-org/sdk';
 import dayjs from 'dayjs';
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -28,7 +28,17 @@ export default function Game() {
         gameStatus: game?.status as any
     });
 
-    const { items, addItem, removeItem } = useBaseBetslip();
+    // const { items, addItem, removeItem } = useBaseBetslip();
+    // const { betAmount, odds, totalOdds, statuses, disableReason, isStatusesFetching, isOddsFetching, isLiveBet } = useDetailedBetslip()
+    // const { formattedRelayerFeeAmount, loading: isRelayerFeeLoading } = useLiveBetFee({
+    //   enabled: isLiveBet,
+    // })
+
+    // const marketData = markets[0].outcomeRows[0][0]
+    // const conditionID = marketData.conditionId;
+    // const isLock = !isStatusesFetching && statuses[conditionID] !== ConditionStatus.Created;
+    
+    // ---------------------------------------------
 
     // const [selectedOdd, setSelectedOdd] = useState<string | null>(null);
     // const [bettingAmount, setBettingAmount] = useState<number>(0);
@@ -123,7 +133,7 @@ export default function Game() {
                     </div>
                     <div className='flex w-3/5 justify-center mt-8 mb-4'>
                         {Boolean(markets?.[0]?.outcomeRows[0]) && (
-                            <div className="lg:min-w-[500px]">
+                            <div className="">
                                 <div className="flex items-center">
                                 {markets![0].outcomeRows[0].map((outcome, index) => (
                                     <OddComponent

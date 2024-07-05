@@ -23,11 +23,13 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="bg-bg text-text font-noto flex flex-col">
+        <div className="mobile-wrapper">
+          <div className="mobile-content no-scrollbar">
             <Providers initialChainId={initialChainId} initialLiveState={initialLiveState}>
               <GameDataProvider>
                 <Navbar />
                 <BetslipProvider>
-                  <main className="container-fluid flex-1 h-screen flex-grow">
+                  <main className="container-fluid flex-1 h-full flex-grow">
                     {children}
                     <Betslip />
                   </main>
@@ -35,6 +37,8 @@ export default function Layout(props: { children: React.ReactNode }) {
                 <BottomBar />
               </GameDataProvider>
             </Providers>
+          </div>
+        </div>
       </body>
     </html>
   );

@@ -256,7 +256,7 @@ function Content() {
           }
         </div>
       );
-    })
+    })  
   }
 </div>
             <div className="flex items-center justify-between mt-2 text-sm px-2 text-bg">
@@ -330,7 +330,7 @@ export function Betslip() {
   const { items } = useBaseBetslip()
 
   return (
-    <div className="fixed bottom-20 right-5 w-11/12">
+    <div className="absolute bottom-20 right-5 w-11/12">
       {
         isOpen && (
           <Content />

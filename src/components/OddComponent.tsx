@@ -1,39 +1,57 @@
 import React from 'react';
-import { GameStatus, MarketOutcome, useGameMarkets } from "@azuro-org/sdk";
+import { MarketOutcome, useBaseBetslip, useGameMarkets, useSelection } from "@azuro-org/sdk";
+import clsx from 'clsx';
+import { OddsProps } from '@/types/types';
 
-interface OddsProps {
-  gameId: string;
-  gameStatus: any;
-}
 
-const OddComponent: React.FC<OddsProps> = ({ gameId, gameStatus}) => {
-    console.log("Game Id", gameId);
-    console.log("Status", gameStatus);
+function OddComponent(props: OddsProps) {
 
-    const { loading, markets } = useGameMarkets({
-        gameId: gameId, 
-        gameStatus: gameStatus
+    const { className, outcome } = props;
+
+    const { items, addItem, removeItem } = useBaseBetslip()
+    const { odds, isLocked, isOddsFetching } = useSelection({
+      selection: outcome,
+      initialOdds: outcome.odds,
+      initialStatus: outcome.status,
     })
 
+    const isActive = Boolean(items?.find((item) => {
+      const propsKey = `${outcome.coreAddress}-${outcome.lpAddress}-${outcome.gameId}-${outcome.conditionId}-${outcome.outcomeId}`
+      const itemKey = `${item.coreAddress}-${item.lpAddress}-${item.game.gameId}-${item.conditionId}-${item.outcomeId}`
 
-    if(loading) return <p>Loading...</p>
+      return propsKey === itemKey
+    }))
 
-    console.log("Markets", markets);
+    const buttonClassName = clsx(`flex items-center justify-between px-4 py-3 transition rounded-2xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className}`, {
+      'bg-sec_dim_2': isActive,
+      'bg-odd': !isActive,
+    })
 
-  return (
-    <div className="flex flex-col w-full">
-        <div>
-            {markets[0].name}
-        </div>
-        <div className="flex w-full justify-around">
-      {markets[0].outcomeRows[0].map((outcome, index) => (
-        <p key={index}>
-          {outcome!== undefined ? outcome.odds?.toFixed(2) : "N/A"}
-        </p>
-      ))}
-      </div>
-    </div>
-  );
+    const handleClick = () => {
+      const item = {
+        gameId: String(outcome.gameId),
+        conditionId: String(outcome.conditionId),
+        outcomeId: String(outcome.outcomeId),
+        coreAddress: outcome.coreAddress,
+        lpAddress: outcome.lpAddress,
+        isExpressForbidden: outcome.isExpressForbidden,
+      }
+      if (isActive) {
+        removeItem(String(outcome.gameId))
+      } else {
+        addItem(item)
+      }
+    }
+    
+    return (
+      <button 
+        className={buttonClassName}
+        onClick={handleClick}
+        disabled={isLocked}
+      >
+        <span>{isOddsFetching ? '--' : odds.toFixed(2)}</span>
+      </button>
+    );
 };
 
 export default OddComponent;

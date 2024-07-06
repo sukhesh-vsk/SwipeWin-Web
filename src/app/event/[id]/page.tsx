@@ -6,19 +6,138 @@ import PageHeader from '@/components/PageHeader'
 import { useGameData } from '@/context/GameDataProvider';
 import { SerializeGameData } from '@/hooks/Serializer';
 import useFetchOdds from '@/hooks/useFetchOdds';
-import { ConditionStatus, GameMarkets, GameQuery, useBaseBetslip, useDetailedBetslip, useGame, useGameMarkets, useLiveBetFee } from '@azuro-org/sdk';
+import { BetslipDisableReason, ConditionStatus, GameMarkets, GameQuery, useBaseBetslip, useBetTokenBalance, useChain, useDetailedBetslip, useGame, useGameMarkets, useLiveBetFee, usePrepareBet } from '@azuro-org/sdk';
 import dayjs from 'dayjs';
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-
+import cx from 'clsx';
+import { useAccount } from 'wagmi';
 
 type ContentProps = {
     game: GameQuery['games'][0]
     isGameInLive: boolean
 }
+
+const errorPerDisableReason = {
+    [BetslipDisableReason.ComboWithForbiddenItem]: 'One or more conditions can\'t be used in combo',
+    [BetslipDisableReason.BetAmountGreaterThanMaxBet]: 'Bet amount exceeds max bet',
+    [BetslipDisableReason.BetAmountLowerThanMinBet]: 'Bet amount lower than min bet',
+    [BetslipDisableReason.ComboWithLive]: 'Live outcome can\'t be used in combo',
+    [BetslipDisableReason.ConditionStatus]: 'One or more outcomes have been removed or suspended. Review your betslip and remove them.',
+    [BetslipDisableReason.PrematchConditionInStartedGame]: 'Game has started',
+  } as const
   
+  const SubmitButton: React.FC = () => {
+    const { appChain, isRightNetwork } = useChain()
+    const { items, clear } = useBaseBetslip()
+    const { betAmount, odds, totalOdds, isStatusesFetching, isOddsFetching, isBetAllowed } = useDetailedBetslip()
+    const { loading: isBalanceFetching, balance } = useBetTokenBalance()
+  
+    const {
+      submit,
+      approveTx,
+      betTx,
+      isRelayerFeeLoading,
+      isAllowanceLoading,
+      isApproveRequired,
+    } = usePrepareBet({
+      betAmount,
+      slippage: 10,
+      affiliate: '0x0000000000000000000000000000000000000000', // your affiliate address
+      selections: items,
+      odds,
+      totalOdds,
+      onSuccess: () => {
+        clear()
+      },
+    })
+  
+    const isPending = approveTx.isPending || betTx.isPending
+    const isProcessing = approveTx.isProcessing  || betTx.isProcessing
+  
+    if (!isRightNetwork) {
+      return (
+        <div className="mt-6 py-3.5 text-center bg-red-200 rounded-2xl">
+          Switch network to <b>{appChain.name}</b> in your wallet
+        </div>
+      )
+    }
+  
+    const isEnoughBalance = isBalanceFetching || !Boolean(+betAmount) ? true : Boolean(+balance! > +betAmount)
+  
+    const isLoading = (
+      isOddsFetching
+      || isBalanceFetching
+      || isStatusesFetching
+      || isAllowanceLoading
+      || isPending
+      || isProcessing
+      || isRelayerFeeLoading
+    )
+  
+    const isDisabled = (
+      isLoading
+      || !isBetAllowed
+      || !isEnoughBalance
+      || !+betAmount
+    )
+  
+    let title
+  
+    if (isPending) {
+      title = 'Waiting for approval'
+    }
+    else if (isProcessing) {
+      title = 'Processing...'
+    }
+    else if (isLoading) {
+      title = 'Loading...'
+    }
+    else if (isApproveRequired) {
+      title = 'Approve'
+    }
+    else {
+      title = 'Place Bet'
+    }
+  
+    return (
+      <div className="mt-1 flex flex-col justify-center items-center">
+        {
+          !isEnoughBalance && (
+            <div className="mb-1 text-sm text-red-500 text-center font-semibold">
+              Not enough balance.
+            </div>
+          )
+        }
+        <button
+          className={cx('bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-widest', {
+            'transition shadow-md': !isDisabled,
+            'bg-bg_dim cursor-not-allowed': isDisabled,
+          })}
+          disabled={isDisabled}
+          onClick={submit}
+        >
+          {title}
+        </button>
+      </div>
+    )
+}
+  
+
+
+
+
+
+
 export default function Game() {
     const params = useParams();
+    const account = useAccount();
+    const { betAmount, odds, totalOdds, statuses, disableReason, isStatusesFetching, isOddsFetching, isLiveBet } = useDetailedBetslip()
+    const { formattedRelayerFeeAmount, loading: isRelayerFeeLoading } = useLiveBetFee({
+        enabled: isLiveBet,
+    })
+
+
     const { loading, game, isGameInLive } = useGame({
       gameId: params.id as string,
     })
@@ -167,7 +286,24 @@ export default function Game() {
                             {/* <p className='text-green_text'>{winningAmount}</p> */}
                         </div>
                     </div>
-                    <button className='bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-widest'>Bet Now</button>    
+                    
+                    {
+                        Boolean(disableReason) && (
+                            <div className="mb-1 text-red-500 text-center font-semibold">
+                            {errorPerDisableReason[disableReason!]}
+                            </div>
+                        )
+                        }
+                        {
+                        account?.address ? (
+                            <SubmitButton />
+                        ) : (
+                            // <div className="mt-1 flex justify-center items-center text-sm text-center">
+                            <p className='bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-wide'>Connect your wallet</p>
+                        // </div>
+                        )
+                        }
+
                     </div>
                 : 
                     <p>Loading...</p>

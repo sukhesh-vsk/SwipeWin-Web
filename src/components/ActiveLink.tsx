@@ -1,49 +1,44 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
-import Link, { LinkProps } from 'next/link'
-
+"use client";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Link, { LinkProps } from "next/link";
 
 type ActiveLinkProps = LinkProps & {
-  className?: string
-  activeClassName: string
-  regex?: string
-}
+  className?: string;
+  activeClassName: string;
+  regex?: string;
+};
 
-export const ActiveLink: React.FC<React.PropsWithChildren<ActiveLinkProps>> = (props) => {
-  const { children, className, activeClassName, regex, ...rest } = props
+export const ActiveLink: React.FC<React.PropsWithChildren<ActiveLinkProps>> = (
+  props
+) => {
+  const { children, className, activeClassName, regex, ...rest } = props;
 
-  const activePathname = usePathname()
-  const [ computedClassName, setComputedClassName ] = useState(className)
+  const activePathname = usePathname();
+  const [computedClassName, setComputedClassName] = useState(className);
 
   useEffect(() => {
-    // Dynamic route will be matched via props.as
-    // Static route will be matched via props.href
     const linkPathname = new URL(
       (rest.as || rest.href) as string,
       location.href
-    ).pathname
+    ).pathname;
 
-    const isMatch = regex ? new RegExp(regex).test(activePathname) : activePathname === linkPathname
+    const isMatch = regex
+      ? new RegExp(regex).test(activePathname)
+      : activePathname === linkPathname;
 
     const newClassName = isMatch
       ? `${className} ${activeClassName}`.trim()
-      : className
+      : className;
 
     if (newClassName !== computedClassName) {
-      setComputedClassName(newClassName)
+      setComputedClassName(newClassName);
     }
-  }, [
-    activePathname,
-    rest.as,
-    rest.href,
-    activeClassName,
-    className,
-  ])
+  }, [activePathname, rest.as, rest.href, activeClassName, className]);
 
   return (
     <Link className={computedClassName} {...rest}>
       {children}
     </Link>
-  )
-}
+  );
+};

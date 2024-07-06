@@ -4,80 +4,79 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
-  font-family: 'Cairo';
-  src: url('/assets/fonts/cairo/Cairo-Regular.ttf') format('truetype');
+  font-family: "Cairo";
+  src: url("/assets/fonts/cairo/Cairo-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Cairo';
-  src: url('/assets/fonts/cairo/Cairo-Bold.ttf') format('truetype');
+  font-family: "Cairo";
+  src: url("/assets/fonts/cairo/Cairo-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Cairo';
-  src: url('/assets/fonts/cairo/Cairo-ExtraBold.ttf') format('truetype');
+  font-family: "Cairo";
+  src: url("/assets/fonts/cairo/Cairo-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Cairo';
-  src: url('/assets/fonts/cairo/Cairo-Medium.ttf') format('truetype');
+  font-family: "Cairo";
+  src: url("/assets/fonts/cairo/Cairo-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Cairo';
-  src: url('/assets/fonts/cairo/Cairo-SemiBold.ttf') format('truetype');
+  font-family: "Cairo";
+  src: url("/assets/fonts/cairo/Cairo-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NotoSansTC';
-  src: url('/assets/fonts/noto-tc/NotoSansTC-Regular.ttf') format('truetype');
+  font-family: "NotoSansTC";
+  src: url("/assets/fonts/noto-tc/NotoSansTC-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NotoSansTC';
-  src: url('/assets/fonts/noto-tc/NotoSansTC-Bold.ttf') format('truetype');
+  font-family: "NotoSansTC";
+  src: url("/assets/fonts/noto-tc/NotoSansTC-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NotoSansTC';
-  src: url('/assets/fonts/noto-tc/NotoSansTC-ExtraBold.ttf') format('truetype');
+  font-family: "NotoSansTC";
+  src: url("/assets/fonts/noto-tc/NotoSansTC-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NotoSansTC';
-  src: url('/assets/fonts/noto-tc/NotoSansTC-Medium.ttf') format('truetype');
+  font-family: "NotoSansTC";
+  src: url("/assets/fonts/noto-tc/NotoSansTC-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NotoSansTC';
-  src: url('/assets/fonts/noto-tc/NotoSansTC-SemiBold.ttf') format('truetype');
+  font-family: "NotoSansTC";
+  src: url("/assets/fonts/noto-tc/NotoSansTC-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NotoSansTC';
-  src: url('/assets/fonts/noto-tc/NotoSansTC-Light.ttf') format('truetype');
+  font-family: "NotoSansTC";
+  src: url("/assets/fonts/noto-tc/NotoSansTC-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
@@ -88,7 +87,8 @@ html {
   scroll-behavior: smooth;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -98,10 +98,10 @@ html, body {
 }
 
 .mobile-wrapper {
-  width: 400px; 
-  height: 844px; 
+  width: 400px;
+  height: 844px;
   border-radius: 20px;
-  overflow: hidden; 
+  overflow: hidden;
   position: relative;
 }
 
@@ -109,40 +109,37 @@ html, body {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background-color: #1C2031;
+  background-color: #1c2031;
 }
 
 @media screen and (min-width: 500px) {
   .mobile-wrapper {
     border: 1px solid #9a9a9a77;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
 }
 
 .text-gradient {
-  background: linear-gradient(228.27deg, #CF3577 2.64%, #64349E 100%);
+  background: linear-gradient(228.27deg, #cf3577 2.64%, #64349e 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.game-card{
-  width: 17rem!important;
-  height: 20rem!important;
+.game-card {
+  width: 17rem !important;
+  height: 20rem !important;
 }
-
-
 
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
-      display: none;
+    display: none;
   }
- /* Hide scrollbar for IE, Edge and Firefox */
+  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 
@@ -152,4 +149,29 @@ html, body {
   @apply text-white;
   @apply bg-blue-700;
   @apply rounded-md;
+}
+
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #3494e6 0%,
+    #ec6ead 51%,
+    #3494e6 100%
+  );
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
 }

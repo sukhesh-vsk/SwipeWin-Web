@@ -88,10 +88,13 @@ export function League(props: LeagueProps) {
 
   return (
     <div
-      className={cx("flex items-center justify-start ms-4 my-5 overflow-x-auto h-max", {
-        "text-sm": !isLeaguePage,
-        "text-sm font-bold": isLeaguePage,
-      })}
+      className={cx(
+        "flex items-center justify-start ms-4 my-5 overflow-x-auto h-max",
+        {
+          "text-sm": !isLeaguePage,
+          "text-sm font-bold": isLeaguePage,
+        }
+      )}
     >
       {isLeaguePage && (
         <>
@@ -104,17 +107,19 @@ export function League(props: LeagueProps) {
           <div className="mx-2">&middot;</div>
         </>
       )}
-      <div className="text-text font-medium text-xs mr-4 flex-1 min-w-28">{league.name}</div>
+      <div className="text-text font-medium text-xs mr-4 flex-1 min-w-28">
+        {league.name}
+      </div>
       <div className="flex">
-      {games.map((game, index) => (
-        <Link
-          href={`/event/${game.gameId}`}
-          className="mx-4 bg-sgrad py-6 px-6 h-48 rounded-lg w-80"
-          key={index}
-        >
-          <GameInfo key={game.gameId} game={game} />
-        </Link>
-      ))}
+        {games.map((game, index) => (
+          <Link
+            href={`/event/${game.gameId}`}
+            className="mx-4 bg-sgrad py-6 px-6 h-48 rounded-lg w-80"
+            key={index}
+          >
+            <GameInfo key={game.gameId} game={game} />
+          </Link>
+        ))}
       </div>
     </div>
   );

@@ -1,8 +1,13 @@
-'use client'
+"use client";
 
-import { Sport } from '@/components/Sport' 
-import { useParams } from 'next/navigation'
-import { useSports, type UseSportsProps, Game_OrderBy, OrderDirection } from '@azuro-org/sdk'
+import { Sport } from "@/components/Sport";
+import { useParams } from "next/navigation";
+import {
+  useSports,
+  type UseSportsProps,
+  Game_OrderBy,
+  OrderDirection,
+} from "@azuro-org/sdk";
 
 const useData = () => {
   const params = useParams();
@@ -14,35 +19,32 @@ const useData = () => {
       sportSlug: params.sport as string,
       countrySlug: params.country as string,
       leagueSlug: params.league as string,
-    }
-  }
+    },
+  };
 
-  const { loading, sports } = useSports(props)
+  const { loading, sports } = useSports(props);
 
   return {
     sports,
     loading,
-  }
-}
+  };
+};
 
 export default function EventsLayout() {
-  const { loading, sports } = useData()
+  const { loading, sports } = useData();
+  console.log("sport", sports);
 
   return (
     <>
-      {
-        loading ? (
-          <div>Loading...</div>
-        ) : (
-          <div>
-            {
-              sports.map((sport) => (
-                <Sport key={sport.slug} sport={sport} />
-              ))
-            }
-          </div>
-        )
-      }
+      {loading ? (
+        <p className="text-center text-lg font-semibold mt-20">Loading...</p>
+      ) : (
+        <div>
+          {sports.map((sport) => (
+            <Sport key={sport.slug} sport={sport} />
+          ))}
+        </div>
+      )}
     </>
-  )
+  );
 }

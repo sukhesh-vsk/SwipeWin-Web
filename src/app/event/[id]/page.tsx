@@ -1,15 +1,9 @@
 "use client";
 
 import OddComponent from "@/components/OddComponent";
-import Odds from "@/components/Odds";
 import PageHeader from "@/components/PageHeader";
-import { useGameData } from "@/context/GameDataProvider";
-import { SerializeGameData } from "@/hooks/Serializer";
-import useFetchOdds from "@/hooks/useFetchOdds";
 import {
   BetslipDisableReason,
-  ConditionStatus,
-  GameMarkets,
   GameQuery,
   OrderDirection,
   useBaseBetslip,
@@ -28,7 +22,6 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import cx from "clsx";
 import { useAccount } from "wagmi";
-import { ethers } from "ethers";
 
 type ContentProps = {
   game: GameQuery["games"][0];
@@ -81,7 +74,6 @@ const SubmitButton: React.FC = () => {
 
   const isPending = approveTx.isPending || betTx.isPending;
   const isProcessing = approveTx.isProcessing || betTx.isProcessing;
-
   if (!isRightNetwork) {
     return (
       <div className="mt-6 py-3.5 text-center bg-red-200 rounded-2xl">
@@ -145,6 +137,19 @@ const SubmitButton: React.FC = () => {
   );
 };
 
+const getSelectionName = (selectionName: string, participants: any[]) => {
+  if (selectionName === "1") {
+    return participants[0].name;
+  }
+  if (selectionName === "2") {
+    return participants[1].name;
+  }
+  if (selectionName === "X") {
+    return "Match Draw";
+  }
+  return "";
+};
+
 const BetHistory: React.FC<{ bets: any[] }> = ({ bets }) => {
   return (
     <div className="mt-8 pb-28 w-full">
@@ -157,24 +162,17 @@ const BetHistory: React.FC<{ bets: any[] }> = ({ bets }) => {
           >
             <div className="flex flex-col">
               <span className="font-semibold text-white">
-                {bet.outcomes[0].game.participants[0].name} vs{" "}
-                {bet.outcomes[0].game.participants[1].name}
+                {getSelectionName(
+                  bet.outcomes[0].selectionName,
+                  bet.outcomes[0].game.participants
+                )}
               </span>
               <span className="text-xs text-white">
                 {new Date(bet.createdAt * 1000).toLocaleString()}
               </span>
             </div>
-            <div className="flex flex-col text-white text-right">
-              <span className="font-semibold">
-                {bet.isWin ? `+ ${bet.possibleWin}` : `- ${bet.amount}`}
-              </span>
-              <span
-                className={`${
-                  bet.isWin ? "text-green-500" : "text-red-500"
-                } text-xs font-bold`}
-              >
-                {bet.isWin ? "Win" : "Loss"}
-              </span>
+            <div className="flex flex-col text-sm text-white text-right">
+              <span className="font-semibold">{bet.amount}USDT</span>
             </div>
           </div>
         ))
@@ -190,6 +188,7 @@ export default function Game() {
   const account = useAccount();
   const { betToken } = useChain();
   const { loading: isBalanceFetching, balance } = useBetTokenBalance();
+  const { items, clear } = useBaseBetslip();
 
   const {
     betAmount,
@@ -199,7 +198,6 @@ export default function Game() {
     isOddsFetching,
     isLiveBet,
   } = useDetailedBetslip();
-  console.log(betAmount);
 
   const { formattedRelayerFeeAmount, loading: isRelayerFeeLoading } =
     useLiveBetFee({
@@ -223,12 +221,38 @@ export default function Game() {
     orderDir: OrderDirection.Desc,
   };
 
+  const getOutcomeLabel = (index, length) => {
+    if (length === 3) {
+      if (index === 0) return `If ${game?.participants[0].name} wins`;
+      if (index === 1) return "If no one wins";
+      if (index === 2) return `If ${game?.participants[1].name} wins`;
+    } else if (length === 2) {
+      if (index === 0) return `If ${game?.participants[0].name} wins`;
+      if (index === 1) return `If ${game?.participants[1].name} wins`;
+    }
+    return "";
+  };
+
   const { loading: isPrematchLoading, bets: prematchBets } =
     usePrematchBets(props);
   const { loading: isLiveLoading, bets: liveBets } = useLiveBets(props);
   const allBets = [...prematchBets, ...liveBets].filter(
     (bet) => bet.outcomes[0].game.gameId === params.id
   );
+
+  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(0);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (initialLoad) {
+      changeBetAmount("1");
+      setInitialLoad(false);
+    }
+  }, [params.id, changeBetAmount, initialLoad]);
+
+  const handleOutcomeSelection = (index: number) => {
+    setSelectedOutcomeIndex(index);
+  };
 
   if (loading || marketLoading || isPrematchLoading || isLiveLoading) {
     return (
@@ -240,139 +264,144 @@ export default function Game() {
     return <div>Game info not found</div>;
   }
 
+  const selectedOutcomeLabel =
+    markets && markets[0]
+      ? getOutcomeLabel(selectedOutcomeIndex, markets[0].outcomeRows[0].length)
+      : "";
   return (
     <>
-      {game !== null && (
+      {game && (
         <PageHeader title={`${game.sport.name} Betting`} filter={false} />
       )}
 
-      <div className="container flex flex-col justify-center items-center">
-        {game !== null ? (
-          <>
-            <div className="bg-sec_2 mt-4 py-4 rounded-xl flex flex-col justify-center items-center">
-              <div className="flex gap-5  items-center px-8 pt-5">
-                <div className="flex flex-col items-center justify-center">
-                  <img
-                    src={
-                      game.participants[0].image !== null
-                        ? game.participants[0].image
-                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
-                    }
-                    alt="team1"
-                    width={50}
-                    height={50}
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
-                    }}
-                  />
-                  <p className="text-xs uppercase mt-2 font-bold">
-                    {game.participants[0].name}
-                  </p>
-                </div>
-                <div className="flex flex-col pl-3 ">
-                  <p className="text-xs">
-                    {dayjs(+game.startsAt * 1000).format("DD MMM HH:mm")}
-                  </p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <img
-                    src={
-                      game.participants[1].image !== null
-                        ? game.participants[1].image
-                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
-                    }
-                    alt="team1"
-                    width={50}
-                    height={50}
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
-                    }}
-                  />
-                  <p className="text-xs uppercase mt-2 font-bold">
-                    {game.participants[1].name}
-                  </p>
-                </div>
-              </div>
-              <div className="flex  justify-center mt-8 mb-4">
-                {Boolean(markets?.[0]?.outcomeRows[0]) && (
-                  <div>
-                    <div className="flex gap-3 items-center">
-                      {markets![0].outcomeRows[0].map((outcome, index) => (
-                        <OddComponent
-                          className="ml-2 odd-cont first-of-type:ml-0"
-                          key={`${outcome.selectionName}-${index}`}
-                          outcome={outcome}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className=" mt-2 flex flex-col items-center">
-                <div className="flex justify-between items-center w-full mb-4">
-                  <p>Betting Amount</p>
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={betAmount}
-                    onChange={(event) => changeBetAmount(event.target.value)}
-                    className="w-2/3 mr-2"
-                  />
-                  <span>{betAmount}</span>
-                </div>
-                <div className="flex justify-between items-center w-full mb-4">
-                  <span>Total Odds:</span>
-                  <span>
-                    {isOddsFetching ? <>Loading...</> : <>{totalOdds}</>}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center w-full mb-4">
-                  <span>Possible Win:</span>
-                  <span>
-                    {isOddsFetching ? (
-                      <>Loading...</>
-                    ) : (
-                      <>{(totalOdds * +betAmount).toFixed(2)}</>
-                    )}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center w-full mb-4">
-                  <span className="text-sm">Wallet balance:</span>
-                  <span className="text-sm font-semibold">
-                    {isBalanceFetching ? (
-                      <>Loading...</>
-                    ) : balance !== undefined ? (
-                      <>
-                        {(+balance).toFixed(2)} {betToken.symbol}
-                      </>
-                    ) : (
-                      <>-</>
-                    )}
-                  </span>
-                </div>
-              </div>
-
-              {Boolean(disableReason) && (
-                <div className="mb-1 text-red-500 text-center font-semibold">
-                  {errorPerDisableReason[disableReason!]}
-                </div>
-              )}
-              {account?.address ? (
-                <SubmitButton />
-              ) : (
-                <p className="bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-wide">
-                  Connect your wallet
+      <div className="container flex flex-col text-center justify-center items-center">
+        <>
+          <div className="bg-sec_2 mt-4 py-4 rounded-xl w-full flex flex-col ">
+            <div className="flex justify-between  items-center px-6 pt-5">
+              <div className="flex flex-col items-center justify-center">
+                <img
+                  src={
+                    game.participants[0].image !== null
+                      ? game.participants[0].image
+                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
+                  }
+                  alt="team1"
+                  width={50}
+                  height={50}
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
+                  }}
+                />
+                <p className="text-xs uppercase mt-2 font-bold">
+                  {game.participants[0].name}
                 </p>
+              </div>
+              <div className="flex flex-col pl-3 ">
+                <p className="text-xs">
+                  {dayjs(+game.startsAt * 1000).format("DD MMM HH:mm")}
+                </p>
+              </div>
+              <div className="flex flex-col items-center">
+                <img
+                  src={
+                    game.participants[1].image !== null
+                      ? game.participants[1].image
+                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
+                  }
+                  alt="team1"
+                  width={50}
+                  height={50}
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
+                  }}
+                />
+                <p className="text-xs uppercase mt-2 font-bold">
+                  {game.participants[1].name}
+                </p>
+              </div>
+            </div>
+            <div className=" w-full px-7 mt-8 mb-4">
+              {Boolean(markets?.[0]?.outcomeRows[0]) && (
+                <div>
+                  <div className="flex gap-3 w-full justify-between items-center">
+                    {markets[0].outcomeRows[0].map((outcome, index) => (
+                      <OddComponent
+                        className="ml-2 odd-cont first-of-type:ml-0"
+                        key={`${outcome.selectionName}-${index}`}
+                        outcome={outcome}
+                        label={getOutcomeLabel(
+                          index,
+                          markets[0].outcomeRows[0].length
+                        )}
+                        onClick={() => handleOutcomeSelection(index)}
+                      />
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
-            <BetHistory bets={allBets} />
-          </>
-        ) : (
-          <p className="text-center text-lg font-semibold mt-20">Loading...</p>
-        )}
+            <div className="mt-2 flex flex-col px-6 items-center">
+              <div className="flex justify-between items-center w-full mb-4">
+                <p>Betting Amount</p>
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  value={betAmount}
+                  onChange={(event) => changeBetAmount(event.target.value)}
+                  className="w-2/3 mr-2"
+                />
+                <span>{betAmount}</span>
+              </div>
+              <div className="flex justify-between items-center w-full mb-4">
+                <span>Total Odds:</span>
+                <span>
+                  {isOddsFetching ? <>Loading...</> : <>{totalOdds}</>}
+                </span>
+              </div>
+              <div className="flex justify-between items-center w-full mb-4">
+                <span>{selectedOutcomeLabel}:</span>
+                <span>
+                  {isOddsFetching ? (
+                    <>Loading...</>
+                  ) : (
+                    <>{(totalOdds * +betAmount).toFixed(2)}</>
+                  )}
+                </span>
+              </div>
+              <div className="flex justify-between items-center w-full mb-4">
+                <span className="text-sm">Wallet balance:</span>
+                <span className="text-sm font-semibold">
+                  {isBalanceFetching ? (
+                    <>Loading...</>
+                  ) : balance !== undefined ? (
+                    <>
+                      {(+balance).toFixed(2)} {betToken.symbol}
+                    </>
+                  ) : (
+                    <>-</>
+                  )}
+                </span>
+              </div>
+            </div>
+
+            {Boolean(disableReason) && (
+              <div className="mb-1 text-red-500 text-center font-semibold">
+                {errorPerDisableReason[disableReason!]}
+              </div>
+            )}
+            {account?.address ? (
+              <SubmitButton />
+            ) : (
+              <p className="bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-wide">
+                Connect your wallet
+              </p>
+            )}
+          </div>
+          <BetHistory bets={allBets} />
+        </>
       </div>
     </>
   );

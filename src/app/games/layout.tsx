@@ -32,7 +32,6 @@ const useData = () => {
 
 export default function EventsLayout() {
   const { loading, sports } = useData();
-  console.log("sport", sports);
 
   return (
     <>

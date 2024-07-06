@@ -1,140 +1,135 @@
 "use client";
 
-import { Listico } from "@/assets/icons";
+import React, { useState } from "react";
 import { SearchBar } from "@/components";
 import GameCard from "@/components/GameCard";
-import { GameProps } from "@/types/types";
-import {
-  Game_OrderBy,
-  UseGamesProps,
-  UseSportsProps,
-  useGameMarkets,
-  useSports,
-} from "@azuro-org/sdk";
-import dayjs from "dayjs";
-import React from "react";
-
-enum GameStatus {
-  Canceled = "Canceled",
-  Created = "Created",
-  Paused = "Paused",
-  Resolved = "Resolved"
-}
-
-interface GameDataProps {
-  __typename?: "Game" | undefined;
-  turnover: string;
-  id: string;
-  gameId: string;
-  title?: string | null | undefined;
-  startsAt: string;
-  status: GameStatus;
-  sport: {
-      __typename?: "Sport" | undefined;
-      sportId: string;
-      slug: string;
-      name: string;
-  };
-  league: {
-      __typename?: "League" | undefined;
-      slug: string;
-      name: string;
-      country: {
-          __typename?: "Country" | undefined;
-          slug: string;
-          name: string;
-      };
-  };
-  participants: {
-      __typename?: "Participant" | undefined;
-      image?: string | null | undefined;
-      name: string;
-  }[];
-};
-
-const useData = () => {
-  const props: UseSportsProps = {
-      gameOrderBy: Game_OrderBy.Turnover,
-      filter: {
-          limit: 10,
-      }
-  }
-  const { loading, sports } = useSports({ ...props });
-  let topGame: GameDataProps[] = [];
-  if (sports.length) {
-      let gameList: GameDataProps[] = []
-      const sortedGame = sports?.flatMap(sport =>
-          sport?.countries.flatMap(country =>
-              country.leagues.flatMap(league =>
-                  league.games
-              )
-          )
-      ).sort((a , b) => +b.turnover - +a.turnover);
-      sortedGame.forEach(game => gameList.push(game));
-
-      topGame = gameList.slice(0, 5);
-
-      // console.log("Game List", gameList);
-  }
-
-  const topEvents = topGame.map((games) => {
-
-    return {
-      id: games["gameId"],
-      sport: games["sport"]["name"],
-      league: games["league"]["name"],
-      status: games["status"],
-      time: dayjs(+games["startsAt"]).format("DD MMM HH:mm"),
-      teams: [
-        games["participants"][0]["name"],
-        games["participants"][1]["name"],
-      ],
-      teamImage: [
-        games["participants"][0]["image"],
-        games["participants"][1]["image"],
-      ],
-    };
-
-  })
-
-  // console.log("Top Game", topEvents);
-
-  return {
-      sports,
-      loading,
-      topEvents
-  }
-}
+import useData from "@/hooks/useData";
 
 export default function Events() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("All");
+  const [selectedSport, setSelectedSport] = useState("All");
 
-  const { loading, topEvents ,  sports } = useData();
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+  };
 
-  // const datas = extractGames(sports);
-  // const datas = topEvents;
-  // if(loading) return <p>Loading...</p>;
+  const handleFilterChange = (filter: string) => {
+    setFilterType(filter);
+  };
 
-  return (
-    <div className="h-full">
-      {/* <p>Main Content</p> */}
-      <SearchBar />
-      <div className="container mt-7 h-4/5 flex-1 h-full">
-        <div className="flex justify-between items-center mt-6">
-          <p>Top Events</p>
-          <div>
-            <Listico className="w-4" />
+  const handleSportChange = (sport: string) => {
+    setSelectedSport(sport);
+  };
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setFilterType("All");
+    setSelectedSport("All");
+  };
+
+  const { loading, topEvents, otherEvents } = useData(
+    searchTerm,
+    filterType,
+    selectedSport
+  );
+
+  const renderTopEvents = () => (
+    <div>
+      <div className="flex justify-between items-center mt-1">
+        <p>Top Events</p>
+      </div>
+      <div className="mt-3 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+        {topEvents.map((data, index) => (
+          <div className="snap-start" key={index}>
+            <GameCard key={index} gameDetails={data} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderOtherEvents = () => (
+    <div className="mt-10">
+      {Object.keys(otherEvents).map((sportName) => (
+        <div key={sportName}>
+          <h2 className="text-2xl font-semibold mt-8 mb-4">{sportName}</h2>
+          <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+            {otherEvents[sportName].map((data, index) => (
+              <div className="snap-start" key={index}>
+                <GameCard key={index} gameDetails={data} />
+              </div>
+            ))}
           </div>
         </div>
-        {(loading) 
-          ? <p>Loading...</p> 
-          : <div className="mt-5 flex mt-8 overflow-visible overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
-              {topEvents.map((data, index: number) => (
-                <div className="snap-start" key={index}>
-                  <GameCard key={index} gameDetails={data} />
-                </div>
-              ))}
-            </div>
-        }
+      ))}
+    </div>
+  );
+
+  const renderSearchResults = () => (
+    <div>
+      <div className="flex justify-between items-center mt-6">
+        <p>Search Results</p>
+      </div>
+      <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+        {topEvents.concat(...Object.values(otherEvents)).map((data, index) => (
+          <div className="snap-start" key={index}>
+            <GameCard key={index} gameDetails={data} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderHeading = () => {
+    if (searchTerm) {
+      return "Search Results";
+    }
+    if (selectedSport !== "All" && filterType !== "All") {
+      return `Results of ${selectedSport} for ${filterType} events`;
+    }
+    if (selectedSport !== "All") {
+      return `Results of ${selectedSport} events`;
+    }
+    if (filterType !== "All") {
+      return `Results of ${filterType} events`;
+    }
+    return "All Events";
+  };
+
+  return (
+    <div className="h-full pb-20">
+      <SearchBar
+        onSearch={handleSearch}
+        onFilterChange={handleFilterChange}
+        onSportChange={handleSportChange}
+        resetFilters={resetFilters}
+        searchTerm={searchTerm}
+        filterType={filterType}
+        selectedSport={selectedSport}
+      />
+      <div className="container mt-7 h-4/5 flex-1 h-full">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold  mb-4">{renderHeading()}</h2>
+          {(selectedSport !== "All" || filterType !== "All" || searchTerm) && (
+            <button
+              onClick={resetFilters}
+              className="bg-red-500 text-white px-4 py-2 rounded-full"
+            >
+              Reset Filters
+            </button>
+          )}
+        </div>
+        {loading ? (
+          <p className="text-center text-lg font-semibold mt-20">Loading...</p>
+        ) : searchTerm || selectedSport !== "All" || filterType !== "All" ? (
+          renderSearchResults()
+        ) : (
+          <>
+            {renderTopEvents()}
+            {renderOtherEvents()}
+          </>
+        )}
       </div>
     </div>
   );

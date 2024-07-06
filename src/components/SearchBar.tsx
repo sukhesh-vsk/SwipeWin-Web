@@ -1,22 +1,36 @@
 "use client";
 
 import { Filterico } from "@/assets/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SportsNavigation } from "./SportNavigation";
 
 interface SearchBarProps {
   onSearch: (term: string) => void;
   onFilterChange: (filter: string) => void;
   onSportChange: (sport: string) => void;
+  resetFilters: () => void;
+  searchTerm: string;
+  filterType: string;
+  selectedSport: string;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   onFilterChange,
   onSportChange,
+  resetFilters,
+  searchTerm,
+  filterType,
+  selectedSport,
 }) => {
   const [isFilterVisible, setFilterVisible] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<string | null>("All");
+  const [selectedFilter, setSelectedFilter] = useState<string>("All");
+  const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    setSelectedFilter(filterType);
+    setLocalSearchTerm(searchTerm);
+  }, [filterType, searchTerm]);
 
   const toggleFilter = () => {
     setFilterVisible(!isFilterVisible);
@@ -34,6 +48,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalSearchTerm(e.target.value);
     onSearch(e.target.value);
   };
 
@@ -70,6 +85,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               id="default-search"
               className="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none"
               placeholder="Search by events, teams"
+              value={localSearchTerm}
               onChange={handleInputChange}
               required
             />

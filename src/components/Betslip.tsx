@@ -37,8 +37,6 @@ function AmountInput() {
     usePrematchBets(props);
   const { loading: isLiveLoading, bets: liveBets } = useLiveBets(props);
 
-  console.log({ prematchBets, liveBets });
-
   return (
     <div className="mt-2 pt-2 px-2 border-t text-bg space-y-2 text-sm">
       <div className="flex items-center justify-between">

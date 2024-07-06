@@ -1,189 +1,162 @@
-"use client"
+"use client";
 
-import PageHeader from '@/components/PageHeader'
-import React, { useState } from 'react'
-import { cricket_ico, football_ico } from '@/assets/icons';
-import DataPopup from '@/components/DataPopup';
+import PageHeader from "@/components/PageHeader";
+import React, { useState } from "react";
+import {
+  FaFootballBall,
+  FaBasketballBall,
+  FaBaseballBall,
+} from "react-icons/fa";
+import { GiCricketBat, GiBoxingGlove } from "react-icons/gi";
+import { MdSportsMma, MdSportsTennis, MdSportsEsports } from "react-icons/md";
+import DataPopup from "@/components/DataPopup";
+import { useAccount } from "wagmi";
+import {
+  OrderDirection,
+  usePrematchBets,
+  useLiveBets,
+  Bet,
+} from "@azuro-org/sdk";
+import { RedeemAll } from "@/components/RedeemAll";
 
 export default function BetHistory() {
-  const matches = [
-    {
-      year: 2024,
-      matches: [
-        {
-          team: 'India',
-          league: 'ICC Mens World Cup',
-          sportIcon: cricket_ico,
-          date: '21 Jun 19:18',
-          teamDetails: 'India vs Australia',
-          odd: '2.16',
-          bet: '$ 25',
-          trasactionHash: 'Oxdf3ycysxggdeg56',
-          payoutHash: 'Oxoeu89h9exertqxc6',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '+ $37.5',
-          result: 'profit',
-        },
-        {
-          team: 'Australia',
-          league: 'ICC Mens World Cup',
-          sportIcon: cricket_ico,
-          date: '21 Jun 19:02',
-          teamDetails: 'India vs Australia',
-          odd: '2.10',
-          bet: '$ 20',
-          trasactionHash: 'Ox2sdy3ycysxggdeg57',
-          payoutHash: 'Oxdseu89h9exertqxc7',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '- $10',
-          result: 'loss',
-        },
-        {
-          team: 'India',
-          league: 'ICC Mens World Cup',
-          sportIcon: cricket_ico,
-          date: '21 Jun 18:42',
-          teamDetails: 'India vs Australia',
-          odd: '2.30',
-          bet: '$ 30',
-          trasactionHash: 'Ox3ty3ycysxggdeg58',
-          payoutHash: 'Oxeueu89h9exertqxc8',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '+ $54.7',
-          result: 'profit',
-        },
-        {
-          team: 'Real Madrid',
-          league: 'UEFA Champions League',
-          sportIcon: football_ico,
-          date: '18 Jun 09:11',
-          teamDetails: 'Real Madrid vs Arsenal',
-          odd: '1.80',
-          bet: '$ 50',
-          trasactionHash: 'Ox4uy3ycysxggdeg59',
-          payoutHash: 'Oxdgeu89h9exertqxc9',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '+ $108.5',
-          result: 'profit', 
-        },
-      ],
-    },
-    {
-      year: 2023,
-      matches: [
-        {
-          team: 'India',
-          league: 'ICC Mens World Cup',
-          sportIcon: cricket_ico,
-          date: '21 Jun 19:18',
-          teamDetails: 'India vs Australia',
-          odd: '2.16',
-          bet: '$ 25',
-          trasactionHash: 'Oxdf3ycysxggdeg56',
-          payoutHash: 'Oxoeu89h9exertqxc6',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '+ $37.5',
-          result: 'profit',
-        },
-        {
-          team: 'Australia',
-          league: 'ICC Mens World Cup',
-          sportIcon: cricket_ico,
-          date: '21 Jun 19:02',
-          teamDetails: 'India vs Australia',
-          odd: '2.10',
-          bet: '$ 20',
-          trasactionHash: 'Ox2sdy3ycysxggdeg57',
-          payoutHash: 'Oxdseu89h9exertqxc7',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '- $10',
-          result: 'loss',
-        },
-        {
-          team: 'India',
-          league: 'ICC Mens World Cup',
-          sportIcon: cricket_ico,
-          date: '21 Jun 18:42',
-          teamDetails: 'India vs Australia',
-          odd: '2.30',
-          bet: '$ 30',
-          trasactionHash: 'Ox3ty3ycysxggdeg58',
-          payoutHash: 'Oxeueu89h9exertqxc8',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '+ $54.7',
-          result: 'profit',
-        },
-        {
-          team: 'Real Madrid',
-          league: 'UEFA Champions League',
-          sportIcon: football_ico,
-          date: '18 Jun 09:11',
-          teamDetails: 'Real Madrid vs Arsenal',
-          odd: '1.80',
-          bet: '$ 50',
-          trasactionHash: 'Ox4uy3ycysxggdeg59',
-          payoutHash: 'Oxdgeu89h9exertqxc9',
-          status: 'Completed',
-          eventDate: '24 JUN 20:30',
-          outcome: '+ $108.5',
-          result: 'profit', 
-        },
-      ],
-    },
-  ];
-  
-  const [isVisible, setIsVisible] = useState("false");
-  const [selectedMatch, setSelectedMatch] = useState(null);
+  const { address } = useAccount();
 
-  const handleClick = (match: any) => {
-    setSelectedMatch(match)
-    setIsVisible((isVisible === "false") ? "true" : "false");
-  }
+  const props = {
+    filter: {
+      bettor: address!,
+    },
+    orderDir: OrderDirection.Desc,
+  };
+
+  const { loading: isPrematchLoading, bets: prematchBets } =
+    usePrematchBets(props);
+  const { loading: isLiveLoading, bets: liveBets } = useLiveBets(props);
+
+  const isLoading = isPrematchLoading || isLiveLoading;
+  const allBets = [...prematchBets, ...liveBets];
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState<Bet | null>(null);
+
+  const handleClick = (match: Bet) => {
+    setSelectedMatch(match);
+    setIsVisible(!isVisible);
+  };
+
+  const getSportIcon = (sportSlug: string) => {
+    switch (sportSlug) {
+      case "football":
+        return <FaFootballBall className="ms-2 w-6" />;
+      case "cricket":
+        return <GiCricketBat className="ms-2 w-6" />;
+      case "tennis":
+        return <MdSportsTennis className="ms-2 w-6" />;
+      case "boxing":
+        return <GiBoxingGlove className="ms-2 w-6" />;
+      case "basketball":
+        return <FaBasketballBall className="ms-2 w-6" />;
+      case "mma":
+        return <MdSportsMma className="ms-2 w-6" />;
+      case "esports":
+        return <MdSportsEsports className="ms-2 w-6" />;
+      case "baseball":
+        return <FaBaseballBall className="ms-2 w-6" />;
+      default:
+        return null;
+    }
+  };
+
+  const getSelectionName = (selectionName: string, participants: any[]) => {
+    if (selectionName === "1") {
+      return participants[0].name;
+    }
+    if (selectionName === "2") {
+      return participants[1].name;
+    }
+    if (selectionName === "X") {
+      return "Match Draw";
+    }
+    return "";
+  };
+
+  const groupedBets = allBets.reduce((acc, bet) => {
+    const year = new Date(bet.createdAt * 1000).getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(bet);
+    return acc;
+  }, {} as { [year: number]: Bet[] });
+
+  const redeemableBets = allBets.filter(
+    (bet) => bet.isRedeemable && !bet.freebetContractAddress
+  );
 
   return (
     <>
-      <PageHeader title='Bet History' filter={true} />
+      <PageHeader title="Bet History" filter={false} />
 
-      <div className='container'>
-        {
-          matches.map((data, index) => (
-            <div key={data.year} className='flex flex-col mt-8'>
-              <div className='absolute right-0 text-start bg-sgrad w-full py-1'>
-                <p className='ms-8'>{data.year}</p>
+      <div className="container">
+        {redeemableBets.length > 0 && (
+          <div className="my-4 flex justify-end">
+            <RedeemAll bets={redeemableBets} />
+          </div>
+        )}
+        {isLoading ? (
+          <p className="text-center text-lg font-semibold mt-20">Loading...</p>
+        ) : Object.keys(groupedBets).length === 0 ? (
+          <p className="text-center text-lg font-semibold mt-20">
+            No Bet History
+          </p>
+        ) : (
+          Object.keys(groupedBets).map((year) => (
+            <div key={year}>
+              <div className="absolute right-0 top-36 text-start bg-sgrad w-full py-1">
+                <p className="ms-8">{year}</p>
               </div>
-              <div className='mt-10'>
-              {
-                data.matches.map((match, index) => (
-                  <div onClick={() => handleClick(match)} key={index} className='flex mt-4 justify-between items-center cursor-pointer'>
-                    <div className='flex-1'>
-                      <div className='flex'>
-                        <p className='tracking-wide font-semibold font-cairo'>{match.team}</p>
-                        <match.sportIcon className="ms-2 w-6"/>
+              <div className="mt-12">
+                {groupedBets[year].map((bet, index) => (
+                  <div
+                    onClick={() => handleClick(bet)}
+                    key={bet.txHash}
+                    className="flex mt-5 justify-between items-center cursor-pointer"
+                  >
+                    <div className="flex-1">
+                      <div className="flex">
+                        <p className="tracking-wide font-semibold font-cairo">
+                          {getSelectionName(
+                            bet.outcomes[0].selectionName,
+                            bet.outcomes[0].game.participants
+                          )}
+                        </p>
+                        {getSportIcon(bet.outcomes[0].game.sport.slug)}
                       </div>
-                      <p className='text-xs text-sec_dim font-semibold'>{match.date}</p>
+                      <p className="text-xs text-sec_dim font-semibold">
+                        {new Date(bet.createdAt * 1000).toLocaleString()}
+                      </p>
                     </div>
-                    <div className='flex-1 text-xs ps-4 text-sec_dim font-medium text-center'>
-                      {match.teamDetails}
+                    <div className="flex-1 text-xs ps-4 text-sec_dim font-medium text-center">
+                      {bet.outcomes[0].game.participants[0].name} vs{" "}
+                      {bet.outcomes[0].game.participants[1].name}
                     </div>
-                    <div className={`${match.result=='profit' ? 'text-green_text' : 'text-red_text'} flex-1 text-end`}>
-                      <p>{match.outcome}</p>
+                    <div className="flex-1 text-end">
+                      <p>{bet.amount}USDT</p>
                     </div>
                   </div>
-                ))
-              }
+                ))}
               </div>
             </div>
           ))
-        }
-        <DataPopup match={selectedMatch} visible={isVisible} toggleVisible={handleClick}/>
+        )}
+        {selectedMatch && (
+          <DataPopup
+            match={selectedMatch}
+            visible={isVisible}
+            toggleVisible={handleClick}
+          />
+        )}
       </div>
     </>
-  )
+  );
 }

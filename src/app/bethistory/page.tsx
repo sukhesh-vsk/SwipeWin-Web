@@ -11,7 +11,13 @@ import { GiCricketBat, GiBoxingGlove } from "react-icons/gi";
 import { MdSportsMma, MdSportsTennis, MdSportsEsports } from "react-icons/md";
 import DataPopup from "@/components/DataPopup";
 import { useAccount } from "wagmi";
-import { OrderDirection, usePrematchBets, useLiveBets } from "@azuro-org/sdk";
+import {
+  OrderDirection,
+  usePrematchBets,
+  useLiveBets,
+  Bet,
+} from "@azuro-org/sdk";
+import { RedeemAll } from "@/components/RedeemAll";
 
 export default function BetHistory() {
   const { address } = useAccount();
@@ -31,9 +37,9 @@ export default function BetHistory() {
   const allBets = [...prematchBets, ...liveBets];
 
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [selectedMatch, setSelectedMatch] = useState<Bet | null>(null);
 
-  const handleClick = (match: any) => {
+  const handleClick = (match: Bet) => {
     setSelectedMatch(match);
     setIsVisible(!isVisible);
   };
@@ -68,13 +74,23 @@ export default function BetHistory() {
     }
     acc[year].push(bet);
     return acc;
-  }, {});
+  }, {} as { [year: number]: Bet[] });
+
+  const redeemableBets = allBets.filter(
+    (bet) => bet.isRedeemable && !bet.freebetContractAddress
+  );
+  console.log(redeemableBets);
 
   return (
     <>
-      <PageHeader title="Bet History" filter={true} />
+      <PageHeader title="Bet History" filter={false} />
 
       <div className="container">
+        {redeemableBets.length > 0 && (
+          <div className="my-4 flex justify-end">
+            <RedeemAll bets={redeemableBets} />
+          </div>
+        )}
         {isLoading ? (
           <p className="text-center text-lg font-semibold mt-20">Loading...</p>
         ) : Object.keys(groupedBets).length === 0 ? (

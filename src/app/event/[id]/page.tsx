@@ -29,6 +29,7 @@ import React, { useEffect, useState } from "react";
 import cx from "clsx";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
+import { BetCard } from "@/components/BetCard";
 
 type ContentProps = {
   game: GameQuery["games"][0];
@@ -369,6 +370,7 @@ export default function Game() {
               )}
             </div>
             <BetHistory bets={allBets} />
+            <BetCard bets={allBets} />
           </>
         ) : (
           <p className="text-center text-lg font-semibold mt-20">Loading...</p>

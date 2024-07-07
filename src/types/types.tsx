@@ -1,4 +1,4 @@
-import { GameStatus, MarketOutcome } from "@azuro-org/sdk";
+import { Bet, GameStatus, MarketOutcome } from "@azuro-org/sdk";
 
 export interface GameProps {
     id: string;
@@ -14,3 +14,13 @@ export type OddsProps = {
     className?: string
     outcome: MarketOutcome
 }
+
+export interface TransactionDetailProps {
+    betDetail: Bet;
+    bidOn: String;
+    league: String;
+    team1: string;
+    team2: string;
+    eventDate: string;
+  }
+  

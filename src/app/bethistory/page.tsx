@@ -18,6 +18,7 @@ import {
   Bet,
 } from "@azuro-org/sdk";
 import { RedeemAll } from "@/components/RedeemAll";
+import { TransactionDetailProps } from "@/types/types";
 
 export default function BetHistory() {
   const { address } = useAccount();
@@ -37,10 +38,19 @@ export default function BetHistory() {
   const allBets = [...prematchBets, ...liveBets];
 
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedMatch, setSelectedMatch] = useState<Bet | null>(null);
+  const [selectedMatch, setSelectedMatch] = useState<TransactionDetailProps | null>(null);
+  const [selectedBid, setSelectedBid] = useState<String>("");
 
   const handleClick = (match: Bet) => {
-    setSelectedMatch(match);
+    setSelectedBid(getSelectionName(match.outcomes[0].selectionName, match.outcomes[0].game.participants));
+    setSelectedMatch({
+                        betDetail: match, 
+                        bidOn: selectedBid,
+                        league: match.outcomes[0].game.league.name,
+                        team1: match.outcomes[0].game.participants[0].name,
+                        team2: match.outcomes[0].game.participants[1].name,
+                        eventDate: match.outcomes[0].game.startsAt
+                      });
     setIsVisible((isVisible === false) ? true : false);
   };
 

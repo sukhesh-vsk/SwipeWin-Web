@@ -1,6 +1,8 @@
 "use client"
 
 import { Closeico } from '@/assets/icons';
+import { TransactionDetailProps } from '@/types/types';
+import { Bet } from '@azuro-org/sdk';
 import React, { useEffect, useState } from 'react'
 
 export default function DataPopup(props: any) {
@@ -21,10 +23,10 @@ export default function DataPopup(props: any) {
         setHidden(!isHidden);
     }
 
-    const data = props.match;
+    const data: TransactionDetailProps = props.match;
 
   return (
-    <div className={`py-4 flex items-center justify-center fixed top-0 left-0 container-fluid bg-bg_dim h-full w-full ${isHidden ? 'hidden' : ''}`} onClick={() => toggleForm()}>
+    <div className={`py-4 flex absolute items-center justify-center fixed top-0 left-0 container-fluid bg-bg_dim h-full w-full ${isHidden ? 'hidden' : ''}`} onClick={() => toggleForm()}>
         <div className='bg-sec_2 flex flex-col items-center h-max py-6 w-4/5 rounded-xl' onClick={(e) => e.stopPropagation()}>
             <div className='flex justify-center items- w-full px-4 pt-4 mb-2'>
                 <p className='uppercase flex-1 text-center ps-4'>Transaction</p>
@@ -39,39 +41,39 @@ export default function DataPopup(props: any) {
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Teams</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.teamDetails}</p>
+                    <p className='font-semibold tracking-widest text-sm'>{`${data.team1} vs ${data.team2}`}</p>
                 </div>
                 <div className='w-full flex justify-between mt-2'>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Bet Placed on</p>
-                        <p className='font-semibold tracking-widest text-sm'>{data.team}</p>
+                        <p className='font-semibold tracking-widest text-sm'>{data.bidOn}</p>
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Betting Odd</p>
-                        <p className='font-semibold tracking-widest text-sm'>{data.odd}</p>
+                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.outcomes[0].odds}</p>
                     </div>
                 </div>
                 <div className='w-full flex justify-between mt-2'>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Bet Placed</p>
-                        <p className='font-semibold tracking-widest text-sm'>{data.bet}</p>
+                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.amount} USDT</p>
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Result</p>
-                        <p className='font-semibold tracking-wide text-sm'>{data.outcome}</p>
+                        <p className='font-semibold tracking-wide text-sm'>{data.betDetail.payout + " USDT" ?? `--`}</p>
                     </div>
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Transaction Hash</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.trasactionHash}</p>
+                    <p className='font-semibold tracking-widest text-sm'>{data.betDetail.txHash}</p>
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Payout Hash</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.payoutHash}</p>
+                    <p className='font-semibold tracking-widest text-sm'>{data.betDetail.lpAddress}</p>
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Payout Status</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.status}</p>
+                    <p className='font-semibold tracking-widest text-sm'>{data.betDetail.status}</p>
                 </div>
                 <div className='w-full flex justify-between mt-2'>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
@@ -80,7 +82,7 @@ export default function DataPopup(props: any) {
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Betting Data</p>
-                        <p className='font-semibold tracking-wide text-xs'>{data.date}</p>
+                        <p className='font-semibold tracking-wide text-xs'>{new Date(data.betDetail.createdAt * 1000).toLocaleString()}</p>
                     </div>
                 </div>
             </div>

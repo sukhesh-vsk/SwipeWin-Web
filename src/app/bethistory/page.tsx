@@ -116,7 +116,18 @@ export default function BetHistory() {
                 <p className="ms-8">{year}</p>
               </div>
               <div className="mt-12">
-                {groupedBets[year].map((bet, index) => (
+                <div className="flex justify-between items-center">
+                  <p className="flex-1 text-start text-sec_dim font-semibold">
+                    Bid
+                  </p>
+                  <p className="flex-1 text-center text-sec_dim font-semibold">
+                    Event
+                  </p>
+                  <p className="flex-1 text-end text-sec_dim font-semibold">
+                    {`Win/Lose (USDT)`}
+                  </p>
+                </div>
+                {groupedBets[year].map((bet: Bet, index: number) => (
                   <div
                     onClick={() => handleClick(bet)}
                     key={bet.txHash}
@@ -141,7 +152,7 @@ export default function BetHistory() {
                       {bet.outcomes[0].game.participants[1].name}
                     </div>
                     <div className="flex-1 text-end">
-                      <p>{bet.amount}USDT</p>
+                      <p className={`${bet.isWin ? "green_text" : bet.isLose ? "red_text" : ""}`}>{`${bet.isLose ? bet.amount : bet.possibleWin}`}</p>
                     </div>
                   </div>
                 ))}

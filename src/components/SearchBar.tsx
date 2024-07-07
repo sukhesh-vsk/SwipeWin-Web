@@ -102,7 +102,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       {isFilterVisible && (
         <div className="rounded-md mt-4 bg-sec_2 border border-sec_dim_2 p-4">
           <div className="flex justify-between items-center border-sec_dim_2 border-b pb-1">
-            <p className="font-bold">Filter</p>
+            <p className="font-medium">Filter</p>
             <button onClick={toggleFilter} className="text-sm">
               ✕
             </button>
@@ -111,10 +111,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             <SportsNavigation onSportChange={onSportChange} />
           </div>
           <div className="grid grid-cols-3 gap-2 mt-4">
-            {["Today", "This Week", "LIVE", "Tomorrow", "All"].map((filter) => (
+            {["Today", "This Week", "Live", "Tomorrow", "All"].map((filter) => (
               <button
                 key={filter}
-                className={`rounded-md px-2 text-xs py-1 ${
+                className={`rounded-md px-2 text-sm py-1 ${
                   selectedFilter === filter
                     ? "bg-sgrad text-white"
                     : "bg-white text-black"

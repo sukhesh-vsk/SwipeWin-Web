@@ -22,7 +22,7 @@ function OddComponent(props: OddsProps) {
   );
 
   const buttonClassName = clsx(
-    `flex items-center justify-between px-4 py-3 transition rounded-2xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className}`,
+    `flex items-center justify-between py-1 transition rounded-md cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className}`,
     {
       "bg-sec_dim_2": isActive,
       "bg-odd": !isActive,
@@ -51,7 +51,7 @@ function OddComponent(props: OddsProps) {
       onClick={handleClick}
       disabled={isLocked}
     >
-      <span>{isOddsFetching ? "--" : odds.toFixed(2)}</span>
+      <span className="w-16 h-8 text-center text-sm font-semibold justify-center flex items-center">{isOddsFetching ? "--" : odds.toFixed(2)}</span>
     </button>
   );
 }

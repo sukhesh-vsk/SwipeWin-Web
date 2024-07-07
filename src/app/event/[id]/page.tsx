@@ -125,7 +125,7 @@ const SubmitButton: React.FC = () => {
         className={cx(
           "px-4 py-2 rounded-full font-cairo font-bold tracking-widest",
           {
-            "btn-grad transition shadow-md": !isDisabled,
+            "btn-grad transition": !isDisabled,
             "bg-gray-400 cursor-not-allowed": isDisabled,
           }
         )}

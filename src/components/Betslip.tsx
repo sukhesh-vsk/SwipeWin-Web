@@ -154,7 +154,7 @@ const SubmitButton: React.FC = () => {
     isRelayerFeeLoading;
 
   const isDisabled =
-    isLoading || !isBetAllowed || !isEnoughBalance || !+betAmount;
+    isLoading || !isBetAllowed || !isEnoughBalance || !+betAmount || (totalOdds===1);
 
   let title;
 

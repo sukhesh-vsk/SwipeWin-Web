@@ -15,8 +15,6 @@ export default function DataPopup(props: any) {
     if (!props.match) {
         return null; 
     }
-    
-
 
     const toggleForm = () => {
         props.toggleVisible();

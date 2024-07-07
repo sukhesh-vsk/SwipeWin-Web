@@ -32,7 +32,7 @@ export default function BetHistory() {
   const { loading: isPrematchLoading, bets: prematchBets } =
     usePrematchBets(props);
   const { loading: isLiveLoading, bets: liveBets } = useLiveBets(props);
-
+  
   const isLoading = isPrematchLoading || isLiveLoading;
   const allBets = [...prematchBets, ...liveBets];
 
@@ -41,7 +41,7 @@ export default function BetHistory() {
 
   const handleClick = (match: Bet) => {
     setSelectedMatch(match);
-    setIsVisible(!isVisible);
+    setIsVisible((isVisible === false) ? true : false);
   };
 
   const getSportIcon = (sportSlug: string) => {

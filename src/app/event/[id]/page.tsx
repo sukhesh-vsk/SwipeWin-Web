@@ -224,13 +224,13 @@ export default function Game() {
   const getOutcomeLabel = (index, length) => {
     if (length === 3) {
       if (index === 0) return `If ${game?.participants[0].name} wins`;
-      if (index === 1) return "If no one wins";
+      if (index === 1) return "If drawn";
       if (index === 2) return `If ${game?.participants[1].name} wins`;
     } else if (length === 2) {
       if (index === 0) return `If ${game?.participants[0].name} wins`;
       if (index === 1) return `If ${game?.participants[1].name} wins`;
     }
-    return "";
+    return "Winning Amount";
   };
 
   const { loading: isPrematchLoading, bets: prematchBets } =
@@ -240,16 +240,16 @@ export default function Game() {
     (bet) => bet.outcomes[0].game.gameId === params.id
   );
 
-  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(0);
+  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
-
+  
   useEffect(() => {
     if (initialLoad) {
       changeBetAmount("1");
       setInitialLoad(false);
     }
   }, [params.id, changeBetAmount, initialLoad]);
-
+  
   const handleOutcomeSelection = (index: number) => {
     setSelectedOutcomeIndex(index);
   };
@@ -268,6 +268,7 @@ export default function Game() {
     markets && markets[0]
       ? getOutcomeLabel(selectedOutcomeIndex, markets[0].outcomeRows[0].length)
       : "";
+      
   return (
     <>
       {game && (
@@ -327,6 +328,13 @@ export default function Game() {
                 <div>
                   <div className="flex gap-3 w-full justify-between items-center">
                     {markets[0].outcomeRows[0].map((outcome, index) => (
+                      <span 
+                        onClick={
+                          () => {
+                            handleOutcomeSelection(index)
+                          }
+                        }
+                      >
                       <OddComponent
                         className="ml-2 odd-cont first-of-type:ml-0"
                         key={`${outcome.selectionName}-${index}`}
@@ -335,8 +343,8 @@ export default function Game() {
                           index,
                           markets[0].outcomeRows[0].length
                         )}
-                        onClick={() => handleOutcomeSelection(index)}
                       />
+                      </span>
                     ))}
                   </div>
                 </div>

@@ -88,7 +88,7 @@ export default function DataPopup(props: any) {
                         <p className='font-semibold tracking-widest text-xs'>{dayjs(+data.eventDate * 1000).format('DD MMM HH:mm')}</p>
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
-                        <p className='text-sec_dim font-medium text-sm'>Betting Data</p>
+                        <p className='text-sec_dim font-medium text-sm'>Betting Date</p>
                         <p className='font-semibold tracking-wide text-xs'>{dayjs(data.betDetail.createdAt * 1000).format('DD MMM HH:mm')}</p>
                     </div>
                 </div>

@@ -176,7 +176,7 @@ export default function BetHistory() {
                       </p>
                     </div>
                     <div className="flex-1 text-end">
-                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? bet.amount : bet.possibleWin.toFixed(2)}`}</p>
+                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? bet.amount : bet.possibleWin.toFixed(0)}`}</p>
                     </div>
                   </div>
                 ))}

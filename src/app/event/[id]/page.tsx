@@ -172,7 +172,7 @@ const BetHistory: React.FC<{ bets: any[] }> = ({ bets }) => {
               </span>
             </div>
             <div className="flex flex-col text-sm text-white text-right">
-              <span className="font-semibold">{bet.amount}USDT</span>
+              <span className="font-semibold">{bet.amount.toFixed(2)}USDT</span>
             </div>
           </div>
         ))

@@ -324,7 +324,11 @@ export default function Game() {
                 </p>
               </div>
             </div>
-            <div className=" w-full px-7 mt-8 mb-4">
+            { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
+                Select Winning Bets
+                <div className="tooltip-arrow" data-popper-arrow></div>
+            </div>}
+            <div className=" w-full px-7 mt-8 mb-4"  data-tooltip-target="tooltip-light" data-tooltip-style="light">
               {Boolean(markets?.[0]?.outcomeRows[0]) && (
                 <div>
                   <div className="flex gap-3 w-full justify-between items-center">

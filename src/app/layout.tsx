@@ -9,7 +9,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { BetslipProvider } from "@/context";
 
 export const metadata: Metadata = {
-  title: "Swipe Win",
+  title: "Wakanda Bets",
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
@@ -24,7 +24,7 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body className="bg-bg text-text font-noto flex flex-col">
+      <body className="bg-bg text-text font-inter flex flex-col">
         <div className="mobile-wrapper">
           <div className="mobile-content no-scrollbar">
             <Providers

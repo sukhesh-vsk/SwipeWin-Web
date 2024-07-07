@@ -12,6 +12,35 @@ export default function DataPopup(props: any) {
         return null; 
     }
 
+    const matchStatus = (betData: Bet) => {
+        if (betData.isWin) {
+            return 'Win';
+        } else if (betData.isLose) {
+            return 'Lose';
+        } else if (betData.isCanceled) {
+            return 'Canceled';
+        } else {
+            return 'Pending';
+        }
+    }
+
+    const payoutStatus = (betData: Bet) => {
+        if (betData.isWin || betData.isCanceled) {
+            if (betData.isRedeemable) {
+                return <button className='bg-blue-500 px-3 py-2'>
+                    Redeem
+                </button>;
+            } else {
+                return <p className='font-semibold tracking-widest text-sm'>Redeemed</p>;
+            }
+        } else if (betData.isLose) {
+            return <p className='font-semibold tracking-widest text-sm'>NA</p>; 
+        }
+        else {
+            return <p className='font-semibold tracking-widest text-sm'>A</p>;
+        }
+    }
+
     const [isHidden, setHidden] = useState(true);
     
     useEffect(() => {
@@ -43,7 +72,7 @@ export default function DataPopup(props: any) {
                     <p className='font-semibold tracking-widest text-sm'>{data.league}</p>
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
-                    <p className='text-sec_dim font-medium text-sm'>Teams</p>
+                    <p className='text-sec_dim font-medium text-sm'>Between</p>
                     <p className='font-semibold tracking-widest text-sm'>{`${data.team1} vs ${data.team2}`}</p>
                 </div>
                 <div className='w-full flex justify-between mt-2'>
@@ -63,7 +92,7 @@ export default function DataPopup(props: any) {
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Result</p>
-                        <p className='font-semibold tracking-wide text-sm'>{data.betDetail.payout != null ? data.betDetail.payout.toFixed(2) + " USDT" : `--`}</p>
+                        <p className='font-semibold tracking-wide text-sm'>{matchStatus(data.betDetail)}</p>
                     </div>
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
@@ -80,7 +109,7 @@ export default function DataPopup(props: any) {
                 </div> */}
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Payout Status</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.betDetail.status}</p>
+                    {payoutStatus(data.betDetail)}
                 </div>
                 <div className='w-full flex justify-between mt-2'>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>

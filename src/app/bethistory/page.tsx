@@ -26,6 +26,7 @@ export default function BetHistory() {
   const props = {
     filter: {
       bettor: address!,
+      // bettor: '0x08a6f17323fF1CC24049edA997A11E1c87f1848A'
     },
     orderDir: OrderDirection.Desc,
   };
@@ -137,11 +138,6 @@ export default function BetHistory() {
                   <p className="flex-1 text-center text-sec_dim font-semibold">
                     Event
                   </p>
-                  <p>
-                    <span className="flex-1 text-end text-sec_dim font-semibold">
-                      Bid
-                    </span>
-                  </p>
                   <p className="flex-1 text-end text-sec_dim font-semibold">
                     {`Win/Lose (USDT)`}
                   </p>
@@ -170,13 +166,8 @@ export default function BetHistory() {
                       {bet.outcomes[0].game.participants[0].name} vs{" "}
                       {bet.outcomes[0].game.participants[1].name}
                     </div>
-                    <div>
-                      <p className="flex-1 text-end">
-                        {bet.amount}
-                      </p>
-                    </div>
                     <div className="flex-1 text-end">
-                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? bet.amount : bet.possibleWin.toFixed(0)}`}</p>
+                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? ('- '+bet.amount) : bet.isWin ? ('+ '+bet.possibleWin.toFixed(0)) : 'Pending'}`}</p>
                     </div>
                   </div>
                 ))}

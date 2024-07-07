@@ -62,7 +62,12 @@ export default function BetHistory() {
                         team2: match.outcomes[0].game.participants[1].name,
                         eventDate: match.outcomes[0].game.startsAt
                       });
-    setIsVisible((isVisible === false) ? true : false);
+    setIsVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsVisible(false);
+    setSelectedMatch(null);
   };
 
   const getSportIcon = (sportSlug: string) => {
@@ -127,10 +132,15 @@ export default function BetHistory() {
               <div className="mt-12">
                 <div className="flex justify-between items-center">
                   <p className="flex-1 text-start text-sec_dim font-semibold">
-                    Bid
+                    Selection
                   </p>
                   <p className="flex-1 text-center text-sec_dim font-semibold">
                     Event
+                  </p>
+                  <p>
+                    <span className="flex-1 text-end text-sec_dim font-semibold">
+                      Bid
+                    </span>
                   </p>
                   <p className="flex-1 text-end text-sec_dim font-semibold">
                     {`Win/Lose (USDT)`}
@@ -160,8 +170,13 @@ export default function BetHistory() {
                       {bet.outcomes[0].game.participants[0].name} vs{" "}
                       {bet.outcomes[0].game.participants[1].name}
                     </div>
+                    <div>
+                      <p className="flex-1 text-end">
+                        {bet.amount}
+                      </p>
+                    </div>
                     <div className="flex-1 text-end">
-                      <p className={`${bet.isWin ? "green_text" : bet.isLose ? "red_text" : ""}`}>{`${bet.isLose ? bet.amount : bet.possibleWin}`}</p>
+                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? bet.amount : bet.possibleWin.toFixed(2)}`}</p>
                     </div>
                   </div>
                 ))}
@@ -173,7 +188,7 @@ export default function BetHistory() {
           <DataPopup
             match={selectedMatch}
             visible={isVisible}
-            toggleVisible={handleClick}
+            toggleVisible={handleClosePopup}
           />
         )}
       </div>

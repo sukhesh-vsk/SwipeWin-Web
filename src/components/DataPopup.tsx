@@ -7,6 +7,11 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 
 export default function DataPopup(props: any) {
+    
+    if (!props.match) {
+        return null; 
+    }
+
     const [isHidden, setHidden] = useState(true);
     
     useEffect(() => {
@@ -15,13 +20,10 @@ export default function DataPopup(props: any) {
         }
     }, [props.visible]);
 
-    if (!props.match) {
-        return null; 
-    }
 
     const toggleForm = () => {
-        props.toggleVisible();
         setHidden(!isHidden);
+        props.toggleVisible();
     }
 
     const data: TransactionDetailProps = props.match;
@@ -50,7 +52,7 @@ export default function DataPopup(props: any) {
                         <p className='font-semibold tracking-widest text-sm'>{data.bidOn}</p>
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
-                        <p className='text-sec_dim font-medium text-sm'>Betting Odd</p>
+                        <p className='text-sec_dim font-medium text-sm'>Betting Odds</p>
                         <p className='font-semibold tracking-widest text-sm'>{data.betDetail.outcomes[0].odds.toFixed(2)}</p>
                     </div>
                 </div>
@@ -67,7 +69,7 @@ export default function DataPopup(props: any) {
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Transaction Hash</p>
                     <a href={`https://polygonscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
-                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.txHash}</p>
+                        <p className='font-semibold tracking-widest text-sm'>{`${data.betDetail.txHash.substring(0, 6)}....${data.betDetail.txHash.substring(data.betDetail.txHash.length-4)}`}</p>
                     </a>
                 </div>
                 {/* <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>

@@ -19,6 +19,7 @@ import {
 } from "@azuro-org/sdk";
 import { RedeemAll } from "@/components/RedeemAll";
 import { TransactionDetailProps } from "@/types/types";
+import dayjs from "dayjs";
 
 export default function BetHistory() {
   const { address } = useAccount();
@@ -26,7 +27,7 @@ export default function BetHistory() {
   const props = {
     filter: {
       bettor: address!,
-      // bettor: '0x08a6f17323fF1CC24049edA997A11E1c87f1848A'
+      // bettor: `0x08a6f17323fF1CC24049edA997A11E1c87f1848A`
     },
     orderDir: OrderDirection.Desc,
   };
@@ -159,7 +160,7 @@ export default function BetHistory() {
                         {getSportIcon(bet.outcomes[0].game.sport.slug)}
                       </div>
                       <p className="text-xs text-sec_dim font-semibold">
-                        {new Date(bet.createdAt * 1000).toLocaleString()}
+                        {dayjs(bet.createdAt * 1000).format('DD MMM HH:mm')}
                       </p>
                     </div>
                     <div className="flex-1 text-xs ps-4 text-sec_dim font-medium text-center">

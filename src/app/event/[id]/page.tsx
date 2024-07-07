@@ -169,11 +169,11 @@ const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
                 )}
               </span>
               <span className="text-xs text-white">
-                {new Date(bet.createdAt * 1000).toLocaleString()}
+                {dayjs(+bet.createdAt * 1000).format('DD MMM HH:mm')}
               </span>
             </div>
             <div className="flex flex-col text-sm text-white text-right">
-              <span className="font-semibold">{bet.amount ? (Number(bet.amount)).toFixed(2) : ''}USDT</span>
+              <span className="font-semibold">{bet.amount ? (Number(bet.amount)).toFixed(2) : ''} USDT</span>
             </div>
           </div>
         ))
@@ -246,7 +246,7 @@ export default function Game() {
   
   useEffect(() => {
     if (initialLoad) {
-      changeBetAmount("1");
+      changeBetAmount("--");
       setInitialLoad(false);
     }
   }, [params.id, changeBetAmount, initialLoad]);
@@ -358,7 +358,7 @@ export default function Game() {
                 <input
                   type="range"
                   min="1"
-                  max={`${ (!isBalanceFetching && balance) ? balance : '100'}`}
+                  max={`${(!isBalanceFetching && (+balance! > 100)) ?  balance : '100'}`}
                   // max='100'
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}

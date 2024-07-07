@@ -3,6 +3,7 @@
 import { Closeico } from '@/assets/icons';
 import { TransactionDetailProps } from '@/types/types';
 import { Bet } from '@azuro-org/sdk';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 
 export default function DataPopup(props: any) {
@@ -50,7 +51,7 @@ export default function DataPopup(props: any) {
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Betting Odd</p>
-                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.outcomes[0].odds}</p>
+                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.outcomes[0].odds.toFixed(2)}</p>
                     </div>
                 </div>
                 <div className='w-full flex justify-between mt-2'>
@@ -60,17 +61,21 @@ export default function DataPopup(props: any) {
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Result</p>
-                        <p className='font-semibold tracking-wide text-sm'>{data.betDetail.payout + " USDT" ?? `--`}</p>
+                        <p className='font-semibold tracking-wide text-sm'>{data.betDetail.payout != null ? data.betDetail.payout.toFixed(2) + " USDT" : `--`}</p>
                     </div>
                 </div>
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Transaction Hash</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.betDetail.txHash}</p>
+                    <a href={`https://polygonscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
+                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.txHash}</p>
+                    </a>
                 </div>
-                <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
-                    <p className='text-sec_dim font-medium text-sm'>Payout Hash</p>
-                    <p className='font-semibold tracking-widest text-sm'>{data.betDetail.lpAddress}</p>
-                </div>
+                {/* <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
+                    <p className='text-sec_dim font-medium text-sm'>Redeem Hash</p>
+                    <a href={`https://polygonscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
+                        <p className='font-semibold tracking-widest text-sm'>{data.betDetail.txHash}</p>
+                    </a>
+                </div> */}
                 <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Payout Status</p>
                     <p className='font-semibold tracking-widest text-sm'>{data.betDetail.status}</p>
@@ -78,11 +83,11 @@ export default function DataPopup(props: any) {
                 <div className='w-full flex justify-between mt-2'>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Event Date</p>
-                        <p className='font-semibold tracking-widest text-xs'>{data.eventDate}</p>
+                        <p className='font-semibold tracking-widest text-xs'>{dayjs(+data.eventDate * 1000).format('DD MMM HH:mm')}</p>
                     </div>
                     <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Betting Data</p>
-                        <p className='font-semibold tracking-wide text-xs'>{new Date(data.betDetail.createdAt * 1000).toLocaleString()}</p>
+                        <p className='font-semibold tracking-wide text-xs'>{dayjs(data.betDetail.createdAt * 1000).format('DD MMM HH:mm')}</p>
                     </div>
                 </div>
             </div>

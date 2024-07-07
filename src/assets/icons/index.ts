@@ -15,3 +15,4 @@ export { default as Telegramico } from './telegram.svg';
 export { default as Logoutico } from './logout.svg';
 export { default as cricket_ico } from './cricket.svg';
 export { default as football_ico } from './football.svg';
+export { default as trophy_ico } from './trophy.svg';

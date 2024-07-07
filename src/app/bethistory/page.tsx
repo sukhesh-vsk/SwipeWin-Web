@@ -39,13 +39,24 @@ export default function BetHistory() {
 
   const [isVisible, setIsVisible] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<TransactionDetailProps | null>(null);
-  const [selectedBid, setSelectedBid] = useState<String>("");
+
+  const getSelectionName = (selectionName: string, participants: any[]) => {
+    if (selectionName === "1") {
+      return participants[0].name;
+    }
+    if (selectionName === "2") {
+      return participants[1].name;
+    }
+    if (selectionName === "X") {
+      return "Match Draw";
+    }
+    return "";
+  };
 
   const handleClick = (match: Bet) => {
-    setSelectedBid(getSelectionName(match.outcomes[0].selectionName, match.outcomes[0].game.participants));
     setSelectedMatch({
                         betDetail: match, 
-                        bidOn: selectedBid,
+                        bidOn: getSelectionName(match.outcomes[0].selectionName, match.outcomes[0].game.participants),
                         league: match.outcomes[0].game.league.name,
                         team1: match.outcomes[0].game.participants[0].name,
                         team2: match.outcomes[0].game.participants[1].name,
@@ -77,18 +88,6 @@ export default function BetHistory() {
     }
   };
 
-  const getSelectionName = (selectionName: string, participants: any[]) => {
-    if (selectionName === "1") {
-      return participants[0].name;
-    }
-    if (selectionName === "2") {
-      return participants[1].name;
-    }
-    if (selectionName === "X") {
-      return "Match Draw";
-    }
-    return "";
-  };
 
   const groupedBets = allBets.reduce((acc, bet) => {
     const year = new Date(bet.createdAt * 1000).getFullYear();

@@ -341,10 +341,6 @@ export default function Game() {
                         className="ml-2 odd-cont first-of-type:ml-0"
                         key={`${outcome.selectionName}-${index}`}
                         outcome={outcome}
-                        label={getOutcomeLabel(
-                          index,
-                          markets[0].outcomeRows[0].length
-                        )}
                       />
                       </span>
                     ))}

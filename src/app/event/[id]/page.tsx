@@ -329,6 +329,7 @@ export default function Game() {
                   <div className="flex gap-3 w-full justify-between items-center">
                     {markets[0].outcomeRows[0].map((outcome, index) => (
                       <span 
+                        key={index}
                         onClick={
                           () => {
                             handleOutcomeSelection(index)
@@ -356,7 +357,8 @@ export default function Game() {
                 <input
                   type="range"
                   min="1"
-                  max="100"
+                  max={`${ (!isBalanceFetching && balance) ? balance : '100'}`}
+                  // max='100'
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}
                   className="w-2/3 mr-2"

@@ -153,13 +153,13 @@ const getSelectionName = (selectionName: string, participants: any[]) => {
 
 const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
   return (
-    <div className="mt-8 pb-28 w-full">
-      <h2 className="text-2xl font-semibold mb-4">Your Bet History</h2>
+    <div className="mt-4 pb-28 w-full">
+      <h2 className="heading1 mb-2">Your Bet History</h2>
       {bets.length > 0 ? (
         bets.map((bet, index) => (
           <div
             key={bet.txHash}
-            className="flex justify-between items-center bg-gray-500  p-4 mb-4 rounded-md shadow-md"
+            className="flex justify-between items-center bg-gray-500  p-4 mb-2 rounded-md shadow-md"
           >
             <div className="flex flex-col">
               <span className="font-semibold text-white">
@@ -169,11 +169,13 @@ const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
                 )}
               </span>
               <span className="text-xs text-white">
-                {dayjs(+bet.createdAt * 1000).format('DD MMM HH:mm')}
+                {dayjs(+bet.createdAt * 1000).format("DD MMM HH:mm")}
               </span>
             </div>
             <div className="flex flex-col text-sm text-white text-right">
-              <span className="font-semibold">{bet.amount ? (Number(bet.amount)).toFixed(2) : ''} USDT</span>
+              <span className="font-semibold">
+                {bet.amount ? Number(bet.amount).toFixed(2) : ""} USDT
+              </span>
             </div>
           </div>
         ))
@@ -243,14 +245,14 @@ export default function Game() {
 
   const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
-  
+
   useEffect(() => {
     if (initialLoad) {
       changeBetAmount("--");
       setInitialLoad(false);
     }
   }, [params.id, changeBetAmount, initialLoad]);
-  
+
   const handleOutcomeSelection = (index: number) => {
     setSelectedOutcomeIndex(index);
   };
@@ -269,7 +271,7 @@ export default function Game() {
     markets && markets[0]
       ? getOutcomeLabel(selectedOutcomeIndex, markets[0].outcomeRows[0].length)
       : "";
-      
+
   return (
     <>
       {game && (
@@ -278,91 +280,107 @@ export default function Game() {
 
       <div className="container flex flex-col text-center justify-center items-center">
         <>
-          <div className="bg-sec_2 mt-4 py-4 rounded-xl w-full flex flex-col ">
-            <div className="flex justify-between  items-center px-6 pt-5">
-              <div className="flex flex-col items-center justify-center">
-                <img
-                  src={
-                    game.participants[0].image !== null
-                      ? game.participants[0].image
-                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
-                  }
-                  alt="team1"
-                  width={50}
-                  height={50}
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
-                  }}
-                />
-                <p className="text-xs uppercase mt-2 font-bold">
-                  {game.participants[0].name}
-                </p>
-              </div>
-              <div className="flex flex-col pl-3 ">
-                <p className="text-xs">
-                  {dayjs(+game.startsAt * 1000).format("DD MMM HH:mm")}
-                </p>
-              </div>
-              <div className="flex flex-col items-center">
-                <img
-                  src={
-                    game.participants[1].image !== null
-                      ? game.participants[1].image
-                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
-                  }
-                  alt="team1"
-                  width={50}
-                  height={50}
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
-                  }}
-                />
-                <p className="text-xs uppercase mt-2 font-bold">
-                  {game.participants[1].name}
-                </p>
-              </div>
-            </div>
-            { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
-                Select Winning Bets
-                <div className="tooltip-arrow" data-popper-arrow></div>
-            </div>}
-            <div className=" w-full px-7 mt-8 mb-4"  data-tooltip-target="tooltip-light" data-tooltip-style="light">
-              {Boolean(markets?.[0]?.outcomeRows[0]) && (
-                <div>
-                  <div className="flex gap-3 w-full justify-between items-center">
-                    {markets[0].outcomeRows[0].map((outcome, index) => (
-                      <span 
-                        key={index}
-                        onClick={
-                          () => {
-                            handleOutcomeSelection(index)
-                          }
-                        }
-                      >
-                      <OddComponent
-                        className="ml-2 odd-cont first-of-type:ml-0"
-                        key={`${outcome.selectionName}-${index}`}
-                        outcome={outcome}
-                        label={getOutcomeLabel(
-                          index,
-                          markets[0].outcomeRows[0].length
-                        )}
-                      />
-                      </span>
+          <div className="bg-sec_2 mt-10 py-4 rounded-xl w-full flex flex-col py-6">
+            {/* Game Details */}
+            <div className="flex flex-col justify-between">
+              <div className="flex justify-between items-center px-6 mb-2">
+                <div className="flex flex-col flex-1  items-center justify-center">
+                  <img
+                    src={
+                      game.participants[0].image !== null
+                        ? game.participants[0].image
+                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
+                    }
+                    alt="team1"
+                    width={50}
+                    height={50}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
+                    }}
+                  />
+                  <p className="text-sm mt-1 flex-1 font-medium">
+                    {game.participants[0].name.split(' ').map((word, index) => (
+                      <span key={index} className="block">{word}</span>
                     ))}
-                  </div>
+                  </p>
                 </div>
-              )}
+                <div className="flex flex-col items-center justify-center text-secondary">
+                  <p className="text-xs">
+                    {dayjs(+game.startsAt * 1000).format("DD MMM")}
+                  </p>
+                  <p className="text-xs">
+                    {dayjs(+game.startsAt * 1000).format("HH:mm")}
+                  </p>
+                </div>
+                <div className="flex flex-col flex-1  items-center justify-center">
+                  <img
+                    src={
+                      game.participants[1].image !== null
+                        ? game.participants[1].image
+                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s"
+                    }
+                    alt="team1"
+                    width={50}
+                    height={50}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO8EIqMyxuA7-SwDuYBU-P-t9RF3AuQ7UfRg&s";
+                    }}
+                  />
+                  <p className="text-sm mt-1 font-medium">
+                    {game.participants[1].name.split(' ').map((word, index) => (
+                      <span key={index} className="block">{word}</span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+                  {/* { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
+                    Select Winning Bets
+                    <div className="tooltip-arrow" data-popper-arrow></div>
+                </div>} */}
+              <div
+                className="w-full px-6 mt-2 mb-6"
+                data-tooltip-target="tooltip-light"
+                data-tooltip-style="light"
+              >
+                {Boolean(markets?.[0]?.outcomeRows[0]) && (
+                  <div>
+                    <div className="flex gap-3 w-full justify-between items-center">
+                      {markets[0].outcomeRows[0].map((outcome, index) => (
+                        <span
+                          key={index}
+                          onClick={() => {
+                            handleOutcomeSelection(index);
+                          }}
+                        >
+                          <OddComponent
+                            className="ml-2 odd-cont first-of-type:ml-0"
+                            key={`${outcome.selectionName}-${index}`}
+                            outcome={outcome}
+                            label={getOutcomeLabel(
+                              index,
+                              markets[0].outcomeRows[0].length
+                            )}
+                          />
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="mt-2 flex flex-col px-6 items-center">
+            
+            {/* Betting Amounts */}
+            <div className="mt-2 flex flex-col px-6 text-sm font-medium items-center">
               <div className="flex justify-between items-center w-full mb-4">
-                <p>Betting Amount</p>
+                <p className="text-start">Betting Amount :</p>
                 <input
                   type="range"
                   min="1"
-                  max={`${(!isBalanceFetching && (+balance! > 100)) ?  balance : '100'}`}
+                  max={`${
+                    !isBalanceFetching && +balance! > 100 ? balance : "100"
+                  }`}
                   // max='100'
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}
@@ -371,13 +389,13 @@ export default function Game() {
                 <span>{betAmount}</span>
               </div>
               <div className="flex justify-between items-center w-full mb-4">
-                <span>Total Odds:</span>
+                <span>Total Odds :</span>
                 <span>
                   {isOddsFetching ? <>Loading...</> : <>{totalOdds}</>}
                 </span>
               </div>
               <div className="flex justify-between items-center w-full mb-4">
-                <span>{selectedOutcomeLabel}:</span>
+                <span>{selectedOutcomeLabel} :</span>
                 <span>
                   {isOddsFetching ? (
                     <>Loading...</>
@@ -387,7 +405,7 @@ export default function Game() {
                 </span>
               </div>
               <div className="flex justify-between items-center w-full mb-4">
-                <span className="text-sm">Wallet balance:</span>
+                <span className="text-sm">Wallet Balance :</span>
                 <span className="text-sm font-semibold">
                   {isBalanceFetching ? (
                     <>Loading...</>
@@ -401,7 +419,8 @@ export default function Game() {
                 </span>
               </div>
             </div>
-
+            
+            {/* Payment Part */}
             {Boolean(disableReason) && (
               <div className="mb-1 text-red-500 text-center font-semibold">
                 {errorPerDisableReason[disableReason!]}
@@ -410,7 +429,7 @@ export default function Game() {
             {account?.address ? (
               <SubmitButton />
             ) : (
-              <p className="bg-sgrad mt-4 px-4 py-2 rounded-full font-cairo font-bold tracking-wide">
+              <p className="bg-sgrad mx-6 mt-3 px-6 py-2 rounded-full font-cairo font-bold tracking-wide">
                 Connect your wallet
               </p>
             )}

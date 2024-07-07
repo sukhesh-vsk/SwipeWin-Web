@@ -7,7 +7,7 @@ export default function DataPopup(props: any) {
     const [isHidden, setHidden] = useState(true);
     
     useEffect(() => {
-        if (props.visible === 'true') {
+        if (props.visible === true) {
             setHidden(false);
         }
     }, [props.visible]);

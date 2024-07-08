@@ -4,12 +4,19 @@ import { useBetTokenBalance } from "@azuro-org/sdk";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import SwapContainer from "./SwapContainer";
+import WrapComponent from "./WrapComponent";
+
+interface PopupProps {
+  onClose: () => void;
+}
 
 export function Navbar() {
   const account = useAccount();
   const { loading, balance } = useBetTokenBalance();
   const [walletBal, setWalletBal] = useState("loading");
   const [mounted, setMounted] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -27,7 +34,7 @@ export function Navbar() {
     }
 
     return account?.address ? (
-      <p className="bg-text px-4 py-1 flex justify-center items-center rounded-full font-medium">
+      <p className="bg-text px-4 py-1 flex justify-center items-center rounded-full font-medium cursor-pointer" onClick={() => setShowPopup(true)}>
         <span className="text-gradient">
           {walletBal === "loading" ? "Loading..." : `My Wallet: ${walletBal}`}
         </span>
@@ -49,6 +56,7 @@ export function Navbar() {
         </div>
       </a>
       {getBalance()}
+      {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>
   );
 }

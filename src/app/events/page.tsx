@@ -124,7 +124,7 @@ export default function Events() {
         filterType={filterType}
         selectedSport={selectedSport}
       />
-      <div className="container mt-7 h-4/5 flex-1 h-full">
+      <div className="container-fluid mt-7 h-4/5 flex-1 h-full">
         <div className="flex justify-between items-center">
         <h2 className="">{renderHeading()}</h2>
           {(selectedSport !== "All" || filterType !== "All" || searchTerm) && (

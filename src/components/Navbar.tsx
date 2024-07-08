@@ -38,7 +38,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="px-8 py-6 flex items-center justify-between">
+    <header className=" py-6 flex items-center container-fluid justify-between">
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base">
           <img

@@ -98,7 +98,7 @@ body {
 
 .mobile-wrapper {
   width: 400px;
-  height: 844px;
+  height: 100%;
   border-radius: 20px;
   overflow: hidden;
   position: relative;

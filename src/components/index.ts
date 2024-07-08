@@ -9,3 +9,4 @@ export * from './GameInfo'
 export { default as DataPopup } from './DataPopup';
 export { default as PageHeader } from './PageHeader';
 export { default as UserAlertPopup } from './UserAlertPopup';
+export { default as SwapContainer } from './SwapContainer';

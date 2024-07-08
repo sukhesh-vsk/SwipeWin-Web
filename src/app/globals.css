@@ -4,84 +4,83 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Cairo";
-  src: url("/assets/fonts/cairo/Cairo-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
 
 @font-face {
-  font-family: "Cairo";
-  src: url("/assets/fonts/cairo/Cairo-Bold.ttf") format("truetype");
+  font-family: "Metropolis";
+  src: url("/fonts/metropolis/Metropolis-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Cairo";
-  src: url("/assets/fonts/cairo/Cairo-ExtraBold.ttf") format("truetype");
+  font-family: "Metropolis";
+  src: url("/fonts/metropolis/Metropolis-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Cairo";
-  src: url("/assets/fonts/cairo/Cairo-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Cairo";
-  src: url("/assets/fonts/cairo/Cairo-SemiBold.ttf") format("truetype");
+  font-family: "Metropolis";
+  src: url("/fonts/metropolis/Metropolis-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "NotoSansTC";
-  src: url("/assets/fonts/noto-tc/NotoSansTC-Regular.ttf") format("truetype");
+  font-family: "Metropolis";
+  src: url("/fonts/metropolis/Metropolis-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "NotoSansTC";
-  src: url("/assets/fonts/noto-tc/NotoSansTC-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "NotoSansTC";
-  src: url("/assets/fonts/noto-tc/NotoSansTC-ExtraBold.ttf") format("truetype");
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "NotoSansTC";
-  src: url("/assets/fonts/noto-tc/NotoSansTC-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "NotoSansTC";
-  src: url("/assets/fonts/noto-tc/NotoSansTC-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "NotoSansTC";
-  src: url("/assets/fonts/noto-tc/NotoSansTC-Light.ttf") format("truetype");
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 
 /* Application Styles */
+
+.heading1 {
+  font-family: "Metropolis";
+  font-weight: 800;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.heading2 {
+  font-family: "Metropolis";
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.allevents {
+  margin-top: 24px;
+}
+
 
 html {
   scroll-behavior: smooth;

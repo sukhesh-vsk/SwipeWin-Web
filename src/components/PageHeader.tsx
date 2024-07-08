@@ -18,11 +18,11 @@ export default function PageHeader({ title, filter }: PageHeaderProps) {
 
     return (
         <header className={`container flex items-center mt-4 ${filter ? 'justify-between' : ''}`}>
-            <button className="p-2" onClick={handleClick}>
-                <Backico className='w-4'/>
+            <button className="p-2 flex items-center justify-center" onClick={handleClick}>
+                <Backico className='w-5'/>
             </button>
             
-            <div className={`${filter ? '' : 'flex-1'} uppercase text-center font-cairo font-semibold tracking-widest text-lg`}>
+            <div className={`${filter ? '' : 'flex-1'} flex justify-center items-center uppercase text-center heading2 !mt-0`}>
                 {title}
             </div>
             

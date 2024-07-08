@@ -36,7 +36,7 @@ export default function Events() {
 
   const renderTopEvents = () => (
     <div>
-      <div className="flex justify-between items-center mt-1">
+      <div className="flex heading1 justify-between items-center mt-1">
         <p>Top Events</p>
       </div>
       <div className="mt-3 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
@@ -50,11 +50,11 @@ export default function Events() {
   );
 
   const renderOtherEvents = () => (
-    <div className="mt-10">
+    <div className="">
       {Object.keys(otherEvents).map((sportName) => (
-        <div key={sportName}>
-          <h2 className="text-2xl font-semibold mt-8 mb-4">{sportName}</h2>
-          <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+        <div key={sportName} className="mb-4 ">
+          <p className="heading2">{sportName}</p>
+          <div className="flex mt-2 overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
             {otherEvents[sportName].map((data, index) => (
               <div className="snap-start" key={index}>
                 <GameCard key={index} gameDetails={data} />
@@ -94,7 +94,7 @@ export default function Events() {
     if (filterType !== "All") {
       return `Results of ${filterType} events`;
     }
-    return "All Events";
+    return "";
   };
 
   return (
@@ -110,7 +110,7 @@ export default function Events() {
       />
       <div className="container mt-7 h-4/5 flex-1 h-full">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-semibold  mb-4">{renderHeading()}</h2>
+        <h2 className="">{renderHeading()}</h2>
           {(selectedSport !== "All" || filterType !== "All" || searchTerm) && (
             <button
               onClick={resetFilters}
@@ -121,12 +121,13 @@ export default function Events() {
           )}
         </div>
         {loading ? (
-          <p className="text-center text-lg font-semibold mt-20">Loading...</p>
+          <p className="text-center text-lg font-metro font-semibold mt-20">Loading...</p>
         ) : searchTerm || selectedSport !== "All" || filterType !== "All" ? (
           renderSearchResults()
         ) : (
           <>
             {renderTopEvents()}
+            <p className="heading1 allevents">All Events</p>
             {renderOtherEvents()}
           </>
         )}

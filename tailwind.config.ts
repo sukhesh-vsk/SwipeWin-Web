@@ -16,8 +16,10 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        cairo: ['Cairo', 'sans-serif'],
-        'noto': ['NotoSansTC', 'sans-serif'],
+        metro: ['Metropolis', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        // cairo: ['Cairo', 'sans-serif'],
+        // 'noto': ['NotoSansTC', 'sans-serif'],
       },
       colors: {
         primary: "#F4376D",
@@ -29,6 +31,7 @@ const config: Config = {
         accent: "#9A9A9A",
         text: "#F1F1F1",
         text_dim: "rgba(241, 241, 241, 0.3)",
+        text_dim_2: "rgba(241, 241, 241, 0.6)",
         green_text: "rgba(78, 204, 76, 0.9)",
         red_text: "#CD3B3B",
         gradient: {

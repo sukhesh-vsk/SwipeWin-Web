@@ -14,7 +14,7 @@ export default function Support() {
   return (
     <>
       <PageHeader title="Support" filter={false} />
-      <div className="container-fluid h-screen flex flex-col items-center justify-around">
+      <div className="container h-screen flex flex-col items-center justify-around">
         <div className="mt-4 mb-4">
           <ConnectButton chainStatus="icon" />
         </div>

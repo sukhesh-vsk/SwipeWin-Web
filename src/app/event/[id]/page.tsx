@@ -279,7 +279,7 @@ export default function Game() {
         <PageHeader title={`${game.sport.name} Betting`} filter={false} />
       )}
 
-      <div className="container flex flex-col text-center justify-center items-center">
+      <div className="container-fluid flex flex-col text-center justify-center items-center">
         <>
           <div className="bg-sec_2 mt-10 py-4 rounded-xl w-full flex flex-col py-6">
             {/* Game Details */}
@@ -383,7 +383,7 @@ export default function Game() {
                   onChange={(event) => changeBetAmount(event.target.value)}
                   className="w-2/3 mr-2"
                 />
-                <span>{betAmount}</span>
+                <span className="w-6 text-end">{betAmount}</span>
               </div>
               <div className="flex justify-between items-center w-full mb-4">
                 <span>Total Odds :</span>

@@ -10,6 +10,12 @@ import { BetslipProvider } from "@/context";
 
 export const metadata: Metadata = {
   title: "Wakanda Bets",
+  description : "Wakanda Betting Platform",
+  generator: "Next.js",
+  manifest: "/manifest.json",
+  icons: [
+    { rel: "icon", url: "WakandaLogo/Wakanda Logo.png" },
+  ],
 };
 
 export default function Layout(props: { children: React.ReactNode }) {

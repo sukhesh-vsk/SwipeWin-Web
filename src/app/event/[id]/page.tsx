@@ -23,6 +23,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import cx from "clsx";
 import { useAccount } from "wagmi";
+import { TOKEN_SYMBOL } from "@/constants";
 
 type ContentProps = {
   game: GameQuery["games"][0];
@@ -174,7 +175,7 @@ const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
             </div>
             <div className="flex flex-col text-sm text-white text-right">
               <span className="font-semibold">
-                {bet.amount ? Number(bet.amount).toFixed(2) : ""} USDT
+                {bet.amount ? Number(bet.amount).toFixed(2) : ""} ${TOKEN_SYMBOL}
               </span>
             </div>
           </div>

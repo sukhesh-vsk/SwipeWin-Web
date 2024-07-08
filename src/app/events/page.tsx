@@ -9,15 +9,15 @@ export default function Events() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("All");
   const [selectedSport, setSelectedSport] = useState("All");
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
 
-  useEffect(() => {
-    const hasSeenPopup = localStorage.getItem("hasSeenPopup");
-    if (!hasSeenPopup) {
-      setShowPopup(true);
-      localStorage.setItem("hasSeenPopup", "true");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const hasSeenPopup = localStorage.getItem("hasSeenPopup");
+  //   if (!hasSeenPopup) {
+  //     setShowPopup(true);
+  //     localStorage.setItem("hasSeenPopup", "true");
+  //   }
+  // }, []);
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -52,7 +52,7 @@ export default function Events() {
       <div className="flex heading1 justify-between items-center mt-1">
         <p>Top Events</p>
       </div>
-      <div className="mt-3 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+      <div className="mt-3 flex overflow-x-auto space-x-4 w-full container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
         {topEvents.map((data, index) => (
           <div className="snap-start" key={index}>
             <GameCard key={index} gameDetails={data} />

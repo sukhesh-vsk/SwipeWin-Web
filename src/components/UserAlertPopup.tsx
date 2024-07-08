@@ -44,14 +44,16 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
     <div className="absolute inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white p-8 text-black rounded-lg shadow-lg max-w-sm w-full flex flex-col justify-center items-center">
         <span className='text-center font-regular text-xs mb-4 flex flex-col justify-center items-center'>
-            <h2 className="font-semibold text-center text-lg font-inter mb-3">{heading}</h2>
+            <h2 className="font-semibold text-center text-lg font-metro mb-3">{heading}</h2>
             <p className='mb-1'>{instructions}</p>
             <p className='mb-4'>{install}</p>
             {qr && <Image src='/images/wakanda-qr.png' alt='PWA QR' width={200} height={200} />}
         </span>
+        {!isMobile && (
         <button onClick={onClose} className="bg-blue-500 text-white px-4 py-2 rounded">
           Close
         </button>
+        )}
       </div>
     </div>
   );

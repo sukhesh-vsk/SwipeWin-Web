@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./globals.css";
 import { Betslip, BottomBar, Navbar } from "@/components";
 import { GameDataProvider } from "@/context/GameDataProvider";

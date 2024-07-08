@@ -1,7 +1,7 @@
 {
     "theme_color": "#1d1307",
     "background_color": "#1f1205",
-    "display": "browser",
+    "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "name": "Wakanda Bets",

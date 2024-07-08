@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { SearchBar } from "@/components";
+import React, { useState, useEffect } from "react";
+import { SearchBar, UserAlertPopup } from "@/components";
 import GameCard from "@/components/GameCard";
 import useData from "@/hooks/useData";
 
@@ -9,6 +9,19 @@ export default function Events() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("All");
   const [selectedSport, setSelectedSport] = useState("All");
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const hasSeenPopup = localStorage.getItem("hasSeenPopup");
+    if (!hasSeenPopup) {
+      setShowPopup(true);
+      localStorage.setItem("hasSeenPopup", "true");
+    }
+  }, []);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -66,6 +79,8 @@ export default function Events() {
     </div>
   );
 
+
+
   const renderSearchResults = () => (
     <div>
       <div className="flex justify-between items-center mt-6">
@@ -99,6 +114,7 @@ export default function Events() {
 
   return (
     <div className="h-full pb-20">
+      {showPopup && <UserAlertPopup onClose={handleClosePopup} />}
       <SearchBar
         onSearch={handleSearch}
         onFilterChange={handleFilterChange}

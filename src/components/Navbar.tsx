@@ -5,7 +5,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import SwapContainer from "./SwapContainer";
-import WrapComponent from "./WrapComponent";
+import { UserAlertPopup } from ".";
 
 interface PopupProps {
   onClose: () => void;
@@ -17,6 +17,11 @@ export function Navbar() {
   const [walletBal, setWalletBal] = useState("loading");
   const [mounted, setMounted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showAlert, setAlert] = useState(true);
+
+  const handleClosePopup = () => {
+    setAlert(false);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -46,6 +51,7 @@ export function Navbar() {
 
   return (
     <header className=" py-6 flex items-center container-fluid justify-between">
+      {showAlert && <UserAlertPopup onClose={handleClosePopup} />}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base">
           <img

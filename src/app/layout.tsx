@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./globals.css";
-import { Betslip, BottomBar, Navbar } from "@/components";
+import { Betslip, BottomBar, Navbar, UserAlertPopup } from "@/components";
 import { GameDataProvider } from "@/context/GameDataProvider";
 import { Providers } from "@/context/Providers";
 import { Metadata } from "next";
@@ -27,7 +27,6 @@ export default function Layout(props: { children: React.ReactNode }) {
       <body className="bg-bg text-text font-inter flex flex-col">
         <div className="mobile-wrapper">
           <div className="mobile-content no-scrollbar">
-
             <Providers
               initialChainId={initialChainId}
               initialLiveState={initialLiveState}

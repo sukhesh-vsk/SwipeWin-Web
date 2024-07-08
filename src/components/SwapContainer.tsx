@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from "react";
-import WrapComponent from "./WrapComponent"; // Adjust the path as necessary
-import CryptoExchange from "./CryptoExchange"; // Adjust the path as necessary
+import WrapComponent from "./WrapComponent"; 
+import CryptoExchange from "./CryptoExchange";
 
 interface PopupProps {
   onClose: () => void;

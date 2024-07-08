@@ -52,7 +52,7 @@ export default function Events() {
       <div className="flex heading1 justify-between items-center mt-1">
         <p>Top Events</p>
       </div>
-      <div className="mt-3 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+      <div className="mt-3 flex overflow-x-auto space-x-4 container-fluid h-2/3 ml-4 snap-x snap-mandatory home-scroll-card-margin no-scrollbar">
         {topEvents.map((data, index) => (
           <div className="snap-start" key={index}>
             <GameCard key={index} gameDetails={data} />
@@ -67,7 +67,7 @@ export default function Events() {
       {Object.keys(otherEvents).map((sportName) => (
         <div key={sportName} className="mb-4 ">
           <p className="heading2">{sportName}</p>
-          <div className="flex mt-2 overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+          <div className="flex mt-2 overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory home-scroll-card-margin no-scrollbar">
             {otherEvents[sportName].map((data, index) => (
               <div className="snap-start" key={index}>
                 <GameCard key={index} gameDetails={data} />
@@ -86,7 +86,7 @@ export default function Events() {
       <div className="flex justify-between items-center mt-6">
         <p>Search Results</p>
       </div>
-      <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+      <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory home-scroll-card-margin  no-scrollbar">
         {topEvents.concat(...Object.values(otherEvents)).map((data, index) => (
           <div className="snap-start" key={index}>
             <GameCard key={index} gameDetails={data} />

@@ -276,7 +276,7 @@ export default function Game() {
   return (
     <>
       {game && (
-        <PageHeader title={`${game.sport.name} Betting`} filter={false} />
+        <PageHeader title={`${game.league.name} Betting`} filter={false} />
       )}
 
       <div className="container flex flex-col text-center justify-center items-center">
@@ -284,7 +284,7 @@ export default function Game() {
           <div className="bg-sec_2 mt-10 py-4 rounded-xl w-full flex flex-col py-6">
             {/* Game Details */}
             <div className="flex flex-col justify-between">
-              <div className="flex justify-between items-center px-6 mb-2">
+              <div className="flex justify-between px-6 mb-2">
                 <div className="flex flex-col flex-1  items-center justify-center">
                   <img
                     src={

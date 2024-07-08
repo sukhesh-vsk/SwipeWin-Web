@@ -35,7 +35,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
           <p className="font-metro font-semibold text-md tracking-wide">{data.league}</p>
           <p className="tracking-widest font-medium text-sm">{data.sport}</p>
         </div>
-        <div className="flex justify-around items-center w-full text-center">
+        <div className="flex justify-around w-full text-center">
           <div className="flex flex-col w-10 items-center">
             <img
               src={

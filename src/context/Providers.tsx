@@ -10,7 +10,7 @@ import { WagmiProvider } from 'wagmi'
 
 const { wallets } = getDefaultWallets()
 
-const chains = [
+export const chains = [
   chiliz
 ] as const
 

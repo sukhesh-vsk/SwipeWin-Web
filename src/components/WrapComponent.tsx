@@ -1,19 +1,56 @@
 "use client"
 
+import { abi } from "@/abi";
+import { chains } from "@/context/Providers";
+import { useBetTokenBalance, useNativeBalance } from "@azuro-org/sdk";
+import { ethers } from "ethers";
 import React, { useState } from "react";
-
+import { spicy } from "viem/chains";
+import { useAccount, useContractWrite, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 interface PopupProps {
   onClose: () => void;
 }
 
+// const contractAddress = '0x678c34581db0a7808d0aC669d7025f1408C9a3C6';
+const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
+
+
+
 const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
   const [isWrap, setIsWrap] = useState(true);
   const [amount, setAmount] = useState("");
-  const [chzBalance, setCHZ] = useState("200.0");
-  const [wchzBalance, setWCHZ] = useState("150.0");
+
+  const { address } = useAccount();
 
   const [from, setFrom] = useState("CHZ");
   const [to, setTo] = useState("wCHZ");
+
+  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
+
+  const { loading: isNativeBalanceFetching, balance: nativeBalance } = useNativeBalance();
+
+  const {
+    data: hash,
+    isPending,
+    writeContract
+  } = useWriteContract();
+
+  const handleDeposit = () => {
+    writeContract({
+      chain: chains[0],
+      address: contractAddress,
+      abi,
+      functionName: 'deposit',
+      args: [],
+      value: amount ? ethers.utils.parseEther(amount) : undefined,
+      account: address
+    })
+  };
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    })
 
   const handleToggle = () => {
     const temp = from;
@@ -24,10 +61,30 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
   };
 
   const handleMaxClick = () => {
+    if (isBalanceFetching || isNativeBalanceFetching) {
+      return
+    }
     setAmount(
-        (isWrap) ? chzBalance : wchzBalance
+      (isWrap) ? nativeBalance : balance
     );
   };
+
+  const getDepositButton = () => {
+    if (isConfirming) {
+      return <p className="text-xs mt-2 text-text_dim_2 font-medium">Waiting for Transaction to complete</p>
+    }
+    if (isPending) {
+      return <p className="text-xs mt-2 text-text_dim_2 font-medium">Sending Transaction</p>
+    }
+
+    if (isConfirmed) {
+      return <p className="text-xs mt-2 text-text_dim_2 font-medium">Transaction Successful</p>
+    }
+
+    return <button className="bg-sgrad text-white px-4 py-2 rounded-md w-full mt-4" onClick={handleDeposit}>
+      {`Convert ${from} to ${to}`}
+    </button>
+  }
 
   return (
     <div className="absolute inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -42,23 +99,21 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
         </div>
         <div className="space-y-4">
           <div className="px-2 pt-2 rounded-lg flex items-center justify-around">
-                  <button
-                    onClick={handleToggle}
-                    className={`px-4 py-2 rounded-md ${
-                      isWrap ? "bg-gray-800 text-text" : "bg-bg text-text_dim_2"
-                    }`}
-                  >
-                    Wrap
-                  </button>
-                  <button
-                    onClick={handleToggle}
-                    className={`px-4 py-2 rounded-md ${
-                      isWrap ? "bg-bg text-text_dim_2" : "bg-gray-800 text-text"
-                    }`}
-                  >
-                    Unwrap
-                  </button>
-            </div>
+            <button
+              onClick={handleToggle}
+              className={`px-4 py-2 rounded-md ${isWrap ? "bg-gray-800 text-text" : "bg-bg text-text_dim_2"
+                }`}
+            >
+              Wrap
+            </button>
+            <button
+              onClick={handleToggle}
+              className={`px-4 py-2 rounded-md ${isWrap ? "bg-bg text-text_dim_2" : "bg-gray-800 text-text"
+                }`}
+            >
+              Unwrap
+            </button>
+          </div>
           <div className="bg-sec_2 p-4 rounded-lg">
             <div className="flex justify-between items-center">
               <input
@@ -76,11 +131,9 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
                 Max
               </button>
             </div>
-            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? chzBalance : wchzBalance} {from} </p>
+            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(nativeBalance).toFixed(2) : Number(balance).toFixed(2)} {from} </p>
           </div>
-          <button className="bg-sgrad text-white px-4 py-2 rounded-md w-full mt-4">
-            {`Convert ${from} to ${to}`}
-          </button>
+          {getDepositButton()}
         </div>
       </div>
     </div>

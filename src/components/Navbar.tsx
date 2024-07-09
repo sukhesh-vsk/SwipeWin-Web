@@ -41,7 +41,7 @@ export function Navbar() {
     return account?.address ? (
       <p className="bg-text px-4 py-1 flex justify-center items-center rounded-full font-medium cursor-pointer" onClick={() => setShowPopup(true)}>
         <span className="text-gradient">
-          {walletBal === "loading" ? "Loading..." : `My Wallet: ${walletBal}`}
+          {walletBal === "loading" ? "Loading..." : `My Wallet: ${Number(walletBal).toFixed(2)}`}
         </span>
       </p>
     ) : (
@@ -50,8 +50,8 @@ export function Navbar() {
   };
 
   return (
-    <header className=" py-6 flex items-center container-fluid justify-between">
-      {showAlert && <UserAlertPopup onClose={handleClosePopup} />}
+    <header className="container py-6 flex items-center container-fluid justify-between">
+      {/* {showAlert && <UserAlertPopup onClose={handleClosePopup} />} */}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base">
           <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="h-8 w-36 transition hover:scale-105" />

@@ -380,7 +380,7 @@ export default function Game() {
                   // max='100'
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}
-                  className="w-2/3 mr-2"
+                  className="mr-2"
                 />
                 <span>{betAmount}</span>
               </div>

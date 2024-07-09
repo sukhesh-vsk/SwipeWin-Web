@@ -2,17 +2,21 @@
 
 import { abi } from "@/abi";
 import { chains } from "@/context/Providers";
-import { useBetTokenBalance, useNativeBalance } from "@azuro-org/sdk";
+import { useBetTokenBalance, useChain, useNativeBalance } from "@azuro-org/sdk";
 import { ethers } from "ethers";
 import React, { useState } from "react";
-import { spicy } from "viem/chains";
-import { useAccount, useContractWrite, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useAccount,  useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 interface PopupProps {
   onClose: () => void;
 }
 
+// Testnet chz Official Contract
 // const contractAddress = '0x678c34581db0a7808d0aC669d7025f1408C9a3C6';
-const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
+// Testnet azuro wchz
+// const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
+
+// Mainnet
+const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS :  '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
 
 
 
@@ -34,11 +38,11 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
     isPending,
     writeContract
   } = useWriteContract();
-
+  
   const handleDeposit = () => {
     writeContract({
       chain: chains[0],
-      address: contractAddress,
+      address: contractAddress as '0x${string}',
       abi,
       functionName: 'deposit',
       args: [],

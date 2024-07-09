@@ -407,7 +407,7 @@ export default function Game() {
                     <>Loading...</>
                   ) : balance !== undefined ? (
                     <>
-                      {(+balance).toFixed(2)} {betToken.symbol}
+                      {(+balance).toFixed(2)} {TOKEN_SYMBOL}
                     </>
                   ) : (
                     <>-</>

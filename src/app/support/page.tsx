@@ -25,7 +25,7 @@ export default function Support() {
               <>Loading...</>
             ) : balance !== undefined ? (
               <>
-                {(+balance).toFixed(2)} {betToken.symbol}
+                {(+balance).toFixed(2)} {TOKEN_SYMBOL}
               </>
             ) : (
               <>-</>

@@ -53,7 +53,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="flex container-fluid flex-col w-full">
+    <div className="flex container flex-col w-full">
       <div className="flex w-full justify-around items-center px-0 mt-4">
         <form className="flex-1 mr-6">
           <label

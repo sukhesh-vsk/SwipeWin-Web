@@ -23,6 +23,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import cx from "clsx";
 import { useAccount } from "wagmi";
+import { TOKEN_SYMBOL } from "@/constants";
 
 type ContentProps = {
   game: GameQuery["games"][0];
@@ -174,7 +175,7 @@ const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
             </div>
             <div className="flex flex-col text-sm text-white text-right">
               <span className="font-semibold">
-                {bet.amount ? Number(bet.amount).toFixed(2) : ""} USDT
+                {bet.amount ? Number(bet.amount).toFixed(2) : ""} ${TOKEN_SYMBOL}
               </span>
             </div>
           </div>
@@ -275,14 +276,14 @@ export default function Game() {
   return (
     <>
       {game && (
-        <PageHeader title={`${game.sport.name} Betting`} filter={false} />
+        <PageHeader title={`${game.league.name} Betting`} filter={false} />
       )}
       <div className="container-fluid flex flex-col text-center justify-center items-center">
         <>
           <div className="bg-sec_2 mt-10 py-4 rounded-xl w-full flex flex-col py-6">
             {/* Game Details */}
             <div className="flex flex-col justify-between">
-              <div className="flex justify-between items-center px-6 mb-2">
+              <div className="flex justify-between px-6 mb-2">
                 <div className="flex flex-col flex-1  items-center justify-center">
                   <img
                     src={
@@ -357,10 +358,6 @@ export default function Game() {
                             className="ml-2 odd-cont first-of-type:ml-0"
                             key={`${outcome.selectionName}-${index}`}
                             outcome={outcome}
-                            label={getOutcomeLabel(
-                              index,
-                              markets[0].outcomeRows[0].length
-                            )}
                           />
                         </span>
                       ))}
@@ -385,7 +382,7 @@ export default function Game() {
                   onChange={(event) => changeBetAmount(event.target.value)}
                   className="w-2/3 mr-2"
                 />
-                <span className="w-6 text-end">{betAmount}</span>
+                <span>{betAmount}</span>
               </div>
               <div className="flex justify-between items-center w-full mb-4">
                 <span>Total Odds :</span>

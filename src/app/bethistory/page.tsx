@@ -20,6 +20,7 @@ import {
 import { RedeemAll } from "@/components/RedeemAll";
 import { TransactionDetailProps } from "@/types/types";
 import dayjs from "dayjs";
+import { TOKEN_SYMBOL } from "@/constants";
 
 export default function BetHistory() {
   const { address } = useAccount();
@@ -140,7 +141,7 @@ export default function BetHistory() {
                     Event
                   </p>
                   <p className="flex-1 text-end text-sec_dim font-semibold">
-                    {`Win/Lose (USDT)`}
+                    {`Win/Lose (${TOKEN_SYMBOL})`}
                   </p>
                 </div>
                 {groupedBets[year].map((bet: Bet, index: number) => (

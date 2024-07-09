@@ -54,7 +54,7 @@ export default function Events() {
       {Object.keys(otherEvents).map((sportName) => (
         <div key={sportName} className="mb-4 ">
           <p className="heading2">{sportName}</p>
-          <div className="flex mt-2 overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+          <div className="flex mt-2 overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory home-scroll-card-margin no-scrollbar">
             {otherEvents[sportName].map((data, index) => (
               <div className="snap-start" key={index}>
                 <GameCard key={index} gameDetails={data} />
@@ -73,7 +73,7 @@ export default function Events() {
       <div className="flex justify-between items-center mt-6">
         <p>Search Results</p>
       </div>
-      <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+      <div className="mt-5 flex overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory home-scroll-card-margin  no-scrollbar">
         {topEvents.concat(...Object.values(otherEvents)).map((data, index) => (
           <div className="snap-start" key={index}>
             <GameCard key={index} gameDetails={data} />
@@ -110,7 +110,7 @@ export default function Events() {
         filterType={filterType}
         selectedSport={selectedSport}
       />
-      <div className="container-fluid mt-7 h-4/5 flex-1 h-full">
+      <div className="container mt-7 h-4/5 flex-1 h-full">
         <div className="flex justify-between items-center">
         <h2 className="">{renderHeading()}</h2>
           {(selectedSport !== "All" || filterType !== "All" || searchTerm) && (

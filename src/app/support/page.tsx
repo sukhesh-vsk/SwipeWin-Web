@@ -4,6 +4,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
 import { Discordico, Logoutico, Telegramico } from "@/assets/icons";
 import { useBetTokenBalance, useChain } from "@azuro-org/sdk";
+import { TOKEN_SYMBOL } from "@/constants";
 
 export default function Support() {
   const { betToken } = useChain();
@@ -13,12 +14,12 @@ export default function Support() {
   return (
     <>
       <PageHeader title="Support" filter={false} />
-      <div className="container-fluid h-screen flex flex-col items-center justify-around">
+      <div className="container h-screen flex flex-col items-center justify-around">
         <div className="mt-4 mb-4">
           <ConnectButton chainStatus="icon" />
         </div>
         <div className="flex justify-between items-center w-full mb-12">
-          <span className="text-sm">USDT balance:</span>
+          <span className="text-sm">${TOKEN_SYMBOL} balance:</span>
           <span className="text-sm font-semibold">
             {isBalanceFetching ? (
               <>Loading...</>

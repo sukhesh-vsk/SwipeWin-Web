@@ -1,11 +1,11 @@
 "use client";
 
-import { useBetTokenBalance } from "@azuro-org/sdk";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import SwapContainer from "./SwapContainer";
 import { UserAlertPopup } from ".";
+import { useBetTokenBalance } from "@azuro-org/sdk";
 
 interface PopupProps {
   onClose: () => void;
@@ -54,11 +54,7 @@ export function Navbar() {
       {showAlert && <UserAlertPopup onClose={handleClosePopup} />}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base">
-          <img
-            src="/WakandaLogo/WakandaTransparentLight.png"
-            alt="WakandaBets"
-            className="h-8 w-36 transition hover:scale-105"
-          />
+          <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="h-8 w-36 transition hover:scale-105" />
         </div>
       </a>
       {getBalance()}

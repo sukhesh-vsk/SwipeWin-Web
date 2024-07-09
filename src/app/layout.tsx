@@ -7,9 +7,16 @@ import { Metadata } from "next";
 import { cookies } from "next/headers";
 import "@rainbow-me/rainbowkit/styles.css";
 import { BetslipProvider } from "@/context";
+import ServiceWorkerRegister from '../components/ServiceWorkerRegister';
 
 export const metadata: Metadata = {
   title: "Wakanda Bets",
+  description: "Wakanda Betting Platform",
+  generator: "Next.js",
+  manifest: "/manifest.json",
+  icons: [
+    { rel: "icon", url: "WakandaLogo/Wakanda Logo.png" },
+  ],
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
@@ -27,6 +34,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       <body className="bg-bg text-text font-inter flex flex-col">
         <div className="mobile-wrapper">
           <div className="mobile-content no-scrollbar">
+            <ServiceWorkerRegister />
             <Providers
               initialChainId={initialChainId}
               initialLiveState={initialLiveState}

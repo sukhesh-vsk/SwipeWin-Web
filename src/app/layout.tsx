@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./globals.css";
-import { Betslip, BottomBar, Navbar } from "@/components";
+import { Betslip, BottomBar, Navbar, UserAlertPopup } from "@/components";
 import { GameDataProvider } from "@/context/GameDataProvider";
 import { Providers } from "@/context/Providers";
 import { Metadata } from "next";

@@ -278,8 +278,7 @@ export default function Game() {
       {game && (
         <PageHeader title={`${game.league.name} Betting`} filter={false} />
       )}
-
-      <div className="container flex flex-col text-center justify-center items-center">
+      <div className="container-fluid flex flex-col text-center justify-center items-center">
         <>
           <div className="bg-sec_2 mt-10 py-4 rounded-xl w-full flex flex-col py-6">
             {/* Game Details */}

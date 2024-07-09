@@ -34,7 +34,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
         setHeading('Wrong platform detected');
         setInstall('This webapp is optimized for mobile screens. For the best experience, please use the PWA version. It may work on desktops, but is not prefered.');
         setInstructions('Please scan the QR code to access on mobile device.');
-        setImage('/images/wakanda-qr.jpg')
+        setImage('/images/wakanda-qr.png')
     }
     setIsDataLoaded(true);
   }, [isMobile]);

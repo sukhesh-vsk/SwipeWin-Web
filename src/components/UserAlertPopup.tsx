@@ -26,9 +26,14 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
             setInstall('To install the app, you need to add this website to your home screen.');
             setInstructions('In your Chrome browser menu, tap the More button and choose Install App in the options.');
         } else if(isIOS) {
-            (!isSafari) ? setHeading('Wrong browser detected') : setHeading('Add To Home Screen');
-            setInstall('To install the app, you need to add this website to your home screen.');
-            setInstructions('In your Safari browser menu, tap the Share icon and choose Add to Home Screen in the options. Then open the wakanda.bets app on your home screen.');
+            if(!isSafari) {
+              setHeading('Wrong browser detected');
+              setInstall('To install the app, you need to add this website to your home screen.');
+            } else {
+              setHeading('Add To Home Screen');
+              setInstructions('To use this app, you need to add this website to your home screen.')
+              setInstall('In your Safari browser menu, tap the Share icon and choose Add to Home Screen in the options.');
+            }
         }
     } else {
         setHeading('Wrong platform detected');

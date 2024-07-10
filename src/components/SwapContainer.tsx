@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import WrapComponent from "./WrapComponent"; 
+import WrapComponent from "./WrapComponent";
 import CryptoExchange from "./CryptoExchange";
 
 interface PopupProps {
@@ -45,7 +45,7 @@ export const SwapContainer: React.FC<PopupProps> = ({ onClose }) => {
               <div>
                 <h3 className="text-md font-bold">Convert CHZ ↔ wCHZ</h3>
                 <p className="text-xs mt-1 text-start">
-                  Convert between native CHZ token and its wrapped ERC20 implementation
+                  wCHZ is the default betting currency on Wakanda.bet. Convert here your CHZ here to wCHZ
                 </p>
               </div>
             </div>

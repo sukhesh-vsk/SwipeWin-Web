@@ -5,7 +5,7 @@ import { chains } from "@/context/Providers";
 import { useBetTokenBalance, useChain, useNativeBalance } from "@azuro-org/sdk";
 import { ethers } from "ethers";
 import React, { useState } from "react";
-import { useAccount,  useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useAccount, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 interface PopupProps {
   onClose: () => void;
 }
@@ -16,7 +16,7 @@ interface PopupProps {
 // const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
 
 // Mainnet
-const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS :  '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
+const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS : '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
 
 
 
@@ -38,15 +38,30 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
     isPending,
     writeContract
   } = useWriteContract();
-  
+
   const handleDeposit = () => {
+    if (isWrap) {
+      writeContract({
+        chain: chains[0],
+        address: contractAddress as '0x${string}',
+        abi,
+        functionName: 'deposit',
+        args: [],
+        value: amount ? ethers.utils.parseEther(amount) : undefined,
+        account: address
+      })
+    } else {
+      handleWithdraw();
+    }
+  };
+
+  const handleWithdraw = () => {
     writeContract({
       chain: chains[0],
       address: contractAddress as '0x${string}',
       abi,
-      functionName: 'deposit',
-      args: [],
-      value: amount ? ethers.utils.parseEther(amount) : undefined,
+      functionName: 'withdraw',
+      args: [amount ? ethers.utils.parseEther(amount) as any as bigint : undefined],
       account: address
     })
   };

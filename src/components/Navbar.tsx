@@ -35,8 +35,8 @@ export function Navbar() {
     }
 
     return account?.address ? (
-      <>
-        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer" style={{
+      < div className="flex flex-col ml-8" >
+        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer mb-2" style={{
           fontSize : '12px',
           padding : '4px'
         }} onClick={() => setShowPopup(true)}>
@@ -53,8 +53,8 @@ export function Navbar() {
             {isNativeBalanceFetching ? "Loading..." : `${Number(nativeBalance).toFixed(2)} CHZ`}
           </span>
         </p>
-      </>
-
+      </div>
+     
     ) : (
       <ConnectButton chainStatus="icon" showBalance={false} />
     );
@@ -71,6 +71,9 @@ export function Navbar() {
         </div>
       </a>
       {getBalance()}
+      <>
+      <img src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12" />
+      </>
       {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>
   );

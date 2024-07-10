@@ -130,7 +130,7 @@ export default function BetHistory() {
           Object.keys(groupedBets).map((year) => (
             <div key={year}>
               <div className="absolute right-0 text-start bg-sgrad w-full py-1" style={{
-                top : '22vh'
+                top : '15vh'
               }}>
                 <p className="ms-8">{year}</p>
               </div>

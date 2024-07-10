@@ -273,6 +273,15 @@ export default function Game() {
       ? getOutcomeLabel(selectedOutcomeIndex, markets[0].outcomeRows[0].length)
       : "";
 
+      const handleBlur = () => {
+        // If the input is empty or out of range, set it to the default value (1)
+        if (Number(betAmount) < 1) {
+          changeBetAmount('1');
+        } else if (Number(betAmount) > 100) {
+          changeBetAmount('100');
+        }
+      };
+
   return (
     <>
       {game && (
@@ -335,7 +344,7 @@ export default function Game() {
                   </p>
                 </div>
               </div>
-                  {/* { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
+              {/* { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
                     Select Winning Bets
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>} */}
@@ -366,23 +375,19 @@ export default function Game() {
                 )}
               </div>
             </div>
-            
             {/* Betting Amounts */}
             <div className="mt-2 flex flex-col px-6 text-sm font-medium items-center">
               <div className="flex justify-between items-center w-full mb-4">
                 <p className="text-start">Betting Amount :</p>
                 <input
-                  type="range"
-                  min="1"
-                  max={`${
-                    !isBalanceFetching && +balance! > 100 ? balance : "100"
-                  }`}
-                  // max='100'
+                  type="number"
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}
-                  className="mr-2"
+                  onBlur={handleBlur}
+                  className="w-50 p-2 rounded focus:outline-none focus:ring focus:border-blue-300 custom-number-input bg-odd"
+                  min="1"
+                  max="100"
                 />
-                <span>{betAmount}</span>
               </div>
               <div className="flex justify-between items-center w-full mb-4">
                 <span>Total Odds :</span>
@@ -415,7 +420,6 @@ export default function Game() {
                 </span>
               </div>
             </div>
-            
             {/* Payment Part */}
             {Boolean(disableReason) && (
               <div className="mb-1 text-red-500 text-center font-semibold">

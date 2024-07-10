@@ -1,11 +1,11 @@
 "use client"
 
 import { abi } from "@/abi";
-import { chains } from "@/context/Providers";
-import { useBetTokenBalance, useChain, useNativeBalance } from "@azuro-org/sdk";
+import { chains, wagmiConfig } from "@/context/Providers";
 import { ethers } from "ethers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { getBalance } from "wagmi/actions";
 interface PopupProps {
   onClose: () => void;
 }
@@ -23,15 +23,37 @@ const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.en
 const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
   const [isWrap, setIsWrap] = useState(true);
   const [amount, setAmount] = useState("");
+  const [currentBalance, setCurrentBalance] = useState(null);
+  const [currentNativeBalance, setCurrentNativeBalance] = useState(null);
+  const [isBalanceFetching, setisBalanceFetching] = useState(true);
+  const [isNativeBalanceFetching, setisNativeBalanceFetching] = useState(true);
+
 
   const { address } = useAccount();
 
   const [from, setFrom] = useState("CHZ");
   const [to, setTo] = useState("wCHZ");
 
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
+  const updateBalance = async () => {
+    setisBalanceFetching(true);
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address,
+      token: contractAddress as `0x{string}`,
+    })
+    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    setCurrentNativeBalance(ethValue);
+    setisBalanceFetching(false);
+  };
 
-  const { loading: isNativeBalanceFetching, balance: nativeBalance } = useNativeBalance();
+  const updateNativeBalance = async () => {
+    setisBalanceFetching(true);
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address
+    });
+    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    setCurrentBalance(ethValue);
+    setisNativeBalanceFetching(false);
+  };
 
   const {
     data: hash,
@@ -71,6 +93,16 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       hash,
     })
 
+  useEffect(() => {
+    updateBalance();
+    updateNativeBalance();
+  }, [isConfirmed]);
+
+  useEffect(() => {
+    updateBalance();
+    updateNativeBalance();
+  },[])
+
   const handleToggle = () => {
     const temp = from;
     setFrom(to);
@@ -84,7 +116,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       return
     }
     setAmount(
-      (isWrap) ? nativeBalance : balance
+      (isWrap) ? currentNativeBalance : currentBalance
     );
   };
 
@@ -150,7 +182,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
                 Max
               </button>
             </div>
-            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(nativeBalance).toFixed(2) : Number(balance).toFixed(2)} {from} </p>
+            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(currentNativeBalance).toFixed(2) : Number(currentBalance).toFixed(2)} {from} </p>
           </div>
           {getDepositButton()}
         </div>

@@ -45,7 +45,7 @@ export const SwapContainer: React.FC<PopupProps> = ({ onClose }) => {
               <div>
                 <h3 className="text-md font-bold">Convert CHZ ↔ wCHZ</h3>
                 <p className="text-xs mt-1 text-start">
-                  wCHZ is the default betting currency on Wakanda.bet. Convert here your CHZ here to wCHZ
+                  wCHZ is the default betting currency on Wakanda.bet. Convert your CHZ to wCHZ here                
                 </p>
               </div>
             </div>

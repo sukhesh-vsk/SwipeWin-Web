@@ -14,7 +14,7 @@ export const chains = [
   chiliz
 ] as const
 
-const wagmiConfig = getDefaultConfig({
+export const wagmiConfig = getDefaultConfig({
   appName: 'Wakanda Bet',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ? process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID : '3020b540cb4600580463aaee8fac93a6',
   wallets,

@@ -3,9 +3,7 @@
 import OddComponent from "@/components/OddComponent";
 import PageHeader from "@/components/PageHeader";
 import {
-  Bet,
   BetslipDisableReason,
-  GameQuery,
   OrderDirection,
   useBaseBetslip,
   useBetTokenBalance,
@@ -16,19 +14,17 @@ import {
   useLiveBetFee,
   useLiveBets,
   usePrematchBets,
-  usePrepareBet,
 } from "@azuro-org/sdk";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import cx from "clsx";
 import { useAccount } from "wagmi";
 import { TOKEN_SYMBOL } from "@/constants";
-
-type ContentProps = {
-  game: GameQuery["games"][0];
-  isGameInLive: boolean;
-};
+import { connect, switchChain } from "wagmi/actions";
+import { wagmiConfig } from "@/context";
+import { injected } from "wagmi/connectors";
+import BetHistory from "@/components/BetHistory";
+import SubmitButton from "@/components/SubmitButton";
 
 const errorPerDisableReason = {
   [BetslipDisableReason.ComboWithForbiddenItem]:
@@ -43,156 +39,16 @@ const errorPerDisableReason = {
   [BetslipDisableReason.PrematchConditionInStartedGame]: "Game has started",
 } as const;
 
-const SubmitButton: React.FC = () => {
-  const { appChain, isRightNetwork } = useChain();
-  const { items, clear } = useBaseBetslip();
-  const {
-    betAmount,
-    odds,
-    totalOdds,
-    isStatusesFetching,
-    isOddsFetching,
-    isBetAllowed,
-  } = useDetailedBetslip();
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
-  const {
-    submit,
-    approveTx,
-    betTx,
-    isRelayerFeeLoading,
-    isAllowanceLoading,
-    isApproveRequired,
-  } = usePrepareBet({
-    betAmount,
-    slippage: 10,
-    affiliate: "0x2687B4FDFa0C4290eD754Bfea807DC6a50CE286E",
-    selections: items,
-    odds,
-    totalOdds,
-    onSuccess: () => {
-      clear();
-    },
-  });
 
-  const isPending = approveTx.isPending || betTx.isPending;
-  const isProcessing = approveTx.isProcessing || betTx.isProcessing;
-  if (!isRightNetwork) {
-    return (
-      <div className="mt-6 py-3.5 text-center bg-red-200 rounded-2xl">
-        Switch network to <b>{appChain.name}</b> in your wallet
-      </div>
-    );
-  }
-
-  const isEnoughBalance =
-    isBalanceFetching || !Boolean(+betAmount)
-      ? true
-      : Boolean(+balance! > +betAmount);
-
-  const isLoading =
-    isOddsFetching ||
-    isBalanceFetching ||
-    isStatusesFetching ||
-    isAllowanceLoading ||
-    isPending ||
-    isProcessing ||
-    isRelayerFeeLoading;
-
-  const isDisabled =
-    isLoading || !isBetAllowed || !isEnoughBalance || !+betAmount;
-
-  let title;
-
-  if (isPending) {
-    title = "Waiting for approval";
-  } else if (isProcessing) {
-    title = "Processing...";
-  } else if (isLoading) {
-    title = "Loading...";
-  } else if (isApproveRequired) {
-    title = "Approve";
-  } else {
-    title = "Place Bet";
-  }
-
-  return (
-    <div className="mt-1 flex flex-col justify-center items-center">
-      {!isEnoughBalance && (
-        <div className="mb-1 text-sm text-red-500 text-center font-semibold">
-          Not enough balance.
-        </div>
-      )}
-      <button
-        className={cx(
-          "px-4 py-2 rounded-full font-cairo font-bold tracking-widest",
-          {
-            "btn-grad transition": !isDisabled,
-            "bg-gray-400 cursor-not-allowed": isDisabled,
-          }
-        )}
-        disabled={isDisabled}
-        onClick={submit}
-      >
-        {title}
-      </button>
-    </div>
-  );
-};
-
-const getSelectionName = (selectionName: string, participants: any[]) => {
-  if (selectionName === "1") {
-    return participants[0].name;
-  }
-  if (selectionName === "2") {
-    return participants[1].name;
-  }
-  if (selectionName === "X") {
-    return "Match Draw";
-  }
-  return "";
-};
-
-const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
-  return (
-    <div className="mt-4 pb-28 w-full">
-      <h2 className="heading1 mb-2">Your Bet History</h2>
-      {bets.length > 0 ? (
-        bets.map((bet, index) => (
-          <div
-            key={bet.txHash}
-            className="flex justify-between items-center bg-gray-500  p-4 mb-2 rounded-md shadow-md"
-          >
-            <div className="flex flex-col">
-              <span className="font-semibold text-white">
-                {getSelectionName(
-                  bet.outcomes[0].selectionName,
-                  bet.outcomes[0].game.participants
-                )}
-              </span>
-              <span className="text-xs text-white">
-                {dayjs(+bet.createdAt * 1000).format("DD MMM HH:mm")}
-              </span>
-            </div>
-            <div className="flex flex-col text-sm text-white text-right">
-              <span className="font-semibold">
-                {bet.amount ? Number(bet.amount).toFixed(2) : ""} ${TOKEN_SYMBOL}
-              </span>
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>No bets placed on this game.</p>
-      )}
-    </div>
-  );
-};
 
 export default function Game() {
   const params = useParams();
   const account = useAccount();
   const { betToken } = useChain();
   const { loading: isBalanceFetching, balance } = useBetTokenBalance();
-  const { items, clear } = useBaseBetslip();
+  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const { items, addItem, removeItem } = useBaseBetslip();
 
   const {
     betAmount,
@@ -244,8 +100,8 @@ export default function Game() {
     (bet) => bet.outcomes[0].game.gameId === params.id
   );
 
-  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+
+
 
   useEffect(() => {
     if (initialLoad) {
@@ -273,14 +129,21 @@ export default function Game() {
       ? getOutcomeLabel(selectedOutcomeIndex, markets[0].outcomeRows[0].length)
       : "";
 
-      const handleBlur = () => {
-        // If the input is empty or out of range, set it to the default value (1)
-        if (Number(betAmount) < 1) {
-          changeBetAmount('1');
-        } else if (Number(betAmount) > 100) {
-          changeBetAmount('100');
-        }
-      };
+  const handleBlur = () => {
+    // If the input is empty or out of range, set it to the default value (1)
+    if (Number(betAmount) < 1) {
+      changeBetAmount('1');
+    } else if (Number(betAmount) > 100) {
+      changeBetAmount('100');
+    }
+  };
+
+  const connectWallet = async () => {
+    const result = await connect(wagmiConfig, {
+      chainId: wagmiConfig.chains[0].id,
+      connector: injected(),
+    })
+  }
 
   return (
     <>
@@ -384,6 +247,7 @@ export default function Game() {
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}
                   onBlur={handleBlur}
+                  disabled={items.length == 0 ? true : false}
                   className="w-50 p-2 rounded focus:outline-none focus:ring focus:border-blue-300 custom-number-input bg-odd"
                   min="1"
                   max="100"
@@ -429,7 +293,7 @@ export default function Game() {
             {account?.address ? (
               <SubmitButton />
             ) : (
-              <p className="bg-sgrad mx-6 mt-3 px-6 py-2 rounded-full font-cairo font-bold tracking-wide">
+              <p className="bg-sgrad mx-6 mt-3 px-6 py-2 rounded-full font-cairo font-bold tracking-wide" onClick={connectWallet}>
                 Connect your wallet
               </p>
             )}

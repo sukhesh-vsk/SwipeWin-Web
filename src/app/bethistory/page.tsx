@@ -36,7 +36,6 @@ export default function BetHistory() {
   const { loading: isPrematchLoading, bets: prematchBets } =
     usePrematchBets(props);
   const { loading: isLiveLoading, bets: liveBets } = useLiveBets(props);
-  
   const isLoading = isPrematchLoading || isLiveLoading;
   const allBets = [...prematchBets, ...liveBets];
 
@@ -58,13 +57,13 @@ export default function BetHistory() {
 
   const handleClick = (match: Bet) => {
     setSelectedMatch({
-                        betDetail: match, 
-                        bidOn: getSelectionName(match.outcomes[0].selectionName, match.outcomes[0].game.participants),
-                        league: match.outcomes[0].game.league.name,
-                        team1: match.outcomes[0].game.participants[0].name,
-                        team2: match.outcomes[0].game.participants[1].name,
-                        eventDate: match.outcomes[0].game.startsAt
-                      });
+      betDetail: match,
+      bidOn: getSelectionName(match.outcomes[0].selectionName, match.outcomes[0].game.participants),
+      league: match.outcomes[0].game.league.name,
+      team1: match.outcomes[0].game.participants[0].name,
+      team2: match.outcomes[0].game.participants[1].name,
+      eventDate: match.outcomes[0].game.startsAt
+    });
     setIsVisible(true);
   };
 
@@ -115,10 +114,9 @@ export default function BetHistory() {
       <PageHeader title="Bet History" filter={false} />
 
       <div className="container">
-        {redeemableBets.length > 0 && (
-          <div className="my-4 flex justify-end">
-            <RedeemAll bets={redeemableBets} />
-          </div>
+        {redeemableBets.length > 0 && (<div className="my-1 flex justify-end">
+          <RedeemAll bets={redeemableBets} />
+        </div>
         )}
         {isLoading ? (
           <p className="text-center text-lg font-semibold mt-20">Loading...</p>
@@ -129,10 +127,10 @@ export default function BetHistory() {
         ) : (
           Object.keys(groupedBets).map((year) => (
             <div key={year}>
-              <div className="absolute right-0 top-36 text-start bg-sgrad w-full py-1">
+              <div className="text-start bg-sgrad w-full py-1">
                 <p className="ms-8">{year}</p>
               </div>
-              <div className="mt-12">
+              <div className="mt-4">
                 <div className="flex justify-between items-center">
                   <p className="flex-1 text-start text-sec_dim font-semibold">
                     Selection
@@ -169,7 +167,7 @@ export default function BetHistory() {
                       {bet.outcomes[0].game.participants[1].name}
                     </div>
                     <div className="flex-1 text-end">
-                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? ('- '+bet.amount) : bet.isWin ? ('+ '+bet.possibleWin.toFixed(0)) : 'Pending'}`}</p>
+                      <p className={`${bet.isWin ? "text-green_text" : bet.isLose ? "text-red_text" : ""}`}>{`${bet.isLose ? ('- ' + bet.amount) : bet.isWin ? ('+ ' + bet.possibleWin.toFixed(0)) : 'Pending'}`}</p>
                     </div>
                   </div>
                 ))}

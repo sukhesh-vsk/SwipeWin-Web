@@ -39,7 +39,7 @@ export default function Events() {
       <div className="flex heading1 justify-between items-center mt-1">
         <p>Top Events</p>
       </div>
-      <div className="mt-3 flex overflow-x-auto space-x-4 w-full container-fluid h-2/3 mx-4 snap-x snap-mandatory no-scrollbar">
+      <div className="flex mt-3 overflow-x-auto space-x-4 container-fluid h-2/3 mx-4 snap-x snap-mandatory home-scroll-card-margin no-scrollbar">
         {topEvents.map((data, index) => (
           <div className="snap-start" key={index}>
             <GameCard key={index} gameDetails={data} />

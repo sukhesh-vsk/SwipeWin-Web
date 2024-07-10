@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import SwapContainer from "./SwapContainer";
 import { UserAlertPopup } from ".";
-import { useBetTokenBalance } from "@azuro-org/sdk";
+import { useBetTokenBalance, useNativeBalance } from "@azuro-org/sdk";
+import { TOKEN_SYMBOL } from "@/constants";
 
 interface PopupProps {
   onClose: () => void;
@@ -14,7 +15,7 @@ interface PopupProps {
 export function Navbar() {
   const account = useAccount();
   const { loading, balance } = useBetTokenBalance();
-  const [walletBal, setWalletBal] = useState("loading");
+  const { loading: isNativeBalanceFetching, balance: nativeBalance } = useNativeBalance();
   const [mounted, setMounted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showAlert, setAlert] = useState(true);
@@ -27,11 +28,6 @@ export function Navbar() {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!loading) {
-      setWalletBal(balance ?? "0");
-    }
-  }, [balance, loading]);
 
   const getBalance = () => {
     if (!mounted) {
@@ -39,22 +35,39 @@ export function Navbar() {
     }
 
     return account?.address ? (
-      <p className="bg-text px-4 py-1 flex justify-center items-center rounded-full font-medium cursor-pointer" onClick={() => setShowPopup(true)}>
-        <span className="text-gradient">
-          {walletBal === "loading" ? "Loading..." : `My Wallet: ${walletBal}`}
-        </span>
-      </p>
+      <>
+        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer" style={{
+          fontSize : '12px',
+          padding : '4px'
+        }} onClick={() => setShowPopup(true)}>
+          <span className="text-gradient">
+            {loading ? "Loading..." : `${Number(balance).toFixed(2)} ${TOKEN_SYMBOL}`}
+          </span>
+        </p>
+        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer" 
+        style={{
+          fontSize : '12px',
+          padding : '4px'
+        }} onClick={() => setShowPopup(true)}>
+          <span className="text-gradient">
+            {isNativeBalanceFetching ? "Loading..." : `${Number(nativeBalance).toFixed(2)} CHZ`}
+          </span>
+        </p>
+      </>
+
     ) : (
       <ConnectButton chainStatus="icon" showBalance={false} />
     );
   };
 
   return (
-    <header className=" py-6 flex items-center container-fluid justify-between">
-      {showAlert && <UserAlertPopup onClose={handleClosePopup} />}
+    <header className="container py-6 flex items-center container-fluid justify-between">
+      {/* {showAlert && <UserAlertPopup onClose={handleClosePopup} />} */}
       <a href="/events" className="cursor-pointer">
-        <div className="text-xl font-semibold text-text tracking-wide text-base">
-          <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="h-8 w-36 transition hover:scale-105" />
+        <div className="text-xl font-semibold text-text tracking-wide text-base" style={{
+          width : '150px'
+        }}>
+          <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="transition hover:scale-105" />
         </div>
       </a>
       {getBalance()}

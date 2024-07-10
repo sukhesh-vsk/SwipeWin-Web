@@ -56,7 +56,7 @@ export const SwapContainer: React.FC<PopupProps> = ({ onClose }) => {
               Convert Now
             </button>
           </div>
-          <div className="bg-sec_2 p-4 rounded-lg flex items-center justify-between">
+          {/* <div className="bg-sec_2 p-4 rounded-lg flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div>
                 <h3 className="text-md font-bold">I have crypto</h3>
@@ -71,7 +71,7 @@ export const SwapContainer: React.FC<PopupProps> = ({ onClose }) => {
             >
               Deposit Now
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       {renderActiveComponent()}

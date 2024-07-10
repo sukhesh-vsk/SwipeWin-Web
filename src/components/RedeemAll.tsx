@@ -35,7 +35,7 @@ export function RedeemAll(props: Props) {
   return (
     <button
       className={cx(
-        "md:w-[200px] py-3.5 text-white font-semibold text-center rounded-xl mb-4",
+        "md:w-[200px] py-3 px-2 text-white font-semibold text-center rounded-xl mb-4",
         {
           "bg-blue-500 hover:bg-blue-600 transition shadow-md": !isDisabled,
           "bg-zinc-300 cursor-not-allowed": isDisabled,

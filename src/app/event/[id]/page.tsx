@@ -144,6 +144,7 @@ export default function Game() {
       connector: injected(),
     })
   }
+  const suggestAmount = [10, 20 ,30, 40]
 
   return (
     <>
@@ -239,7 +240,17 @@ export default function Game() {
               </div>
             </div>
             {/* Betting Amounts */}
+            
             <div className="mt-2 flex flex-col px-6 text-sm font-medium items-center">
+
+            <div className="flex justify-between w-80 mb-2">
+                {suggestAmount.map((el) => {
+                  return <p className="bg-odd py-2 px-4 rounded-md cursor-pointer active:bg-violet-700"  
+                  
+                  >${el}</p>
+                })}
+            </div>
+
               <div className="flex justify-between items-center w-full mb-4">
                 <p className="text-start">Betting Amount :</p>
                 <input
@@ -253,6 +264,8 @@ export default function Game() {
                   max="100"
                 />
               </div>
+
+             
               <div className="flex justify-between items-center w-full mb-4">
                 <span>Total Odds :</span>
                 <span>

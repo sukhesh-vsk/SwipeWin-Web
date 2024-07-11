@@ -69,6 +69,8 @@ export function Navbar() {
         <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer mb-2" style={{
           fontSize: '12px',
           padding: '4px'
+          fontSize: '12px',
+          padding: '4px'
         }} onClick={() => setShowPopup(true)}>
           <span className="text-gradient">
             {loading ? "Loading..." : `${Number(tBalance).toFixed(2)} ${TOKEN_SYMBOL}`}
@@ -79,11 +81,17 @@ export function Navbar() {
             fontSize: '12px',
             padding: '4px'
           }} onClick={() => setShowPopup(true)}>
+        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer"
+          style={{
+            fontSize: '12px',
+            padding: '4px'
+          }} onClick={() => setShowPopup(true)}>
           <span className="text-gradient">
             {isNativeBalanceFetching ? "Loading..." : `${Number(nBalance).toFixed(2)} CHZ`}
           </span>
         </p>
       </div>
+
 
     ) : (
       <ConnectButton chainStatus="icon" showBalance={false} />
@@ -96,13 +104,14 @@ export function Navbar() {
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base" style={{
           width: '150px'
+          width: '150px'
         }}>
           <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="transition hover:scale-105" />
         </div>
       </a>
       {getBalance()}
       <>
-        {account?.address && <img src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12" />}
+          {account?.address && <img onClick={() => setShowPopup(true)} src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12 cursor-pointer" />}
       </>
       {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>

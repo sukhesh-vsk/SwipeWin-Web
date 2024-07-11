@@ -27,8 +27,8 @@ export default function BetHistory() {
 
   const props = {
     filter: {
-      bettor: address!,
-      // bettor: `0x08a6f17323fF1CC24049edA997A11E1c87f1848A`
+      // bettor: address!,
+      bettor: `0x08a6f17323fF1CC24049edA997A11E1c87f1848A`
     },
     orderDir: OrderDirection.Desc,
   };
@@ -130,7 +130,9 @@ export default function BetHistory() {
               <div className="text-start bg-sgrad w-full py-1">
                 <p className="ms-8">{year}</p>
               </div>
-              <div className="mt-4">
+              <div className="mt-4" style={{
+                marginBottom : '5rem'
+              }}>
                 <div className="flex justify-between items-center">
                   <p className="flex-1 text-start text-sec_dim font-semibold">
                     Selection

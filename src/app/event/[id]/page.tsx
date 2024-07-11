@@ -6,7 +6,6 @@ import {
   BetslipDisableReason,
   OrderDirection,
   useBaseBetslip,
-  useBetTokenBalance,
   useChain,
   useDetailedBetslip,
   useGame,
@@ -20,11 +19,18 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { TOKEN_SYMBOL } from "@/constants";
-import { connect, switchChain } from "wagmi/actions";
+import { connect, getBalance } from "wagmi/actions";
 import { wagmiConfig } from "@/context";
 import { injected } from "wagmi/connectors";
 import BetHistory from "@/components/BetHistory";
 import SubmitButton from "@/components/SubmitButton";
+
+import { AppDispatch, RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setTokenBalance } from "@/lib/features/walletSlice";
+import { contractAddress } from "@/components/WrapComponent";
+import { ethers } from "ethers";
+
 
 const errorPerDisableReason = {
   [BetslipDisableReason.ComboWithForbiddenItem]:
@@ -44,8 +50,6 @@ const errorPerDisableReason = {
 export default function Game() {
   const params = useParams();
   const account = useAccount();
-  const { betToken } = useChain();
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
   const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const { items, addItem, removeItem } = useBaseBetslip();
@@ -56,13 +60,7 @@ export default function Game() {
     totalOdds,
     disableReason,
     isOddsFetching,
-    isLiveBet,
   } = useDetailedBetslip();
-
-  const { formattedRelayerFeeAmount, loading: isRelayerFeeLoading } =
-    useLiveBetFee({
-      enabled: isLiveBet,
-    });
 
   const { loading, game, isGameInLive } = useGame({
     gameId: params.id as string,
@@ -145,6 +143,31 @@ export default function Game() {
     })
   }
 
+  useEffect(() => {
+    updateBalance();
+  }, [])
+
+
+  const [isBalanceFetching, setisBalanceFetching] = useState(true);
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+  const dispatch = useDispatch<AppDispatch>();
+  const setTokenValue = (value: string) => {
+    dispatch(setTokenBalance(value))
+  }
+
+  const updateBalance = async () => {
+    setisBalanceFetching(true);
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address,
+      token: contractAddress as `0x{string}`,
+    })
+    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    if (tBalance != ethValue) {
+      setTokenValue(ethValue);
+    }
+    setisBalanceFetching(false);
+  };
+  
   return (
     <>
       {game && (
@@ -274,9 +297,9 @@ export default function Game() {
                 <span className="text-sm font-semibold">
                   {isBalanceFetching ? (
                     <>Loading...</>
-                  ) : balance !== undefined ? (
+                  ) : tBalance !== undefined ? (
                     <>
-                      {(+balance).toFixed(2)} {TOKEN_SYMBOL}
+                      {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
                     </>
                   ) : (
                     <>-</>

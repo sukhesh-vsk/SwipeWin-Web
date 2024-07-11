@@ -6,33 +6,45 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { getBalance } from "wagmi/actions";
+import { AppDispatch, RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setNativeBalance, setTokenBalance } from "@/lib/features/walletSlice";
+
 interface PopupProps {
   onClose: () => void;
 }
 
 // Testnet chz Official Contract
-// const contractAddress = '0x678c34581db0a7808d0aC669d7025f1408C9a3C6';
+//export  const contractAddress = '0x678c34581db0a7808d0aC669d7025f1408C9a3C6';
 // Testnet azuro wchz
-// const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
+// export const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
 
 // Mainnet
-const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS : '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
+export const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS : '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
 
 
 
 const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
   const [isWrap, setIsWrap] = useState(true);
   const [amount, setAmount] = useState("");
-  const [currentBalance, setCurrentBalance] = useState(null);
-  const [currentNativeBalance, setCurrentNativeBalance] = useState(null);
-  const [isBalanceFetching, setisBalanceFetching] = useState(true);
-  const [isNativeBalanceFetching, setisNativeBalanceFetching] = useState(true);
-
 
   const { address } = useAccount();
 
   const [from, setFrom] = useState("CHZ");
   const [to, setTo] = useState("wCHZ");
+
+  const [isBalanceFetching, setisBalanceFetching] = useState(true);
+  const [isNativeBalanceFetching, setisNativeBalanceFetching] = useState(true);
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+  const nBalance = useSelector((state: RootState) => state.walletReducer.nativeBalance);
+  const dispatch = useDispatch<AppDispatch>();
+  const setTokenValue = (value: string) => {
+    dispatch(setTokenBalance(value))
+  }
+
+  const setNativeTokenValue = (value: string) => {
+    dispatch(setNativeBalance(value))
+  }
 
   const updateBalance = async () => {
     setisBalanceFetching(true);
@@ -41,7 +53,9 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       token: contractAddress as `0x{string}`,
     })
     const ethValue = ethers.utils.formatEther(tempBalance.value);
-    setCurrentNativeBalance(ethValue);
+    if (tBalance != ethValue) {
+      setTokenValue(ethValue);
+    }
     setisBalanceFetching(false);
   };
 
@@ -51,7 +65,9 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       address: address
     });
     const ethValue = ethers.utils.formatEther(tempBalance.value);
-    setCurrentBalance(ethValue);
+    if (nBalance != ethValue) {
+      setNativeTokenValue(ethValue);
+    }
     setisNativeBalanceFetching(false);
   };
 
@@ -101,7 +117,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
   useEffect(() => {
     updateBalance();
     updateNativeBalance();
-  },[])
+  }, [])
 
   const handleToggle = () => {
     const temp = from;
@@ -116,7 +132,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       return
     }
     setAmount(
-      (isWrap) ? currentNativeBalance : currentBalance
+      (isWrap) ? nBalance : tBalance
     );
   };
 
@@ -182,7 +198,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
                 Max
               </button>
             </div>
-            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(currentNativeBalance).toFixed(2) : Number(currentBalance).toFixed(2)} {from} </p>
+            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(nBalance).toFixed(2) : Number(tBalance).toFixed(2)} {from} </p>
           </div>
           {getDepositButton()}
         </div>

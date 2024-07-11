@@ -2,25 +2,25 @@
 import PageHeader from "@/components/PageHeader";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
-import { Discordico, Logoutico, Telegramico } from "@/assets/icons";
-import { useBetTokenBalance, useChain } from "@azuro-org/sdk";
+import { Discordico, Telegramico } from "@/assets/icons";
 import { TOKEN_SYMBOL } from "@/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 export default function Support() {
-  const { betToken } = useChain();
 
   const telegramLink = "https://t.me/Wakanda_Bet";
   const discordLink = "https://discord.gg/EyUYFcm5u3";
 
 
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+
 
   const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
     if (newWindow) newWindow.opener = null
     return
-}
-
+  }
   return (
     <>
       <PageHeader title="Support" filter={false} />
@@ -31,11 +31,11 @@ export default function Support() {
         <div className="flex justify-between items-center w-full mb-12">
           <span className="text-sm">${TOKEN_SYMBOL} balance:</span>
           <span className="text-sm font-semibold">
-            {isBalanceFetching ? (
+            {tBalance == '' ? (
               <>Loading...</>
-            ) : balance !== undefined ? (
+            ) : tBalance !== undefined ? (
               <>
-                {(+balance).toFixed(2)} {TOKEN_SYMBOL}
+                {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
               </>
             ) : (
               <>-</>
@@ -73,3 +73,4 @@ export default function Support() {
     </>
   );
 }
+

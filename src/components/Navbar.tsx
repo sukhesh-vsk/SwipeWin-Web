@@ -37,24 +37,24 @@ export function Navbar() {
     return account?.address ? (
       < div className="flex flex-col ml-8" >
         <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer mb-2" style={{
-          fontSize : '12px',
-          padding : '4px'
+          fontSize: '12px',
+          padding: '4px'
         }} onClick={() => setShowPopup(true)}>
           <span className="text-gradient">
             {loading ? "Loading..." : `${Number(balance).toFixed(2)} ${TOKEN_SYMBOL}`}
           </span>
         </p>
-        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer" 
-        style={{
-          fontSize : '12px',
-          padding : '4px'
-        }} onClick={() => setShowPopup(true)}>
+        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer"
+          style={{
+            fontSize: '12px',
+            padding: '4px'
+          }} onClick={() => setShowPopup(true)}>
           <span className="text-gradient">
             {isNativeBalanceFetching ? "Loading..." : `${Number(nativeBalance).toFixed(2)} CHZ`}
           </span>
         </p>
       </div>
-     
+
     ) : (
       <ConnectButton chainStatus="icon" showBalance={false} />
     );
@@ -65,14 +65,14 @@ export function Navbar() {
       {/* {showAlert && <UserAlertPopup onClose={handleClosePopup} />} */}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base" style={{
-          width : '150px'
+          width: '150px'
         }}>
           <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="transition hover:scale-105" />
         </div>
       </a>
       {getBalance()}
       <>
-      <img src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12" />
+        <img onClick={() => setShowPopup(true)} src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12 cursor-pointer" />
       </>
       {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>

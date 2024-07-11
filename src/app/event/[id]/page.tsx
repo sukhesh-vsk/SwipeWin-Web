@@ -62,7 +62,6 @@ export default function Game() {
     isOddsFetching,
   } = useDetailedBetslip();
 
-  const [isBalanceFetching, setisBalanceFetching] = useState(true);
   const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
   const dispatch = useDispatch<AppDispatch>();
   const setTokenValue = (value: string) => {
@@ -74,7 +73,6 @@ export default function Game() {
   });
 
   const updateBalance = async () => {
-    setisBalanceFetching(true);
     const tempBalance = await getBalance(wagmiConfig, {
       address: address,
       token: contractAddress as `0x{string}`,
@@ -83,11 +81,10 @@ export default function Game() {
     if (tBalance != ethValue) {
       setTokenValue(ethValue);
     }
-    setisBalanceFetching(false);
   };
 
   useEffect(() => {
-    if(address) {
+    if (address) {
       updateBalance();
     }
   }, [])
@@ -263,13 +260,17 @@ export default function Game() {
             </div>
             {/* Betting Amounts */}
 
-            <div className="mt-2 flex flex-col px-6 text-sm font-medium items-center">
+            <div className="mt-2 flex flex-col px-1 text-sm font-medium items-center">
 
-              <div className="flex justify-between w-80 mb-2">
+              <div className="flex justify-between w-100 mb-2">
                 {suggestAmount.map((value, index) => {
-                  return <p key={index} onClick={() => changeBetAmount(value.toString())} className="bg-odd py-2 px-4 rounded-md cursor-pointer active:bg-violet-700"
+                  return <p key={index} onClick={() => {
+                    if (items.length) {
+                      changeBetAmount(value.toString())
+                    }
+                  }} className="bg-odd py-2 px-2 mr-1 rounded-md cursor-pointer active:bg-violet-700"
 
-                  >$ {value}</p>
+                  >{value} {TOKEN_SYMBOL}</p>
                 })}
               </div>
 
@@ -307,9 +308,9 @@ export default function Game() {
               <div className="flex justify-between items-center w-full mb-4">
                 <span className="text-sm">Wallet Balance :</span>
                 <span className="text-sm font-semibold">
-                  {isBalanceFetching ? (
+                  {tBalance == '' ? (
                     <>Loading...</>
-                  ) : tBalance !== undefined ? (
+                  ) : address ? (
                     <>
                       {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
                     </>

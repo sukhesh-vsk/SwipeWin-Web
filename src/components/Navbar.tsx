@@ -69,18 +69,11 @@ export function Navbar() {
         <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer mb-2" style={{
           fontSize: '12px',
           padding: '4px'
-          fontSize: '12px',
-          padding: '4px'
         }} onClick={() => setShowPopup(true)}>
           <span className="text-gradient">
             {loading ? "Loading..." : `${Number(tBalance).toFixed(2)} ${TOKEN_SYMBOL}`}
           </span>
         </p>
-        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer"
-          style={{
-            fontSize: '12px',
-            padding: '4px'
-          }} onClick={() => setShowPopup(true)}>
         <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer"
           style={{
             fontSize: '12px',
@@ -103,7 +96,6 @@ export function Navbar() {
       {/* {showAlert && <UserAlertPopup onClose={handleClosePopup} />} */}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base" style={{
-          width: '150px'
           width: '150px'
         }}>
           <img src="/WakandaLogo/WakandaTransparentLight.png" alt="WakandaBets" className="transition hover:scale-105" />

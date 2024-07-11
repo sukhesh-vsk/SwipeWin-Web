@@ -27,8 +27,8 @@ export default function BetHistory() {
 
   const props = {
     filter: {
-      // bettor: address!,
-      bettor: `0x08a6f17323fF1CC24049edA997A11E1c87f1848A`
+      bettor: address!,
+      // bettor: `0x08a6f17323fF1CC24049edA997A11E1c87f1848A`
     },
     orderDir: OrderDirection.Desc,
   };

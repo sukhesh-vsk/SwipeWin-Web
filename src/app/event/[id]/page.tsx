@@ -144,7 +144,6 @@ export default function Game() {
       connector: injected(),
     })
   }
-
   const suggestAmount = [10, 20, 30, 40]
 
   return (

@@ -62,9 +62,36 @@ export default function Game() {
     isOddsFetching,
   } = useDetailedBetslip();
 
+  const [isBalanceFetching, setisBalanceFetching] = useState(true);
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+  const dispatch = useDispatch<AppDispatch>();
+  const setTokenValue = (value: string) => {
+    dispatch(setTokenBalance(value))
+  }
+
   const { loading, game, isGameInLive } = useGame({
     gameId: params.id as string,
   });
+
+  const updateBalance = async () => {
+    setisBalanceFetching(true);
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address,
+      token: contractAddress as `0x{string}`,
+    })
+    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    if (tBalance != ethValue) {
+      setTokenValue(ethValue);
+    }
+    setisBalanceFetching(false);
+  };
+
+  useEffect(() => {
+    if(address) {
+      updateBalance();
+    }
+  }, [])
+
 
   const { loading: marketLoading, markets } = useGameMarkets({
     gameId: params.id as string,
@@ -97,9 +124,6 @@ export default function Game() {
   const allBets = [...prematchBets, ...liveBets].filter(
     (bet) => bet.outcomes[0].game.gameId === params.id
   );
-
-
-
 
   useEffect(() => {
     if (initialLoad) {
@@ -142,31 +166,6 @@ export default function Game() {
       connector: injected(),
     })
   }
-
-  useEffect(() => {
-    updateBalance();
-  }, [])
-
-
-  const [isBalanceFetching, setisBalanceFetching] = useState(true);
-  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
-  const dispatch = useDispatch<AppDispatch>();
-  const setTokenValue = (value: string) => {
-    dispatch(setTokenBalance(value))
-  }
-
-  const updateBalance = async () => {
-    setisBalanceFetching(true);
-    const tempBalance = await getBalance(wagmiConfig, {
-      address: address,
-      token: contractAddress as `0x{string}`,
-    })
-    const ethValue = ethers.utils.formatEther(tempBalance.value);
-    if (tBalance != ethValue) {
-      setTokenValue(ethValue);
-    }
-    setisBalanceFetching(false);
-  };
   
   return (
     <>

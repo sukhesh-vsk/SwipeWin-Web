@@ -102,7 +102,7 @@ export function Navbar() {
       </a>
       {getBalance()}
       <>
-        <img src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12" />
+        {account?.address && <img src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12" />}
       </>
       {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>

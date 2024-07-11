@@ -1,22 +1,26 @@
 "use client"
 
 import { abi } from "@/abi";
-import { chains } from "@/context/Providers";
-import { useBetTokenBalance, useChain, useNativeBalance } from "@azuro-org/sdk";
+import { chains, wagmiConfig } from "@/context/Providers";
 import { ethers } from "ethers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { getBalance } from "wagmi/actions";
+import { AppDispatch, RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setNativeBalance, setTokenBalance } from "@/lib/features/walletSlice";
+
 interface PopupProps {
   onClose: () => void;
 }
 
 // Testnet chz Official Contract
-// const contractAddress = '0x678c34581db0a7808d0aC669d7025f1408C9a3C6';
+//export  const contractAddress = '0x678c34581db0a7808d0aC669d7025f1408C9a3C6';
 // Testnet azuro wchz
-// const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
+// export const contractAddress = '0x721EF6871f1c4Efe730Dce047D40D1743B886946';
 
 // Mainnet
-const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS : '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
+export const contractAddress = process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS ? process.env.NEXT_PUBLIC_CHAIN_TOKEN_ADDRESS : '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47';
 
 
 
@@ -29,9 +33,43 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
   const [from, setFrom] = useState("CHZ");
   const [to, setTo] = useState("wCHZ");
 
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
+  const [isBalanceFetching, setisBalanceFetching] = useState(true);
+  const [isNativeBalanceFetching, setisNativeBalanceFetching] = useState(true);
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+  const nBalance = useSelector((state: RootState) => state.walletReducer.nativeBalance);
+  const dispatch = useDispatch<AppDispatch>();
+  const setTokenValue = (value: string) => {
+    dispatch(setTokenBalance(value))
+  }
 
-  const { loading: isNativeBalanceFetching, balance: nativeBalance } = useNativeBalance();
+  const setNativeTokenValue = (value: string) => {
+    dispatch(setNativeBalance(value))
+  }
+
+  const updateBalance = async () => {
+    setisBalanceFetching(true);
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address,
+      token: contractAddress as `0x{string}`,
+    })
+    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    if (tBalance != ethValue) {
+      setTokenValue(ethValue);
+    }
+    setisBalanceFetching(false);
+  };
+
+  const updateNativeBalance = async () => {
+    setisBalanceFetching(true);
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address
+    });
+    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    if (nBalance != ethValue) {
+      setNativeTokenValue(ethValue);
+    }
+    setisNativeBalanceFetching(false);
+  };
 
   const {
     data: hash,
@@ -71,6 +109,16 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       hash,
     })
 
+  useEffect(() => {
+    updateBalance();
+    updateNativeBalance();
+  }, [isConfirmed]);
+
+  useEffect(() => {
+    updateBalance();
+    updateNativeBalance();
+  }, [])
+
   const handleToggle = () => {
     const temp = from;
     setFrom(to);
@@ -84,7 +132,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       return
     }
     setAmount(
-      (isWrap) ? nativeBalance : balance
+      (isWrap) ? nBalance : tBalance
     );
   };
 
@@ -150,7 +198,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
                 Max
               </button>
             </div>
-            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(nativeBalance).toFixed(2) : Number(balance).toFixed(2)} {from} </p>
+            <p className="text-xs mt-2 text-text_dim_2 font-medium">Balance: {(isWrap) ? Number(nBalance).toFixed(2) : Number(tBalance).toFixed(2)} {from} </p>
           </div>
           {getDepositButton()}
         </div>

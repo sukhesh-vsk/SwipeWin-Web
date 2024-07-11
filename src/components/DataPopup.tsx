@@ -8,8 +8,18 @@ import React, { useEffect, useState } from 'react'
 import cx from "clsx";
 import { TOKEN_SYMBOL } from '@/constants';
 
+import { AppDispatch, RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setTokenBalance } from "@/lib/features/walletSlice";
+import { contractAddress } from "@/components/WrapComponent";
+import { ethers } from "ethers";
+import { getBalance } from 'wagmi/actions';
+import { wagmiConfig } from '@/context/Providers';
+import { useAccount } from 'wagmi';
 
 export default function DataPopup(props: any) {
+    
+    const { address } = useAccount();
 
     const { submit, isPending, isProcessing } = useRedeemBet()
 
@@ -20,6 +30,7 @@ export default function DataPopup(props: any) {
     const handleRedeem = async () => {
         try {
             await submit({ bets: [props.match.betDetail] });
+            updateBalance();
         } catch (error) {
             console.error("Erorr in Redeem", error)
         }
@@ -73,6 +84,23 @@ export default function DataPopup(props: any) {
         setHidden(!isHidden);
         props.toggleVisible();
     }
+
+    const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+    const dispatch = useDispatch<AppDispatch>();
+    const setTokenValue = (value: string) => {
+      dispatch(setTokenBalance(value))
+    }
+  
+    const updateBalance = async () => {
+      const tempBalance = await getBalance(wagmiConfig, {
+        address: address,
+        token: contractAddress as `0x{string}`,
+      })
+      const ethValue = ethers.utils.formatEther(tempBalance.value);
+      if (tBalance != ethValue) {
+        setTokenValue(ethValue);
+      }
+    };
 
     const data: TransactionDetailProps = props.match;
 

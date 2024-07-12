@@ -31,6 +31,7 @@ export default function DataPopup(props: any) {
         try {
             await submit({ bets: [props.match.betDetail] });
             updateBalance();
+            toggleForm();
         } catch (error) {
             console.error("Erorr in Redeem", error)
         }

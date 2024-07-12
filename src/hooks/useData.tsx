@@ -93,7 +93,6 @@ const useData = (
           return true;
       }
     })();
-
     const matchesSelectedSport =
       selectedSport === "All" || game.sport.name === selectedSport;
 
@@ -111,6 +110,8 @@ const useData = (
       (participant) => participant.image || "/default.png"
     ),
   }));
+
+  filteredGames.sort((a,b) => +a.startsAt - +b.startsAt);
 
   const otherEvents = filteredGames.slice(5).reduce((acc, game) => {
     const sportName = game.sport.name;

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Wakanda Bets",
   description: "Wakanda Betting Platform",
   generator: "Next.js",
-  manifest: "/manifest.json"
+  manifest: "/manifest.json",
 };
 
 export default function Layout(props: { children: React.ReactNode }) {

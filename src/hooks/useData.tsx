@@ -109,8 +109,10 @@ const useData = (
     teamImage: game.participants.map(
       (participant) => participant.image || "/default.png"
     ),
+    startsAt :game.startsAt
   }));
 
+  topEvents.sort((a,b) => +a.startsAt - +b.startsAt);
   filteredGames.sort((a,b) => +a.startsAt - +b.startsAt);
 
   const otherEvents = filteredGames.slice(5).reduce((acc, game) => {

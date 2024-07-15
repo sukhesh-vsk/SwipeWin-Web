@@ -145,13 +145,13 @@ export default function DataPopup(props: any) {
                     </div>
                     <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                         <p className='text-sec_dim font-medium text-sm'>Transaction Hash</p>
-                        <a href={`https://polygonscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
+                        <a href={`https://chiliscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
                             <p className='font-semibold tracking-widest text-sm'>{`${data.betDetail.txHash.substring(0, 6)}....${data.betDetail.txHash.substring(data.betDetail.txHash.length - 4)}`}</p>
                         </a>
                     </div>
                     {/* <div className='flex flex-col mt-2 px-6 font-cairo text-start w-full leading-5'>
                     <p className='text-sec_dim font-medium text-sm'>Redeem Hash</p>
-                    <a href={`https://polygonscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
+                    <a href={`https://chiliscan.com/tx/${data.betDetail.txHash}`} target='_blank'>
                         <p className='font-semibold tracking-widest text-sm'>{data.betDetail.txHash}</p>
                     </a>
                 </div> */}

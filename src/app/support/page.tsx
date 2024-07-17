@@ -2,7 +2,7 @@
 import PageHeader from "@/components/PageHeader";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
-import { Discordico, Telegramico } from "@/assets/icons";
+import { Discordico, Telegramico, Twitterico } from "@/assets/icons";
 import { TOKEN_SYMBOL } from "@/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -11,6 +11,8 @@ export default function Support() {
 
   const telegramLink = "https://t.me/Wakanda_Bet";
   const discordLink = "https://discord.gg/EyUYFcm5u3";
+  const twitterLink = "https://x.com/WakandaBets";
+
 
 
   const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
@@ -44,17 +46,23 @@ export default function Support() {
         </div>
         <div className="flex-1 w-full">
           <div className="flex justify-around items-center">
+          <button onClick={() => {
+              openInNewTab(twitterLink)
+            }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex items-center">
+              <Twitterico className="w-10" />
+              {/* <span className="ml-2 font-semibold font-sm">Twitter</span> */}
+            </button>
             <button onClick={() => {
               openInNewTab(discordLink)
             }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex items-center">
               <Discordico className="w-10" />
-              <span className="ml-2 font-semibold font-sm">Discord</span>
+              {/* <span className="ml-2 font-semibold font-sm">Discord</span> */}
             </button>
             <button onClick={() => {
               openInNewTab(telegramLink)
             }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex justify-center items-center">
               <Telegramico className="w-10 mt-2" />
-              <span className="ml-2 font-semibold font-sm">Telegram</span>
+              {/* <span className="ml-2 font-semibold font-sm">Telegram</span> */}
             </button>
           </div>
           <div className="text-sm mt-10">

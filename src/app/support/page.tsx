@@ -12,6 +12,8 @@ export default function Support() {
   const telegramLink = "https://t.me/Wakanda_Bet";
   const discordLink = "https://discord.gg/EyUYFcm5u3";
   const twitterLink = "https://x.com/WakandaBets";
+  const termsLink = "https://wakanda.bet/tnc.html";
+  const privacyLink = "https://wakanda.bet/privacypolicy.html";
 
 
 
@@ -67,8 +69,12 @@ export default function Support() {
           </div>
           <div className="text-sm mt-10">
             <p className="font-semibold uppercase mb-3 text-md">About</p>
-            <p className="mb-2">Terms & Conditions</p>
-            <p className="mb-2">Privacy Policy</p>
+            <p className="mb-2" onClick={() => {
+              openInNewTab(termsLink);
+            }}>Terms & Conditions</p>
+            <p className="mb-2" onClick={() => {
+              openInNewTab(privacyLink);
+            }}>Privacy Policy</p>
             {/* <p className="flex items-center">
               Log out{" "}
               <span className="ml-2">

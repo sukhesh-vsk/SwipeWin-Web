@@ -152,8 +152,8 @@ export default function Game() {
     // If the input is empty or out of range, set it to the default value (1)
     if (Number(betAmount) < 1) {
       changeBetAmount('1');
-    } else if (Number(betAmount) > 100) {
-      changeBetAmount('100');
+    } else if (Number(betAmount) > 10000) {
+      changeBetAmount('10000');
     }
   };
 
@@ -284,7 +284,7 @@ export default function Game() {
                   disabled={items.length == 0 ? true : false}
                   className="w-50 p-2 rounded focus:outline-none focus:ring focus:border-blue-300 custom-number-input bg-odd"
                   min="1"
-                  max="100"
+                  max="10000"
                 />
               </div>
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { AzuroSDKProvider, SocketProvider, useWatchers } from '@azuro-org/sdk'
+import { AzuroSDKProvider, SocketProvider, useWatchers, ChainProvider, LiveProvider, ApolloProvider } from '@azuro-org/sdk'
 import { ChainId } from '@azuro-org/toolkit';
 import { RainbowKitProvider, getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -41,19 +41,25 @@ export function Providers(props: ProvidersProps) {
 
   const chainId = initialChainId
     ? chains.find(chain => chain.id === +initialChainId) ? +initialChainId as ChainId : chiliz.id
-    : chiliz.id
+    : chiliz.id;
 
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
-          <AzuroSDKProvider initialChainId={chainId}>
-            <SocketProvider>
-              {children}
-            </SocketProvider>
-            <Watchers />
-          </AzuroSDKProvider>
-        </RainbowKitProvider>
+        <ChainProvider initialChainId={chiliz.id}>
+        <LiveProvider initialLiveState={false}>
+        <ApolloProvider>
+          <RainbowKitProvider>
+            <AzuroSDKProvider initialChainId={initialChainId as unknown as ChainId}>
+              <SocketProvider>
+                {children}
+              </SocketProvider>
+              <Watchers />
+            </AzuroSDKProvider>
+          </RainbowKitProvider>
+          </ApolloProvider>
+          </LiveProvider>
+        </ChainProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

@@ -1,6 +1,4 @@
 import {
-  GamesQuery,
-  useGameMarkets,
   useGameStatus,
   useLive,
 } from "@azuro-org/sdk";
@@ -16,10 +14,6 @@ export const SerializeGameData = (
     graphStatus,
     startsAt: +startsAt,
     isGameExistInLive: isLive,
-  });
-  const { markets } = useGameMarkets({
-    gameStatus: status,
-    gameId: gameId,
   });
 
   const DATA = {

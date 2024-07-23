@@ -1,6 +1,7 @@
 'use client'
 
-import { AzuroSDKProvider, ChainId } from '@azuro-org/sdk'
+import { AzuroSDKProvider } from '@azuro-org/sdk'
+import { ChainId } from '@azuro-org/toolkit';
 import { RainbowKitProvider, getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'

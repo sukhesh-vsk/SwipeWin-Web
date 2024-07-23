@@ -2,7 +2,6 @@
 import React from "react";
 import cx from "clsx";
 import {
-  ConditionStatus,
   useBaseBetslip,
   useBetTokenBalance,
   useChain,
@@ -10,10 +9,11 @@ import {
   BetslipDisableReason,
   useLiveBetFee,
   usePrepareBet,
-  OrderDirection,
   usePrematchBets,
   useLiveBets,
 } from "@azuro-org/sdk";
+
+import { ConditionStatus, OrderDirection } from "@azuro-org/toolkit";
 import { getMarketName, getSelectionName } from "@azuro-org/dictionaries";
 import { useAccount } from "wagmi";
 import dayjs from "dayjs";
@@ -251,7 +251,10 @@ function Content() {
                       <p className="font-semibold"> {sportName} </p>{" "}
                       <p> {leagueName} </p>
                     </div>
-                    <button onClick={() => removeItem(gameId)}>Remove</button>
+                    <button onClick={() => removeItem({
+                      conditionId,
+                      outcomeId
+                    })}>Remove</button>
                   </div>
                   <div className="flex items-center justify-between mb-2 text-xs">
                     {participants.map(({ image, name }) => (

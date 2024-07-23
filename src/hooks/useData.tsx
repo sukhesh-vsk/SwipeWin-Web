@@ -1,4 +1,5 @@
-import { useSports, type UseSportsProps, Game_OrderBy } from "@azuro-org/sdk";
+import { useSports, type UseSportsProps } from "@azuro-org/sdk";
+import { Game_OrderBy } from '@azuro-org/toolkit';
 import dayjs from "dayjs";
 
 enum GameStatus {
@@ -104,7 +105,7 @@ const useData = (
     sport: game.sport.name,
     league: game.league.name,
     status: game.status,
-    time: dayjs(game.startsAt * 1000).format("DD MMM HH:mm"),
+    time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
     teams: game.participants.map((participant) => participant.name),
     teamImage: game.participants.map(
       (participant) => participant.image || "/default.png"
@@ -125,7 +126,7 @@ const useData = (
       sport: game.sport.name,
       league: game.league.name,
       status: game.status,
-      time: dayjs(game.startsAt * 1000).format("DD MMM HH:mm"),
+      time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
       teams: game.participants.map((participant) => participant.name),
       teamImage: game.participants.map(
         (participant) => participant.image || "/default.png"

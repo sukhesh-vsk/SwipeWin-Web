@@ -52,7 +52,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       address: address,
       token: contractAddress as `0x{string}`,
     })
-    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    const ethValue = ethers.formatEther(tempBalance.value);
     if (tBalance != ethValue) {
       setTokenValue(ethValue);
     }
@@ -64,7 +64,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
     const tempBalance = await getBalance(wagmiConfig, {
       address: address
     });
-    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    const ethValue = ethers.formatEther(tempBalance.value);
     if (nBalance != ethValue) {
       setNativeTokenValue(ethValue);
     }
@@ -85,7 +85,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
         abi,
         functionName: 'deposit',
         args: [],
-        value: amount ? ethers.utils.parseEther(amount) : undefined,
+        value: amount ? ethers.parseEther(amount) : undefined,
         account: address
       })
     } else {
@@ -99,7 +99,7 @@ const WrapComponent: React.FC<PopupProps> = ({ onClose }) => {
       address: contractAddress as '0x${string}',
       abi,
       functionName: 'withdraw',
-      args: [amount ? ethers.utils.parseEther(amount) as any as bigint : undefined],
+      args: [amount ? ethers.parseEther(amount) as any as bigint : undefined],
       account: address
     })
   };

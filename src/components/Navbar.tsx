@@ -33,7 +33,16 @@ export function Navbar() {
 
   useEffect(() => {
     setMounted(true);
+    console.log("Is PWA", isPwa());
+    setAlert(!isPwa());
   }, []);
+
+
+  const isPwa = () => {
+    return ["fullscreen", "standalone", "minimal-ui"].some(
+      (displayMode) => window.matchMedia('(display-mode: ' + displayMode + ')').matches
+    );
+  }
 
   useEffect(() => {
     if (!isNativeBalanceFetching) {
@@ -93,7 +102,7 @@ export function Navbar() {
 
   return (
     <header className="container py-6 flex items-center container-fluid justify-between">
-      {/* {showAlert && <UserAlertPopup onClose={handleClosePopup} />} */}
+      {showAlert && <UserAlertPopup onClose={handleClosePopup} />}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base" style={{
           width: '150px'
@@ -103,7 +112,7 @@ export function Navbar() {
       </a>
       {getBalance()}
       <>
-          {account?.address && <img onClick={() => setShowPopup(true)} src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12 cursor-pointer" />}
+        {account?.address && <img onClick={() => setShowPopup(true)} src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12 cursor-pointer" />}
       </>
       {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>

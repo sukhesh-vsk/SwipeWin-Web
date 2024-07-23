@@ -1,19 +1,21 @@
 'use client'
 
-import { type MarketOutcome, useSelection, useBaseBetslip } from '@azuro-org/sdk'
+import { useSelection, useBaseBetslip } from '@azuro-org/sdk'
+import { MarketOutcome } from '@azuro-org/toolkit'
+
 import cx from 'clsx'
 
 
 type OutcomeProps = {
   className?: string
-  outcome: MarketOutcome
+  outcome: MarketOutcome,
 }
 
 export function OutcomeButton(props: OutcomeProps) {
   const { className, outcome } = props
 
   const { items, addItem, removeItem } = useBaseBetslip()
-  const { odds, isLocked, isOddsFetching } = useSelection({
+  const { odds, isLocked, isOddsFetching, } = useSelection({
     selection: outcome,
     initialOdds: outcome.odds,
     initialStatus: outcome.status,
@@ -41,7 +43,10 @@ export function OutcomeButton(props: OutcomeProps) {
       isExpressForbidden: outcome.isExpressForbidden,
     }
     if (isActive) {
-      removeItem(String(outcome.gameId))
+      removeItem({
+        outcomeId: outcome.outcomeId,
+        conditionId: outcome.conditionId
+      })
     } else {
       addItem(item)
     }

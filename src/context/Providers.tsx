@@ -1,6 +1,6 @@
 'use client'
 
-import { AzuroSDKProvider } from '@azuro-org/sdk'
+import { AzuroSDKProvider, SocketProvider, useWatchers } from '@azuro-org/sdk'
 import { ChainId } from '@azuro-org/toolkit';
 import { RainbowKitProvider, getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -30,6 +30,12 @@ type ProvidersProps = {
   initialLiveState?: boolean
 }
 
+export function Watchers() {
+  useWatchers()
+
+  return null
+}
+
 export function Providers(props: ProvidersProps) {
   const { children, initialChainId, initialLiveState } = props
 
@@ -41,8 +47,11 @@ export function Providers(props: ProvidersProps) {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <AzuroSDKProvider initialChainId={chainId} initialLiveState={initialLiveState}>
-            {children}
+          <AzuroSDKProvider initialChainId={chainId}>
+            <SocketProvider>
+              {children}
+            </SocketProvider>
+            <Watchers />
           </AzuroSDKProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

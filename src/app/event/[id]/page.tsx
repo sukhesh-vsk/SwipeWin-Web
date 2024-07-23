@@ -4,16 +4,18 @@ import OddComponent from "@/components/OddComponent";
 import PageHeader from "@/components/PageHeader";
 import {
   BetslipDisableReason,
-  OrderDirection,
   useBaseBetslip,
   useChain,
   useDetailedBetslip,
   useGame,
-  useGameMarkets,
-  useLiveBetFee,
+  useActiveMarkets,
   useLiveBets,
   usePrematchBets,
 } from "@azuro-org/sdk";
+
+import {
+  OrderDirection,
+} from "@azuro-org/toolkit";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -90,7 +92,7 @@ export default function Game() {
   }, [])
 
 
-  const { loading: marketLoading, markets } = useGameMarkets({
+  const { loading: marketLoading, markets } = useActiveMarkets({
     gameId: params.id as string,
     gameStatus: game?.status as any,
   });

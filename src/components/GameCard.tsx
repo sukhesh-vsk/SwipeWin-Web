@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { useGameMarkets, useBaseBetslip } from "@azuro-org/sdk";
+import { useBaseBetslip, useActiveMarkets } from "@azuro-org/sdk";
+
 import Link from "next/link";
 import OddComponent from "./OddComponent";
 import { GameProps } from "@/types/types";
@@ -23,7 +24,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
     router.push(`/event/${data.id}`);
   };
 
-  const { markets } = useGameMarkets({
+  const { markets } = useActiveMarkets({
     gameId: data.id,
     gameStatus: data.status,
   });

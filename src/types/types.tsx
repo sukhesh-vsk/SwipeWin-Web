@@ -1,4 +1,6 @@
-import { Bet, GameStatus, MarketOutcome } from "@azuro-org/sdk";
+import { Bet } from "@azuro-org/sdk";
+import { MarketOutcome } from "@azuro-org/toolkit";
+
 
 export interface GameProps {
     id: string;
@@ -22,5 +24,4 @@ export interface TransactionDetailProps {
     team1: string;
     team2: string;
     eventDate: string;
-  }
-  
+}

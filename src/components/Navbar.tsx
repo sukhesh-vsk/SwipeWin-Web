@@ -1,7 +1,7 @@
 "use client";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import SwapContainer from "./SwapContainer";
 import { UserAlertPopup } from ".";
@@ -10,7 +10,6 @@ import { TOKEN_SYMBOL } from "@/constants";
 import { AppDispatch, RootState } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setNativeBalance, setTokenBalance } from "@/lib/features/walletSlice";
-import { useLive } from '@azuro-org/sdk'
 
 
 interface PopupProps {
@@ -18,7 +17,6 @@ interface PopupProps {
 }
 
 export function Navbar() {
-  const { isLive, changeLive } = useLive()
   const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
   const nBalance = useSelector((state: RootState) => state.walletReducer.nativeBalance);
   const dispatch = useDispatch<AppDispatch>();
@@ -62,11 +60,6 @@ export function Navbar() {
     }
   }, [loading])
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    changeLive(event.target.checked)
-  }
-
-
   const setTokenValue = (value: string) => {
     dispatch(setTokenBalance(value))
   }
@@ -99,8 +92,6 @@ export function Navbar() {
             {isNativeBalanceFetching ? "Loading..." : `${Number(nBalance).toFixed(2)} CHZ`}
           </span>
         </p>
-        <label className="mr-2" htmlFor="live">Live</label>
-        <input id="live" type="checkbox" checked={isLive} onChange={handleChange} />
       </div>
 
 
@@ -109,8 +100,6 @@ export function Navbar() {
         width: '150px'
       }}>
         <ConnectButton chainStatus="icon" showBalance={false} />
-        <label className="mr-2" htmlFor="live">Live</label>
-        <input id="live" type="checkbox" checked={isLive} onChange={handleChange} />
       </div>
     );
 

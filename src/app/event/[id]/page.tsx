@@ -5,7 +5,6 @@ import PageHeader from "@/components/PageHeader";
 import {
   BetslipDisableReason,
   useBaseBetslip,
-  useChain,
   useDetailedBetslip,
   useGame,
   useActiveMarkets,
@@ -17,7 +16,7 @@ import {
   OrderDirection,
 } from "@azuro-org/toolkit";
 import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { TOKEN_SYMBOL } from "@/constants";

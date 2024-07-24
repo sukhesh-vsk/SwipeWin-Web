@@ -1,12 +1,14 @@
 'use client'
 
-import { AzuroSDKProvider, SocketProvider, useWatchers, ChainProvider, LiveProvider, ApolloProvider } from '@azuro-org/sdk'
+import { AzuroSDKProvider, useWatchers, LiveProvider } from '@azuro-org/sdk'
 import { ChainId } from '@azuro-org/toolkit';
 import { RainbowKitProvider, getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
+import { Address } from 'viem';
 import { chiliz } from 'viem/chains'
 import { WagmiProvider } from 'wagmi'
+
 
 
 const { wallets } = getDefaultWallets()
@@ -46,20 +48,13 @@ export function Providers(props: ProvidersProps) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <ChainProvider initialChainId={chiliz.id}>
-        <LiveProvider initialLiveState={false}>
-        <ApolloProvider>
-          <RainbowKitProvider>
-            <AzuroSDKProvider initialChainId={initialChainId as unknown as ChainId}>
-              <SocketProvider>
+        <RainbowKitProvider>
+          <AzuroSDKProvider initialChainId={chainId as unknown as ChainId} isBatchBetWithSameGameEnabled affiliate={process.env.NEXT_PUBLIC_AFFILIATE_ADDRESS as Address}>
+              <LiveProvider initialLiveState={initialLiveState}>
                 {children}
-              </SocketProvider>
-              <Watchers />
-            </AzuroSDKProvider>
-          </RainbowKitProvider>
-          </ApolloProvider>
-          </LiveProvider>
-        </ChainProvider>
+              </LiveProvider>
+          </AzuroSDKProvider>
+        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

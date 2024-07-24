@@ -1,6 +1,5 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+'use client';
+import React, { useState } from "react";
 import { SearchBar } from "@/components";
 import GameCard from "@/components/GameCard";
 import useData from "@/hooks/useData";

@@ -26,7 +26,7 @@ const SubmitButton: React.FC = () => {
   } = usePrepareBet({
     betAmount,
     slippage: 10,
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE as `0x${string}` ?? "0x1494887C286D539f29A527734975119CdEDcE2D2",
+    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_ADDRESS as `0x${string}` ?? "0x1494887C286D539f29A527734975119CdEDcE2D2",
     selections: items,
     odds,
     totalOdds,

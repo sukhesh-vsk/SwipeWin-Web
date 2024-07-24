@@ -1,4 +1,4 @@
-import { useSports, type UseSportsProps } from "@azuro-org/sdk";
+import { useSports, type UseSportsProps, useLive } from '@azuro-org/sdk'
 import { Game_OrderBy } from '@azuro-org/toolkit';
 import dayjs from "dayjs";
 
@@ -45,11 +45,14 @@ const useData = (
   filterType: string,
   selectedSport: string
 ) => {
+  const { isLive } = useLive()
+
   const props: UseSportsProps = {
     gameOrderBy: Game_OrderBy.Turnover,
     filter: {
       limit: 50,
     },
+    isLive
   };
 
   const { loading, sports } = useSports(props);

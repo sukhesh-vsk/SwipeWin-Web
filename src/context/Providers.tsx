@@ -32,12 +32,6 @@ type ProvidersProps = {
   initialLiveState?: boolean
 }
 
-export function Watchers() {
-  useWatchers()
-
-  return null
-}
-
 export function Providers(props: ProvidersProps) {
   const { children, initialChainId, initialLiveState } = props
 

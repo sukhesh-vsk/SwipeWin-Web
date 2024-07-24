@@ -28,7 +28,7 @@ const nextConfig = {
   images: {
     domains: ["avatars.azuro.org"],
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   typescript: {
     // !! WARN !!

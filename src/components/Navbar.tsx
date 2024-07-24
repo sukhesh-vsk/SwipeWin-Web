@@ -96,8 +96,14 @@ export function Navbar() {
 
 
     ) : (
-      <ConnectButton chainStatus="icon" showBalance={false} />
+      <div style={{
+        width: '150px'
+      }}>
+        <ConnectButton chainStatus="icon" showBalance={false} />
+      </div>
     );
+
+
   };
 
   return (

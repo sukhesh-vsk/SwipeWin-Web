@@ -4,18 +4,19 @@ import OddComponent from "@/components/OddComponent";
 import PageHeader from "@/components/PageHeader";
 import {
   BetslipDisableReason,
-  OrderDirection,
   useBaseBetslip,
-  useChain,
   useDetailedBetslip,
   useGame,
-  useGameMarkets,
-  useLiveBetFee,
+  useActiveMarkets,
   useLiveBets,
   usePrematchBets,
 } from "@azuro-org/sdk";
+
+import {
+  OrderDirection,
+} from "@azuro-org/toolkit";
 import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { TOKEN_SYMBOL } from "@/constants";
@@ -77,7 +78,7 @@ export default function Game() {
       address: address,
       token: contractAddress as `0x{string}`,
     })
-    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    const ethValue = ethers.formatEther(tempBalance.value);
     if (tBalance != ethValue) {
       setTokenValue(ethValue);
     }
@@ -90,7 +91,7 @@ export default function Game() {
   }, [])
 
 
-  const { loading: marketLoading, markets } = useGameMarkets({
+  const { loading: marketLoading, markets } = useActiveMarkets({
     gameId: params.id as string,
     gameStatus: game?.status as any,
   });

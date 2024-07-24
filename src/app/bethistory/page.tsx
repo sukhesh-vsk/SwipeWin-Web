@@ -12,11 +12,15 @@ import { MdSportsMma, MdSportsTennis, MdSportsEsports } from "react-icons/md";
 import DataPopup from "@/components/DataPopup";
 import { useAccount } from "wagmi";
 import {
-  OrderDirection,
   usePrematchBets,
   useLiveBets,
   Bet,
 } from "@azuro-org/sdk";
+
+import {
+  OrderDirection
+} from "@azuro-org/toolkit";
+
 import { RedeemAll } from "@/components/RedeemAll";
 import { TransactionDetailProps } from "@/types/types";
 import dayjs from "dayjs";

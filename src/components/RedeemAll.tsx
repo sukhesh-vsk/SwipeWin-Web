@@ -53,7 +53,7 @@ export function RedeemAll(props: Props) {
       address: address,
       token: contractAddress as `0x{string}`,
     })
-    const ethValue = ethers.utils.formatEther(tempBalance.value);
+    const ethValue = ethers.formatEther(tempBalance.value);
     if (tBalance != ethValue) {
       setTokenValue(ethValue);
     }

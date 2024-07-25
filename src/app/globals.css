@@ -125,20 +125,31 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+@media screen and (min-width : 450px) {
+  .game-card {
+    width: 90vw !important;
+    height: 50vh !important;
+  }
+}
+
 .game-card {
-  width: 17rem !important;
-  height: 20rem !important;
+  width: 21rem !important;
+  height: 29rem !important;
 }
 
 @layer utilities {
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }
 
@@ -151,12 +162,10 @@ body {
 }
 
 .btn-grad {
-  background-image: linear-gradient(
-    to right,
-    #3494e6 0%,
-    #ec6ead 51%,
-    #3494e6 100%
-  );
+  background-image: linear-gradient(to right,
+      #3494e6 0%,
+      #ec6ead 51%,
+      #3494e6 100%);
   margin: 10px;
   padding: 15px 45px;
   text-align: center;
@@ -193,4 +202,21 @@ body {
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+}
+
+.home-scroll-card-margin {
+  margin-right: -2rem;
+  margin-left: -1rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.custom-number-input::-webkit-outer-spin-button,
+.custom-number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.custom-number-input {
+  -moz-appearance: textfield;
 }

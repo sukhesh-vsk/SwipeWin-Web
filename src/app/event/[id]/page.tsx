@@ -3,31 +3,35 @@
 import OddComponent from "@/components/OddComponent";
 import PageHeader from "@/components/PageHeader";
 import {
-  Bet,
   BetslipDisableReason,
-  GameQuery,
-  OrderDirection,
   useBaseBetslip,
-  useBetTokenBalance,
-  useChain,
   useDetailedBetslip,
   useGame,
-  useGameMarkets,
-  useLiveBetFee,
+  useActiveMarkets,
   useLiveBets,
   usePrematchBets,
-  usePrepareBet,
 } from "@azuro-org/sdk";
-import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import cx from "clsx";
-import { useAccount } from "wagmi";
 
-type ContentProps = {
-  game: GameQuery["games"][0];
-  isGameInLive: boolean;
-};
+import {
+  OrderDirection,
+} from "@azuro-org/toolkit";
+import dayjs from "dayjs";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { TOKEN_SYMBOL } from "@/constants";
+import { connect, getBalance } from "wagmi/actions";
+import { wagmiConfig } from "@/context";
+import { injected } from "wagmi/connectors";
+import BetHistory from "@/components/BetHistory";
+import SubmitButton from "@/components/SubmitButton";
+
+import { AppDispatch, RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setTokenBalance } from "@/lib/features/walletSlice";
+import { contractAddress } from "@/components/WrapComponent";
+import { ethers } from "ethers";
+
 
 const errorPerDisableReason = {
   [BetslipDisableReason.ComboWithForbiddenItem]:
@@ -42,156 +46,14 @@ const errorPerDisableReason = {
   [BetslipDisableReason.PrematchConditionInStartedGame]: "Game has started",
 } as const;
 
-const SubmitButton: React.FC = () => {
-  const { appChain, isRightNetwork } = useChain();
-  const { items, clear } = useBaseBetslip();
-  const {
-    betAmount,
-    odds,
-    totalOdds,
-    isStatusesFetching,
-    isOddsFetching,
-    isBetAllowed,
-  } = useDetailedBetslip();
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
-  const {
-    submit,
-    approveTx,
-    betTx,
-    isRelayerFeeLoading,
-    isAllowanceLoading,
-    isApproveRequired,
-  } = usePrepareBet({
-    betAmount,
-    slippage: 10,
-    affiliate: "0x2687B4FDFa0C4290eD754Bfea807DC6a50CE286E",
-    selections: items,
-    odds,
-    totalOdds,
-    onSuccess: () => {
-      clear();
-    },
-  });
 
-  const isPending = approveTx.isPending || betTx.isPending;
-  const isProcessing = approveTx.isProcessing || betTx.isProcessing;
-  if (!isRightNetwork) {
-    return (
-      <div className="mt-6 py-3.5 text-center bg-red-200 rounded-2xl">
-        Switch network to <b>{appChain.name}</b> in your wallet
-      </div>
-    );
-  }
-
-  const isEnoughBalance =
-    isBalanceFetching || !Boolean(+betAmount)
-      ? true
-      : Boolean(+balance! > +betAmount);
-
-  const isLoading =
-    isOddsFetching ||
-    isBalanceFetching ||
-    isStatusesFetching ||
-    isAllowanceLoading ||
-    isPending ||
-    isProcessing ||
-    isRelayerFeeLoading;
-
-  const isDisabled =
-    isLoading || !isBetAllowed || !isEnoughBalance || !+betAmount;
-
-  let title;
-
-  if (isPending) {
-    title = "Waiting for approval";
-  } else if (isProcessing) {
-    title = "Processing...";
-  } else if (isLoading) {
-    title = "Loading...";
-  } else if (isApproveRequired) {
-    title = "Approve";
-  } else {
-    title = "Place Bet";
-  }
-
-  return (
-    <div className="mt-1 flex flex-col justify-center items-center">
-      {!isEnoughBalance && (
-        <div className="mb-1 text-sm text-red-500 text-center font-semibold">
-          Not enough balance.
-        </div>
-      )}
-      <button
-        className={cx(
-          "px-4 py-2 rounded-full font-cairo font-bold tracking-widest",
-          {
-            "btn-grad transition": !isDisabled,
-            "bg-gray-400 cursor-not-allowed": isDisabled,
-          }
-        )}
-        disabled={isDisabled}
-        onClick={submit}
-      >
-        {title}
-      </button>
-    </div>
-  );
-};
-
-const getSelectionName = (selectionName: string, participants: any[]) => {
-  if (selectionName === "1") {
-    return participants[0].name;
-  }
-  if (selectionName === "2") {
-    return participants[1].name;
-  }
-  if (selectionName === "X") {
-    return "Match Draw";
-  }
-  return "";
-};
-
-const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
-  return (
-    <div className="mt-4 pb-28 w-full">
-      <h2 className="heading1 mb-2">Your Bet History</h2>
-      {bets.length > 0 ? (
-        bets.map((bet, index) => (
-          <div
-            key={bet.txHash}
-            className="flex justify-between items-center bg-gray-500  p-4 mb-2 rounded-md shadow-md"
-          >
-            <div className="flex flex-col">
-              <span className="font-semibold text-white">
-                {getSelectionName(
-                  bet.outcomes[0].selectionName,
-                  bet.outcomes[0].game.participants
-                )}
-              </span>
-              <span className="text-xs text-white">
-                {dayjs(+bet.createdAt * 1000).format("DD MMM HH:mm")}
-              </span>
-            </div>
-            <div className="flex flex-col text-sm text-white text-right">
-              <span className="font-semibold">
-                {bet.amount ? Number(bet.amount).toFixed(2) : ""} USDT
-              </span>
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>No bets placed on this game.</p>
-      )}
-    </div>
-  );
-};
 
 export default function Game() {
   const params = useParams();
   const account = useAccount();
-  const { betToken } = useChain();
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
-  const { items, clear } = useBaseBetslip();
+  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const { items, addItem, removeItem } = useBaseBetslip();
 
   const {
     betAmount,
@@ -199,19 +61,37 @@ export default function Game() {
     totalOdds,
     disableReason,
     isOddsFetching,
-    isLiveBet,
   } = useDetailedBetslip();
 
-  const { formattedRelayerFeeAmount, loading: isRelayerFeeLoading } =
-    useLiveBetFee({
-      enabled: isLiveBet,
-    });
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+  const dispatch = useDispatch<AppDispatch>();
+  const setTokenValue = (value: string) => {
+    dispatch(setTokenBalance(value))
+  }
 
   const { loading, game, isGameInLive } = useGame({
     gameId: params.id as string,
   });
 
-  const { loading: marketLoading, markets } = useGameMarkets({
+  const updateBalance = async () => {
+    const tempBalance = await getBalance(wagmiConfig, {
+      address: address,
+      token: contractAddress as `0x{string}`,
+    })
+    const ethValue = ethers.formatEther(tempBalance.value);
+    if (tBalance != ethValue) {
+      setTokenValue(ethValue);
+    }
+  };
+
+  useEffect(() => {
+    if (address) {
+      updateBalance();
+    }
+  }, [])
+
+
+  const { loading: marketLoading, markets } = useActiveMarkets({
     gameId: params.id as string,
     gameStatus: game?.status as any,
   });
@@ -243,9 +123,6 @@ export default function Game() {
     (bet) => bet.outcomes[0].game.gameId === params.id
   );
 
-  const [selectedOutcomeIndex, setSelectedOutcomeIndex] = useState<number>(-1);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
-
   useEffect(() => {
     if (initialLoad) {
       changeBetAmount("--");
@@ -272,18 +149,34 @@ export default function Game() {
       ? getOutcomeLabel(selectedOutcomeIndex, markets[0].outcomeRows[0].length)
       : "";
 
+  const handleBlur = () => {
+    // If the input is empty or out of range, set it to the default value (1)
+    if (Number(betAmount) < 1) {
+      changeBetAmount('1');
+    } else if (Number(betAmount) > 10000) {
+      changeBetAmount('10000');
+    }
+  };
+
+  const connectWallet = async () => {
+    const result = await connect(wagmiConfig, {
+      chainId: wagmiConfig.chains[0].id,
+      connector: injected(),
+    })
+  }
+  const suggestAmount = [10, 20, 30, 40]
+
   return (
     <>
       {game && (
-        <PageHeader title={`${game.sport.name} Betting`} filter={false} />
+        <PageHeader title={`${game.league.name} Betting`} filter={false} />
       )}
-
-      <div className="container flex flex-col text-center justify-center items-center">
+      <div className="container-fluid flex flex-col text-center justify-center items-center">
         <>
           <div className="bg-sec_2 mt-10 py-4 rounded-xl w-full flex flex-col py-6">
             {/* Game Details */}
             <div className="flex flex-col justify-between">
-              <div className="flex justify-between items-center px-6 mb-2">
+              <div className="flex justify-between px-6 mb-2">
                 <div className="flex flex-col flex-1  items-center justify-center">
                   <img
                     src={
@@ -335,7 +228,7 @@ export default function Game() {
                   </p>
                 </div>
               </div>
-                  {/* { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
+              {/* { totalOdds === 1 && <div id="tooltip-light" role="tooltip" className="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1 tooltip">
                     Select Winning Bets
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>} */}
@@ -358,10 +251,6 @@ export default function Game() {
                             className="ml-2 odd-cont first-of-type:ml-0"
                             key={`${outcome.selectionName}-${index}`}
                             outcome={outcome}
-                            label={getOutcomeLabel(
-                              index,
-                              markets[0].outcomeRows[0].length
-                            )}
                           />
                         </span>
                       ))}
@@ -370,24 +259,37 @@ export default function Game() {
                 )}
               </div>
             </div>
-            
             {/* Betting Amounts */}
-            <div className="mt-2 flex flex-col px-6 text-sm font-medium items-center">
+
+            <div className="mt-2 flex flex-col px-1 text-sm font-medium items-center">
+
+              <div className="flex justify-between w-100 mb-2">
+                {suggestAmount.map((value, index) => {
+                  return <p key={index} onClick={() => {
+                    if (items.length) {
+                      changeBetAmount(value.toString())
+                    }
+                  }} className="bg-odd py-2 px-2 mr-1 rounded-md cursor-pointer active:bg-violet-700"
+
+                  >{value} {TOKEN_SYMBOL}</p>
+                })}
+              </div>
+
               <div className="flex justify-between items-center w-full mb-4">
                 <p className="text-start">Betting Amount :</p>
                 <input
-                  type="range"
-                  min="1"
-                  max={`${
-                    !isBalanceFetching && +balance! > 100 ? balance : "100"
-                  }`}
-                  // max='100'
+                  type="number"
                   value={betAmount}
                   onChange={(event) => changeBetAmount(event.target.value)}
-                  className="w-2/3 mr-2"
+                  onBlur={handleBlur}
+                  disabled={items.length == 0 ? true : false}
+                  className="w-50 p-2 rounded focus:outline-none focus:ring focus:border-blue-300 custom-number-input bg-odd"
+                  min="1"
+                  max="10000"
                 />
-                <span>{betAmount}</span>
               </div>
+
+
               <div className="flex justify-between items-center w-full mb-4">
                 <span>Total Odds :</span>
                 <span>
@@ -407,11 +309,11 @@ export default function Game() {
               <div className="flex justify-between items-center w-full mb-4">
                 <span className="text-sm">Wallet Balance :</span>
                 <span className="text-sm font-semibold">
-                  {isBalanceFetching ? (
+                  {tBalance == '' ? (
                     <>Loading...</>
-                  ) : balance !== undefined ? (
+                  ) : address ? (
                     <>
-                      {(+balance).toFixed(2)} {betToken.symbol}
+                      {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
                     </>
                   ) : (
                     <>-</>
@@ -419,7 +321,6 @@ export default function Game() {
                 </span>
               </div>
             </div>
-            
             {/* Payment Part */}
             {Boolean(disableReason) && (
               <div className="mb-1 text-red-500 text-center font-semibold">
@@ -429,7 +330,7 @@ export default function Game() {
             {account?.address ? (
               <SubmitButton />
             ) : (
-              <p className="bg-sgrad mx-6 mt-3 px-6 py-2 rounded-full font-cairo font-bold tracking-wide">
+              <p className="bg-sgrad mx-6 mt-3 px-6 py-2 rounded-full font-cairo font-bold tracking-wide" onClick={connectWallet}>
                 Connect your wallet
               </p>
             )}

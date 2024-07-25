@@ -1,22 +1,25 @@
 'use client'
 
-import { AzuroSDKProvider, ChainId } from '@azuro-org/sdk'
+import { AzuroSDKProvider, useWatchers, LiveProvider } from '@azuro-org/sdk'
+import { ChainId } from '@azuro-org/toolkit';
 import { RainbowKitProvider, getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
-import { gnosis, polygon } from 'viem/chains'
+import { Address } from 'viem';
+import { chiliz } from 'viem/chains'
 import { WagmiProvider } from 'wagmi'
+
 
 
 const { wallets } = getDefaultWallets()
 
-const chains = [
-  polygon,
+export const chains = [
+  chiliz
 ] as const
 
-const wagmiConfig = getDefaultConfig({
-  appName: 'Azuro',
-  projectId: '3020b540cb4600580463aaee8fac93a6',
+export const wagmiConfig = getDefaultConfig({
+  appName: 'Wakanda Bet',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ? process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID : '3020b540cb4600580463aaee8fac93a6',
   wallets,
   chains,
 })
@@ -33,15 +36,17 @@ export function Providers(props: ProvidersProps) {
   const { children, initialChainId, initialLiveState } = props
 
   const chainId = initialChainId
-    ? chains.find(chain => chain.id === +initialChainId) ? +initialChainId as ChainId : polygon.id
-    : polygon.id
+    ? chains.find(chain => chain.id === +initialChainId) ? +initialChainId as ChainId : chiliz.id
+    : chiliz.id;
 
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <AzuroSDKProvider initialChainId={chainId} initialLiveState={initialLiveState}>
-              {children}
+          <AzuroSDKProvider initialChainId={chainId as unknown as ChainId} isBatchBetWithSameGameEnabled affiliate={process.env.NEXT_PUBLIC_AFFILIATE_ADDRESS as Address}>
+              <LiveProvider initialLiveState={initialLiveState}>
+                {children}
+              </LiveProvider>
           </AzuroSDKProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

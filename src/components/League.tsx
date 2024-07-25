@@ -1,11 +1,14 @@
 "use client";
 import {
-  GamesQuery,
-  SportsQuery,
   useGameStatus,
-  useGameMarkets,
+  useActiveMarkets,
   useLive,
 } from "@azuro-org/sdk";
+import {
+  GamesQuery,
+  SportsQuery
+} from "@azuro-org/toolkit";
+
 import Link from "next/link";
 import cx from "clsx";
 import { useParams } from "next/navigation";
@@ -28,7 +31,7 @@ function Game(props: GameProps & { league: string } & { sports: string }) {
     startsAt: +startsAt,
     isGameExistInLive: isLive,
   });
-  const { markets } = useGameMarkets({
+  const { markets } = useActiveMarkets({
     gameStatus: status,
     gameId,
   });

@@ -2,14 +2,29 @@
 import PageHeader from "@/components/PageHeader";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
-import { Discordico, Logoutico, Telegramico } from "@/assets/icons";
-import { useBetTokenBalance, useChain } from "@azuro-org/sdk";
+import { Discordico, Telegramico, Twitterico } from "@/assets/icons";
+import { TOKEN_SYMBOL } from "@/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 export default function Support() {
-  const { betToken } = useChain();
 
-  const { loading: isBalanceFetching, balance } = useBetTokenBalance();
+  const telegramLink = "https://t.me/Wakanda_Bet";
+  const discordLink = "https://discord.gg/EyUYFcm5u3";
+  const twitterLink = "https://x.com/WakandaBets";
+  const termsLink = "https://wakanda.bet/tnc.html";
+  const privacyLink = "https://wakanda.bet/privacypolicy.html";
 
+
+
+  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+
+
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+    return
+  }
   return (
     <>
       <PageHeader title="Support" filter={false} />
@@ -18,13 +33,13 @@ export default function Support() {
           <ConnectButton chainStatus="icon" />
         </div>
         <div className="flex justify-between items-center w-full mb-12">
-          <span className="text-sm">USDT balance:</span>
+          <span className="text-sm">${TOKEN_SYMBOL} balance:</span>
           <span className="text-sm font-semibold">
-            {isBalanceFetching ? (
+            {tBalance == '' ? (
               <>Loading...</>
-            ) : balance !== undefined ? (
+            ) : tBalance !== undefined ? (
               <>
-                {(+balance).toFixed(2)} {betToken.symbol}
+                {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
               </>
             ) : (
               <>-</>
@@ -33,28 +48,43 @@ export default function Support() {
         </div>
         <div className="flex-1 w-full">
           <div className="flex justify-around items-center">
-            <button className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex items-center">
-              <Discordico className="w-10" />
-              <span className="ml-2 font-semibold font-sm">Discord</span>
+          <button onClick={() => {
+              openInNewTab(twitterLink)
+            }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex items-center">
+              <Twitterico className="w-10" />
+              {/* <span className="ml-2 font-semibold font-sm">Twitter</span> */}
             </button>
-            <button className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex justify-center items-center">
+            <button onClick={() => {
+              openInNewTab(discordLink)
+            }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex items-center">
+              <Discordico className="w-10" />
+              {/* <span className="ml-2 font-semibold font-sm">Discord</span> */}
+            </button>
+            <button onClick={() => {
+              openInNewTab(telegramLink)
+            }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex justify-center items-center">
               <Telegramico className="w-10 mt-2" />
-              <span className="ml-2 font-semibold font-sm">Telegram</span>
+              {/* <span className="ml-2 font-semibold font-sm">Telegram</span> */}
             </button>
           </div>
           <div className="text-sm mt-10">
             <p className="font-semibold uppercase mb-3 text-md">About</p>
-            <p className="mb-2">Terms & Conditions</p>
-            <p className="mb-2">Privacy Policy</p>
-            <p className="flex items-center">
+            <p className="mb-2" onClick={() => {
+              openInNewTab(termsLink);
+            }}>Terms & Conditions</p>
+            <p className="mb-2" onClick={() => {
+              openInNewTab(privacyLink);
+            }}>Privacy Policy</p>
+            {/* <p className="flex items-center">
               Log out{" "}
               <span className="ml-2">
                 <Logoutico className="w-3" />
               </span>
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
     </>
   );
 }
+

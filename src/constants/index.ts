@@ -1,0 +1,1 @@
+export const TOKEN_SYMBOL = process.env.NEXT_PUBLIC_CHAIN_TOKEN_SYMBOL ?? 'USDT';

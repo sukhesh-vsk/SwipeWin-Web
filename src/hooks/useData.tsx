@@ -1,4 +1,5 @@
-import { useSports, type UseSportsProps, Game_OrderBy } from "@azuro-org/sdk";
+import { useSports, type UseSportsProps, useLive } from '@azuro-org/sdk'
+import { Game_OrderBy } from '@azuro-org/toolkit';
 import dayjs from "dayjs";
 
 enum GameStatus {
@@ -44,11 +45,14 @@ const useData = (
   filterType: string,
   selectedSport: string
 ) => {
+  const { isLive } = useLive()
+
   const props: UseSportsProps = {
     gameOrderBy: Game_OrderBy.Turnover,
     filter: {
       limit: 50,
     },
+    isLive
   };
 
   const { loading, sports } = useSports(props);
@@ -93,7 +97,6 @@ const useData = (
           return true;
       }
     })();
-
     const matchesSelectedSport =
       selectedSport === "All" || game.sport.name === selectedSport;
 
@@ -105,12 +108,16 @@ const useData = (
     sport: game.sport.name,
     league: game.league.name,
     status: game.status,
-    time: dayjs(game.startsAt * 1000).format("DD MMM HH:mm"),
+    time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
     teams: game.participants.map((participant) => participant.name),
     teamImage: game.participants.map(
       (participant) => participant.image || "/default.png"
     ),
+    startsAt :game.startsAt
   }));
+
+  topEvents.sort((a,b) => +a.startsAt - +b.startsAt);
+  filteredGames.sort((a,b) => +a.startsAt - +b.startsAt);
 
   const otherEvents = filteredGames.slice(5).reduce((acc, game) => {
     const sportName = game.sport.name;
@@ -122,7 +129,7 @@ const useData = (
       sport: game.sport.name,
       league: game.league.name,
       status: game.status,
-      time: dayjs(game.startsAt * 1000).format("DD MMM HH:mm"),
+      time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
       teams: game.participants.map((participant) => participant.name),
       teamImage: game.participants.map(
         (participant) => participant.image || "/default.png"

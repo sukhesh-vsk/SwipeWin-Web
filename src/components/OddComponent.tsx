@@ -39,7 +39,10 @@ function OddComponent(props: OddsProps) {
       isExpressForbidden: outcome.isExpressForbidden,
     };
     if (isActive) {
-      removeItem(String(outcome.gameId));
+      removeItem({
+        outcomeId: outcome.outcomeId,
+        conditionId: outcome.conditionId
+      })
     } else {
       addItem(item);
     }

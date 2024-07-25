@@ -1,5 +1,5 @@
 import React from 'react';
-import { MarketOutcome } from "@azuro-org/sdk";
+import { MarketOutcome } from "@azuro-org/toolkit";
 
 interface OddsProps {
   oddsData: MarketOutcome[];

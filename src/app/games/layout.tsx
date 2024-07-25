@@ -4,10 +4,13 @@ import { Sport } from "@/components/Sport";
 import { useParams } from "next/navigation";
 import {
   useSports,
-  type UseSportsProps,
+  type UseSportsProps
+} from "@azuro-org/sdk";
+
+import {
   Game_OrderBy,
   OrderDirection,
-} from "@azuro-org/sdk";
+} from "@azuro-org/toolkit";
 
 const useData = () => {
   const params = useParams();

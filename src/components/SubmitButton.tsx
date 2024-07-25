@@ -3,6 +3,7 @@ import { wagmiConfig } from "@/context";
 import { useChain, useBaseBetslip, useDetailedBetslip, useBetTokenBalance, usePrepareBet } from "@azuro-org/sdk";
 import { switchChain } from "viem/actions";
 import cx from "clsx";
+import { ethers } from "ethers";
 
 const SubmitButton: React.FC = () => {
   const { appChain, isRightNetwork } = useChain();
@@ -30,6 +31,13 @@ const SubmitButton: React.FC = () => {
     selections: items,
     odds,
     totalOdds,
+    betGas : {
+      gas: undefined,
+      maxFeePerBlobGas: undefined,
+      gasPrice: undefined,
+      maxFeePerGas: ethers.parseUnits('2500', 'gwei'),
+      maxPriorityFeePerGas: ethers.parseUnits('5', 'gwei')
+    },
     onSuccess: () => {
       clear();
     },

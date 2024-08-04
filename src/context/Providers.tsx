@@ -1,6 +1,6 @@
 'use client'
 
-import { AzuroSDKProvider,LiveProvider, ChainProvider } from '@azuro-org/sdk'
+import { AzuroSDKProvider,LiveProvider } from '@azuro-org/sdk'
 import { ChainId } from '@azuro-org/toolkit';
 import { RainbowKitProvider, getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -44,11 +44,9 @@ export function Providers(props: ProvidersProps) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <AzuroSDKProvider initialChainId={chainId as unknown as ChainId} isBatchBetWithSameGameEnabled affiliate={process.env.NEXT_PUBLIC_AFFILIATE_ADDRESS as Address}>
-            <ChainProvider initialChainId={chainId as unknown as ChainId}>
               <LiveProvider initialLiveState={initialLiveState}>
                 {children}
               </LiveProvider>
-            </ChainProvider>
           </AzuroSDKProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

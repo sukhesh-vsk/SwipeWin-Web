@@ -1,13 +1,15 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Discordico, Telegramico, Twitterico } from "@/assets/icons";
 import { TOKEN_SYMBOL } from "@/constants";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
-import { useChain } from "@azuro-org/sdk";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
+import { useChain, useNativeBalance } from "@azuro-org/sdk";
 import { ChainId } from '@azuro-org/toolkit';
+import { useBetTokenBalance } from '@azuro-org/sdk'
+import { setNativeBalance, setTokenBalance } from "@/lib/features/walletSlice";
 
 export default function Support() {
 
@@ -18,8 +20,32 @@ export default function Support() {
   const privacyLink = "https://wakanda.bet/privacypolicy.html";
 
 
+  const [fetchTrigger, setFetchTrigger] = useState(false);
+  const { balance, rawBalance, loading, error } = useBetTokenBalance()
+  const [currentBalance, setCurrentBalance] = useState(balance);
+  const { balance: nativeBalance } = useNativeBalance()
+  const [currentNativeBalance, setCurrentNativeBalance] = useState(nativeBalance);
 
-  const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const setTokenValue = (value: string) => {
+    dispatch(setTokenBalance(value))
+  }
+
+  const setNativeTokenValue = (value: string) => {
+    dispatch(setNativeBalance(value))
+  }
+  
+  useEffect(() => {
+    setCurrentBalance(balance);
+    setTokenValue(balance);
+  }, [balance, rawBalance, fetchTrigger]);
+
+  useEffect(() => {
+    setCurrentNativeBalance(nativeBalance);
+    setNativeTokenValue(nativeBalance);
+  }, [nativeBalance, fetchTrigger]);
+
 
 
   const openInNewTab = (url: string) => {
@@ -44,11 +70,11 @@ export default function Support() {
         <div className="flex justify-between items-center w-full mb-2">
           <span className="text-sm">${TOKEN_SYMBOL(appChain.id)} balance:</span>
           <span className="text-sm font-semibold">
-            {tBalance == '' ? (
+            {currentBalance == '' ? (
               <>Loading...</>
-            ) : tBalance !== undefined ? (
+            ) : currentBalance !== undefined ? (
               <>
-                {(+tBalance).toFixed(2)} {TOKEN_SYMBOL(appChain.id)}
+                {(+currentBalance).toFixed(2)} {TOKEN_SYMBOL(appChain.id)}
               </>
             ) : (
               <>-</>

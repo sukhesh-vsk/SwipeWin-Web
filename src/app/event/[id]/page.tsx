@@ -10,6 +10,7 @@ import {
   useActiveMarkets,
   useLiveBets,
   usePrematchBets,
+  useChain
 } from "@azuro-org/sdk";
 
 import {
@@ -62,6 +63,7 @@ export default function Game() {
     disableReason,
     isOddsFetching,
   } = useDetailedBetslip();
+  const { appChain } = useChain();
 
   const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
   const dispatch = useDispatch<AppDispatch>();
@@ -271,7 +273,7 @@ export default function Game() {
                     }
                   }} className="bg-odd py-2 px-2 mr-1 rounded-md cursor-pointer active:bg-violet-700"
 
-                  >{value} {TOKEN_SYMBOL}</p>
+                  >{value} ${TOKEN_SYMBOL(appChain.id)}</p>
                 })}
               </div>
 
@@ -313,7 +315,7 @@ export default function Game() {
                     <>Loading...</>
                   ) : address ? (
                     <>
-                      {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
+                      {(+tBalance).toFixed(2)} ${TOKEN_SYMBOL(appChain.id)}
                     </>
                   ) : (
                     <>-</>

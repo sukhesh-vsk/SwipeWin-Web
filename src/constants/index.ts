@@ -1,1 +1,10 @@
-export const TOKEN_SYMBOL = process.env.NEXT_PUBLIC_CHAIN_TOKEN_SYMBOL ?? 'USDT';
+export const TOKEN_SYMBOL = (chainId : number) => {    
+    if(Number(chainId) == 137) {
+        return 'USDT'
+    }
+    if(Number(chainId) == 88888) {
+        return 'wCHZ'
+    }
+
+    return '';
+} 

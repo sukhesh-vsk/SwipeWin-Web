@@ -1,5 +1,7 @@
+'use client';
+
 import { TOKEN_SYMBOL } from "@/constants";
-import { Bet } from "@azuro-org/sdk";
+import { Bet, useChain } from "@azuro-org/sdk";
 import dayjs from "dayjs";
 
 const getSelectionName = (selectionName: string, participants: any[]) => {
@@ -16,6 +18,8 @@ const getSelectionName = (selectionName: string, participants: any[]) => {
 };
 
 const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
+    const { appChain } = useChain();
+
     return (
         <div className="mt-4 pb-28 w-full">
             <h2 className="heading1 mb-2">Your Bet History</h2>
@@ -38,7 +42,7 @@ const BetHistory: React.FC<{ bets: Bet[] }> = ({ bets }) => {
                         </div>
                         <div className="flex flex-col text-sm text-white text-right">
                             <span className="font-semibold">
-                                {bet.amount ? Number(bet.amount).toFixed(2) : ""} ${TOKEN_SYMBOL}
+                                {bet.amount ? Number(bet.amount).toFixed(2) : ""} ${TOKEN_SYMBOL(appChain.id)}
                             </span>
                         </div>
                     </div>

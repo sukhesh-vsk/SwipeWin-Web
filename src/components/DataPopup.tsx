@@ -2,7 +2,7 @@
 
 import { Closeico } from '@/assets/icons';
 import { TransactionDetailProps } from '@/types/types';
-import { Bet, useRedeemBet } from '@azuro-org/sdk';
+import { Bet, useRedeemBet, useChain } from '@azuro-org/sdk';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import cx from "clsx";
@@ -18,7 +18,8 @@ import { wagmiConfig } from '@/context/Providers';
 import { useAccount } from 'wagmi';
 
 export default function DataPopup(props: any) {
-    
+
+    const { appChain } = useChain();
     const { address } = useAccount();
 
     const { submit, isPending, isProcessing } = useRedeemBet()
@@ -136,7 +137,7 @@ export default function DataPopup(props: any) {
                     <div className='w-full flex justify-between mt-2'>
                         <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                             <p className='text-sec_dim font-medium text-sm'>Bet Placed</p>
-                            <p className='font-semibold tracking-widest text-sm'>{data.betDetail.amount ? Number(data.betDetail.amount).toFixed(2) : ''} ${TOKEN_SYMBOL}</p>
+                            <p className='font-semibold tracking-widest text-sm'>{data.betDetail.amount ? Number(data.betDetail.amount).toFixed(2) : ''} ${TOKEN_SYMBOL(appChain.id)}</p>
                         </div>
                         <div className='flex flex-col px-6 font-cairo text-start w-full leading-5'>
                             <p className='text-sec_dim font-medium text-sm'>Result</p>

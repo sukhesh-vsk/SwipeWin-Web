@@ -6,6 +6,8 @@ import { Discordico, Telegramico, Twitterico } from "@/assets/icons";
 import { TOKEN_SYMBOL } from "@/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import { useChain } from "@azuro-org/sdk";
+import { ChainId } from '@azuro-org/toolkit';
 
 export default function Support() {
 
@@ -20,11 +22,18 @@ export default function Support() {
   const tBalance = useSelector((state: RootState) => state.walletReducer.tokenBalance);
 
 
-  const openInNewTab = (url) => {
+  const openInNewTab = (url: string) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
     if (newWindow) newWindow.opener = null
     return
   }
+
+  const { appChain, setAppChainId } = useChain();
+
+  const handleChainChange = (chainId: number) => {
+    setAppChainId(chainId as ChainId);
+  }
+
   return (
     <>
       <PageHeader title="Support" filter={false} />
@@ -32,23 +41,41 @@ export default function Support() {
         <div className="mt-4 mb-4">
           <ConnectButton chainStatus="icon" />
         </div>
-        <div className="flex justify-between items-center w-full mb-12">
-          <span className="text-sm">${TOKEN_SYMBOL} balance:</span>
+        <div className="flex justify-between items-center w-full mb-2">
+          <span className="text-sm">${TOKEN_SYMBOL(appChain.id)} balance:</span>
           <span className="text-sm font-semibold">
             {tBalance == '' ? (
               <>Loading...</>
             ) : tBalance !== undefined ? (
               <>
-                {(+tBalance).toFixed(2)} {TOKEN_SYMBOL}
+                {(+tBalance).toFixed(2)} {TOKEN_SYMBOL(appChain.id)}
               </>
             ) : (
               <>-</>
             )}
           </span>
         </div>
+        <div className="mb-4">
+          <button
+            className={`${appChain.id === 137 ? 'bg-blue-500' : 'bg-white'} hover:bg-blue-700 text-black font-bold py-2 px-4 rounded-full mr-5`}
+            onClick={() => {
+              handleChainChange(137);
+            }}
+          >
+            Polygon
+          </button>
+          <button
+            className={`${appChain.id === 88888 ? 'bg-blue-700' : 'bg-white'} hover:bg-blue-700 text-black font-bold py-2 px-4 rounded-full ml-5`}
+            onClick={() => {
+              handleChainChange(88888)
+            }}
+          >
+            Chiliz
+          </button>
+        </div>
         <div className="flex-1 w-full">
           <div className="flex justify-around items-center">
-          <button onClick={() => {
+            <button onClick={() => {
               openInNewTab(twitterLink)
             }} className="bg-sec_dim_2 flex px-3 py-2 h-12 rounded-lg flex items-center">
               <Twitterico className="w-10" />

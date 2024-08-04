@@ -15,6 +15,7 @@ import {
   usePrematchBets,
   useLiveBets,
   Bet,
+  useChain
 } from "@azuro-org/sdk";
 
 import {
@@ -36,6 +37,9 @@ export default function BetHistory() {
     },
     orderDir: OrderDirection.Desc,
   };
+
+  const { appChain } = useChain();
+
 
   const { loading: isPrematchLoading, bets: prematchBets } =
     usePrematchBets(props);
@@ -145,7 +149,7 @@ export default function BetHistory() {
                     Event
                   </p>
                   <p className="flex-1 text-end text-sec_dim font-semibold">
-                    {`Win/Lose (${TOKEN_SYMBOL})`}
+                    {`Win/Lose (${TOKEN_SYMBOL(appChain.id)})`}
                   </p>
                 </div>
                 {groupedBets[year].map((bet: Bet, index: number) => (

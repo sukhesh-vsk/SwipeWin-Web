@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import SwapContainer from "./SwapContainer";
 import { UserAlertPopup } from ".";
-import { useBetTokenBalance, useNativeBalance } from "@azuro-org/sdk";
+import { useBetTokenBalance, useChain, useNativeBalance } from "@azuro-org/sdk";
 import { TOKEN_SYMBOL } from "@/constants";
 import { AppDispatch, RootState } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,15 @@ export function Navbar() {
   const handleClosePopup = () => {
     setAlert(false);
   };
+
+  
+  const { appChain } = useChain();
+
+  // const { isLive, changeLive } = useLive()
+
+  // const handleLiveChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   changeLive(event.target.checked)
+  // }
 
   useEffect(() => {
     setMounted(true);
@@ -74,16 +83,16 @@ export function Navbar() {
     }
 
     return account?.address ? (
-      < div className="flex flex-col ml-8" >
+      <div className="flex flex-col ml-8" >
         <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer mb-2" style={{
           fontSize: '12px',
           padding: '4px'
-        }} onClick={() => setShowPopup(true)}>
+        }} onClick={() => Number(appChain.id) == 88888 ? setShowPopup(true) : null}>
           <span className="text-gradient">
-            {loading ? "Loading..." : `${Number(tBalance).toFixed(2)} ${TOKEN_SYMBOL}`}
+            {loading ? "Loading..." : `${Number(tBalance).toFixed(2)} ${TOKEN_SYMBOL(appChain.id)}`}
           </span>
         </p>
-        <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer"
+        { Number(appChain.id) == 88888 && <p className="bg-text flex justify-center items-center rounded-full font-medium cursor-pointer"
           style={{
             fontSize: '12px',
             padding: '4px'
@@ -91,7 +100,11 @@ export function Navbar() {
           <span className="text-gradient">
             {isNativeBalanceFetching ? "Loading..." : `${Number(nBalance).toFixed(2)} CHZ`}
           </span>
-        </p>
+        </p>}
+        {/* <div className="flex items-center mr-4">
+          <label className="mr-2" htmlFor="live">Live</label>
+          <input id="live" type="checkbox" checked={isLive} onChange={handleLiveChange} />
+        </div> */}
       </div>
 
 
@@ -100,6 +113,10 @@ export function Navbar() {
         width: '150px'
       }}>
         <ConnectButton chainStatus="icon" showBalance={false} />
+        {/* <div className="flex items-center mr-4">
+          <label className="mr-2" htmlFor="live">Live</label>
+          <input id="live" type="checkbox" checked={isLive} onChange={handleLiveChange} />
+        </div> */}
       </div>
     );
 
@@ -118,7 +135,7 @@ export function Navbar() {
       </a>
       {getBalance()}
       <>
-        {account?.address && <img onClick={() => setShowPopup(true)} src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12 cursor-pointer" />}
+        {(account?.address && Number(appChain.id) == 88888 ) && <img onClick={() => setShowPopup(true)} src="\images\exchange.png" alt="WakandaBets" className="transition hover:scale-105 h-12 w-12 cursor-pointer" />}
       </>
       {showPopup && <SwapContainer onClose={() => setShowPopup(false)} />}
     </header>

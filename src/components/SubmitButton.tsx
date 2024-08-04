@@ -35,8 +35,8 @@ const SubmitButton: React.FC = () => {
       gas: undefined,
       maxFeePerBlobGas: undefined,
       gasPrice: undefined,
-      maxFeePerGas: ethers.parseUnits('2500', 'gwei'),
-      maxPriorityFeePerGas: ethers.parseUnits('5', 'gwei')
+      maxFeePerGas: Number(appChain.id) == 88888 ? ethers.parseUnits('2500', 'gwei') : undefined,
+      maxPriorityFeePerGas:  Number(appChain.id) == 88888 ? ethers.parseUnits('5', 'gwei') :  undefined
     },
     onSuccess: () => {
       clear();

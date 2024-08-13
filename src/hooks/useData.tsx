@@ -74,6 +74,7 @@ const useData = (
       game.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       game.sport.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       game.league.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      game.league.country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       game.participants.some((participant) =>
         participant.name.toLowerCase().includes(searchTerm.toLowerCase())
       );

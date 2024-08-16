@@ -34,7 +34,8 @@ export default function GameCard(props: { gameDetails: GameProps }) {
       <div className="bg-sgrad font-inter font-medium rounded-xl game-card h-3/4 min-w-60 p-4 flex flex-col justify-around">
         <div className="text-center">
           <p className="font-metro font-semibold text-md tracking-wide">{data.league}</p>
-          <p className="tracking-widest font-medium text-sm">{data.sport}</p>
+          <p className="font-medium text-xs">{data.country}</p>
+          <p className="tracking-widest font-medium text-sm mt-2">{data.sport}</p>
         </div>
         <div className="flex justify-around w-full text-center">
           <div className="flex flex-col w-10 items-center">

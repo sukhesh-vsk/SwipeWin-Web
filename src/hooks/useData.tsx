@@ -3,6 +3,7 @@ import { Game_OrderBy } from '@azuro-org/toolkit';
 import dayjs from "dayjs";
 
 enum GameStatus {
+  Live = "Live",
   Canceled = "Canceled",
   Created = "Created",
   Paused = "Paused",
@@ -73,7 +74,6 @@ const useData = (
     const startTime = dayjs.unix(Number(game.startsAt));
     const today = dayjs();
     const endOfWeek = today.endOf("week");
-
     const matchesSearchTerm =
       game.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       game.sport.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,8 +89,8 @@ const useData = (
           return startTime.isSame(today, "day");
         case "This Week":
           return startTime.isBefore(endOfWeek) && startTime.isAfter(today);
-        case "LIVE":
-          return game.status === GameStatus.Created;
+        case "Live":
+          return game.status === GameStatus.Live;
         case "Tomorrow":
           return startTime.isSame(today.add(1, "day"), "day");
         case "All":
@@ -108,6 +108,7 @@ const useData = (
     id: game.gameId,
     sport: game.sport.name,
     league: game.league.name,
+    country: game.league.country.name,
     status: game.status,
     time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
     teams: game.participants.map((participant) => participant.name),
@@ -129,6 +130,7 @@ const useData = (
       id: game.gameId,
       sport: game.sport.name,
       league: game.league.name,
+      country: game.league.country.name,
       status: game.status,
       time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
       teams: game.participants.map((participant) => participant.name),
@@ -138,7 +140,7 @@ const useData = (
     });
     return acc;
   }, {});
-
+  
   return {
     sports,
     loading,

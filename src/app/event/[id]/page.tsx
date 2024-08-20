@@ -171,7 +171,7 @@ export default function Game() {
   return (
     <>
       {game && (
-        <PageHeader title={`${game.league.name} Betting`} filter={false} />
+        <PageHeader title={`${game.league.name}`} filter={false} />
       )}
       <div className="container-fluid flex flex-col text-center justify-center items-center">
         <>
@@ -288,7 +288,7 @@ export default function Game() {
                   onChange={(event) => changeBetAmount(event.target.value)}
                   onBlur={handleBlur}
                   disabled={items.length == 0 ? true : false}
-                  className="w-50 p-2 rounded focus:outline-none focus:ring focus:border-blue-300 custom-number-input bg-odd"
+                  className="w-50 p-2 rounded border border-accent focus:outline-none focus:ring focus:border-blue-300 custom-number-input bg-odd"
                   min="1"
                   max="10000"
                 />

@@ -207,6 +207,9 @@ export default function Game() {
                   <p className="text-xs">
                     {dayjs(+game.startsAt * 1000).format("HH:mm")}
                   </p>
+                  <p className="text-xs">
+                    {game.league.country.name}
+                  </p>
                 </div>
                 <div className="flex flex-col flex-1  items-center justify-center">
                   <img

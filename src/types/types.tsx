@@ -6,6 +6,7 @@ export interface GameProps {
     id: string;
     sport: string;
     league: string;
+    country: string;
     status: any;
     time: string;
     teams: string[];

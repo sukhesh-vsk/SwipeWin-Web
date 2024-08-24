@@ -125,7 +125,7 @@ export function Navbar() {
 
   return (
     <header className="container py-6 flex items-center container-fluid justify-between">
-      {showAlert && <UserAlertPopup onClose={handleClosePopup} />}
+      {/* {showAlert && <UserAlertPopup onClose={handleClosePopup} />} */}
       <a href="/events" className="cursor-pointer">
         <div className="text-xl font-semibold text-text tracking-wide text-base" style={{
           width: '150px'

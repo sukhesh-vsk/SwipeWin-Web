@@ -110,16 +110,17 @@ const useData = (
     league: game.league.name,
     country: game.league.country.name,
     status: game.status,
+    name: game.title,
     time: dayjs(Number(game.startsAt) * 1000).format("DD MMM HH:mm"),
     teams: game.participants.map((participant) => participant.name),
     teamImage: game.participants.map(
       (participant) => participant.image || "/default.png"
     ),
-    startsAt :game.startsAt
+    startsAt: game.startsAt
   }));
 
-  topEvents.sort((a,b) => +a.startsAt - +b.startsAt);
-  filteredGames.sort((a,b) => +a.startsAt - +b.startsAt);
+  topEvents.sort((a, b) => +a.startsAt - +b.startsAt);
+  filteredGames.sort((a, b) => +a.startsAt - +b.startsAt);
 
   const otherEvents = filteredGames.slice(5).reduce((acc, game) => {
     const sportName = game.sport.name;
@@ -140,7 +141,7 @@ const useData = (
     });
     return acc;
   }, {});
-  
+
   return {
     sports,
     loading,

@@ -14,7 +14,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
   const { gameDetails: data } = props;
   const router = useRouter();
   const { clear } = useBaseBetslip();
-  
+
   useEffect(() => {
     clear();
   }, [clear]);
@@ -34,7 +34,9 @@ export default function GameCard(props: { gameDetails: GameProps }) {
       <div className="bg-sgrad font-inter font-medium rounded-xl game-card h-3/4 min-w-60 p-4 flex flex-col justify-around">
         <div className="text-center">
           <p className="font-metro font-semibold text-md tracking-wide">{data.league}</p>
-          <p className="font-medium text-xs">{data.country}</p>
+          <p className="font-medium text-xs">
+
+            {data.name ? data.name : data.country}</p>
           <p className="tracking-widest font-medium text-sm mt-2">{data.sport}</p>
         </div>
         <div className="flex justify-around w-full text-center">
@@ -54,13 +56,13 @@ export default function GameCard(props: { gameDetails: GameProps }) {
               }}
               className="rounded-full"
             />
-            <p className="text-sm font-semibold mt-2 fixed-width text-center" style={{lineHeight: '18.2px'}}>
+            <p className="text-sm font-semibold mt-2 fixed-width text-center" style={{ lineHeight: '18.2px' }}>
               {data.teams[0]}
             </p>
           </div>
           <div className="flex flex-col text-xs items-center text-text_dim_2">
-            <p className="">{data.time.substring(0, data.time.length-5)}</p>
-            <p className="">{data.time.substring(data.time.length-5)}</p>
+            <p className="">{data.time.substring(0, data.time.length - 5)}</p>
+            <p className="">{data.time.substring(data.time.length - 5)}</p>
           </div>
           <div className="flex flex-col w-10 items-center">
             <img
@@ -78,7 +80,7 @@ export default function GameCard(props: { gameDetails: GameProps }) {
               }}
               className="rounded-full"
             />
-            <p className="text-sm font-semibold mt-2 fixed-width text-center" style={{lineHeight: '18.2px'}}>
+            <p className="text-sm font-semibold mt-2 fixed-width text-center" style={{ lineHeight: '18.2px' }}>
               {data.teams[1]}
             </p>
           </div>

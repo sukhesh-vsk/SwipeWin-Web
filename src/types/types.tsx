@@ -11,6 +11,7 @@ export interface GameProps {
     time: string;
     teams: string[];
     teamImage: (string | null | undefined)[];
+    name?: string;
 }
 
 export type OddsProps = {

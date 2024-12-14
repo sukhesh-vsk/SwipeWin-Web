@@ -26,6 +26,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<string>("All");
   const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
+  const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
     setSelectedFilter(filterType);
@@ -50,6 +51,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalSearchTerm(e.target.value);
     onSearch(e.target.value);
+  };
+
+  const handleSwitchChange = () => {
+    const newState = !isEnabled;
+    setIsEnabled(newState);
+    if (newState) {
+      window.location.href = 'https://app.wakanda.bet/';
+    }
   };
 
   return (
@@ -129,6 +138,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               onClick={handleApplyClick}
             >
               APPLY
+            </button>
+          </div>
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-sec_dim_2">
+            <span className="text-sm">Switch to App</span>
+            <button
+              onClick={handleSwitchChange}
+              className={`relative inline-flex items-center h-6 rounded-full w-11 
+                ${isEnabled ? 'bg-sgrad' : 'bg-gray-200'}`}
+            >
+              <span
+                className={`inline-block w-4 h-4 transform transition-transform bg-white rounded-full
+                  ${isEnabled ? 'translate-x-6' : 'translate-x-1'}`}
+              />
             </button>
           </div>
         </div>

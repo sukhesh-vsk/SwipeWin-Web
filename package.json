@@ -12,6 +12,7 @@
     "@apollo/client": "^3.11.0",
     "@azuro-org/dictionaries": "^3.0.16",
     "@azuro-org/sdk": "^5.1.0",
+    "@azuro-org/sdk-social-aa-connector": "^1.1.7",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
